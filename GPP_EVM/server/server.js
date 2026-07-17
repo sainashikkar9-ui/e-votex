@@ -13,7 +13,8 @@ const db = new pg.Client({
     host: "localhost",
     database: "GPP_EVM",
     password: "Sai@2009",
-    port: 3000
+    port: 3000,
+    connectionTimeoutMillis: 5000
 });
 
 db.connect();
@@ -21,11 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(_dirname + "/../public"));
 app.use('/bootstrap', express.static(path.join(_dirname, '../node_modules/bootstrap/dist')))
 app.use(session({
-    secret : process.env.SESSION_SECRET,
-    resave : false,
-    saveUninitialized : false,
-    cookie : {
-        secure : false
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false
     }
 }));
 app.set("view engine", "ejs");
@@ -40,18 +41,28 @@ app.get("/", (req, res) => {
 });
 
 app.post("/vote", (req, res) => {
+    let yesCommonOff = 0;
+    let noCommonOff = 0;
+    if (!req.sessionID.voteResponse) {
+        req.session.voteResponse = { yesCommonOff, noCommonOff };
+    }
+
     if (req.body['yesCommonOff'] === '1') {
-        yesCommonOff++;
+        req.session.voteResponse.yesCommonOff = ++yesCommonOff;
         console.log("yesCommonOff : ", yesCommonOff);
     }
     else {
-        noCommonOff++;
+        req.session.voteResponse.noCommonOff = ++noCommonOff;
         console.log("noCommonOff : ", noCommonOff);
     }
     res.render("confirmVote");
 });
 
 app.post("/confirmVote", async (req, res) => {
+    let yesCommonOff = req.session.voteResponse.yesCommonOff;
+    let noCommonOff = req.session.voteResponse.noCommonOff;
+
+
     if (req.body['confirm'] === 'confirm') {
         try {
             if (yesCommonOff === 1) {
@@ -74,6 +85,8 @@ app.post("/confirmVote", async (req, res) => {
     else {
         yesCommonOff = 0;
         noCommonOff = 0;
+        req.session.voteResponse.yesCommonOff = yesCommonOff;
+        req.session.voteResponse.noCommonOff = noCommonOff;
         res.redirect("/");
     }
 });
