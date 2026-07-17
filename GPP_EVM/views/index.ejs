@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPP EVM</title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel = "stylesheet" href = "/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPP EVM</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <h1></h1>
-    <form action = "/vote" method = "post">
-        <button value = "1" name = "yesCommonOff" class = "btn btn-primary">CommonOff Janata Party</button>
-        <button value = "1" name = "noCommonOff">Full Attendance Janata Party</button>
-    </form>
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src = "../scripts/index.js"></script>
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div class="p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
+      <h1 class="text-4xl font-mono font-bold text-blue-600 mb-4">
+        Tailwind is Working!
+      </h1>
+      <p class="text-gray-600 text-lg">
+        If you see this box with a shadow and blue text, you are all set.
+      </p>
+      <form action="/vote" method="post">
+        <button value="1" name="yesCommonOff"
+          class="mt-6 px-6 py-2 bg-blue-500 text-lg text-white font-hind font-semibold rounded-lg hover:bg-blue-700 transition">CommonOff
+          Janata Party</button>
+        <button value="1" name="noCommonOff"
+          class="mt-6 px-6 py-2 bg-blue-500 text-lg text-white font-hind font-semibold rounded-lg hover:bg-blue-700 transition">Full
+          Attendance Janata Party</button>
+      </form>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="../scripts/index.js"></script>
 </body>
-</html> 
+
+</html>
