@@ -1,0 +1,23 @@
+{
+  "name": "gpp_evm",
+  "version": "1.0.0",
+  "description": "\"package to run gpp_evm server.",
+  "license": "ISC",
+  "author": "Sai Avinash Nashikkar",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "nodemon": "^3.1.14",
+    "path": "^0.12.7",
+    "pg": "^8.22.0",
+    "url": "^0.11.4"
+  }
+}

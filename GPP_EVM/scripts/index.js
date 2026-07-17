@@ -1,0 +1,1 @@
+$('h1').text("JQuery linked successfully!");
