@@ -20,6 +20,7 @@ const db = new pg.Client({
 db.connect();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(_dirname + "/../public"));
+app.use('/scripts', express.static(path.join(_dirname, '../scripts')));
 app.use('/bootstrap', express.static(path.join(_dirname, '../node_modules/bootstrap/dist')))
 app.use(session({
     secret: process.env.SESSION_SECRET,
