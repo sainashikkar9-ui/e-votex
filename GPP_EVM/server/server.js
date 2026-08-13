@@ -42,55 +42,62 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+app.get("/prot4", (req, res) => {
+    const voteResponse = req.session.voteResponse || {};
+    const partyName = voteResponse.partyName || "Common Off Janata Party";
+    res.render("prot4", { partyName });
+});
+
+app.get("/confirmedVote", (req, res) => {
+    const voteResponse = req.session.voteResponse || {};
+    const partyName = voteResponse.partyName || "Common Off Janata Party";
+    res.render("confirmed", { partyName });
+});
+
 app.post("/vote", (req, res) => {
-    let yesCommonOff = 0;
-    let noCommonOff = 0;
-    if (!req.sessionID.voteResponse) {
-        req.session.voteResponse = { yesCommonOff, noCommonOff };
+    const selectedValue = req.body['yesCommonOff'] === '1' ? 'yes' : req.body['noCommonOff'] === '1' ? 'no' : null;
+
+    if (!selectedValue) {
+        return res.redirect("/");
     }
 
-    if (req.body['yesCommonOff'] === '1') {
-        req.session.voteResponse.yesCommonOff = ++yesCommonOff;
-        console.log("yesCommonOff : ", yesCommonOff);
-    }
-    else {
-        req.session.voteResponse.noCommonOff = ++noCommonOff;
-        console.log("noCommonOff : ", noCommonOff);
-    }
-    res.render("confirmVote");
+    const voteResponse = {
+        selected: selectedValue,
+        yesCommonOff: selectedValue === 'yes' ? 1 : 0,
+        noCommonOff: selectedValue === 'no' ? 1 : 0,
+        partyName: selectedValue === 'yes' ? "Common Off Janata Party" : "Full Attendance Janata Party"
+    };
+
+    req.session.voteResponse = voteResponse;
+    return res.render("prot4", { partyName: voteResponse.partyName });
 });
 
 app.post("/confirmVote", async (req, res) => {
-    let yesCommonOff = req.session.voteResponse.yesCommonOff;
-    let noCommonOff = req.session.voteResponse.noCommonOff;
-
+    const voteResponse = req.session.voteResponse || {};
+    const yesCommonOff = voteResponse.yesCommonOff || 0;
+    const noCommonOff = voteResponse.noCommonOff || 0;
 
     if (req.body['confirm'] === 'confirm') {
         try {
             if (yesCommonOff === 1) {
                 await db.query('UPDATE "commonOffVote" SET yes = yes + 1 WHERE id = 1');
-                let status = await db.query('SELECT yes FROM "commonOffVote"');
+                const status = await db.query('SELECT yes FROM "commonOffVote"');
                 console.log("Status : yes = " + status.rows[0].yes);
-                res.send("Status : yes = " + status.rows[0].yes);
             }
             else {
                 await db.query('UPDATE "commonOffVote" SET no = no + 1 WHERE id = 1');
-                let status = await db.query('SELECT no FROM "commonOffVote"');
+                const status = await db.query('SELECT no FROM "commonOffVote"');
                 console.log("Status : no = " + status.rows[0].no);
-                res.send("Status : no = " + status.rows[0].no);
             }
+            return res.redirect("/confirmedVote");
         } catch (err) {
             console.log(err);
-            res.sendStatus(500).send("Database error occured!");
+            return res.status(500).send("Database error occured!");
         }
     }
-    else {
-        yesCommonOff = 0;
-        noCommonOff = 0;
-        req.session.voteResponse.yesCommonOff = yesCommonOff;
-        req.session.voteResponse.noCommonOff = noCommonOff;
-        res.redirect("/");
-    }
+
+    req.session.voteResponse = {};
+    return res.redirect("/");
 });
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
