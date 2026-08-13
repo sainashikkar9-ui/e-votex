@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPP EVM - Campus Ballot</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-[#f4efe5] font-[Hind_Madurai] text-slate-900">
+  <main
+    class="mx-auto grid min-h-screen max-w-6xl items-center gap-8 px-4 py-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(32rem,1.3fr)] lg:gap-12">
+    <header class="order-2 text-center lg:order-1 lg:text-left">
+      <p class="font-mono text-xs font-bold tracking-[0.2em] text-orange-700">CAMPUS DEMOCRACY - 2026</p>
+      <h1 class="mt-3 text-4xl font-bold leading-tight sm:text-5xl">Your voice,<br>one clear vote.</h1>
+      <p class="mx-auto mt-5 max-w-sm text-base leading-relaxed text-slate-600 lg:mx-0">Pick the blue button next to
+        your preferred party. The ballot is built to be clear, simple, and familiar.</p>
+      <p
+        class="mx-auto mt-7 max-w-sm border-l-4 border-emerald-600 bg-emerald-50 px-4 py-3 text-base font-bold leading-snug text-emerald-950 shadow-sm lg:mx-0">
+        Your selection is private. You can vote once.</p>
+      <div
+        class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800">
+        <span class="h-2 w-2 rounded-full bg-emerald-600"></span>Voting is open</div>
+    </header>
+
+    <section
+      class="order-1 w-full rounded-[2.25rem] border-[7px] border-[#63787a] bg-[#a8cfd0] p-3 shadow-[0_22px_46px_rgba(48,65,68,.28)] sm:p-5 lg:order-2"
+      aria-label="Electronic voting machine ballot unit">
+      <div class="overflow-hidden rounded-[1.45rem] border-2 border-[#84b6b8] bg-[#e6ffff]">
+        <div
+          class="flex items-center justify-between border-b border-[#9bcacc] bg-[#d1f1f1] px-5 py-3 font-mono text-xs font-bold tracking-wider text-slate-700">
+          <span>BALLOT UNIT</span><span>GPP-01</span></div>
+        <form id="ballot-form" class="p-3 sm:p-4">
+          <div
+            class="grid grid-cols-[minmax(0,1fr)_2.5rem_4.5rem] overflow-hidden rounded-lg border border-[#9bcacc] bg-white sm:grid-cols-[minmax(0,1fr)_3rem_5.5rem]">
+            <div class="grid min-h-20 grid-cols-[2.5rem_1fr] items-center"><span
+                class="self-stretch border-r border-[#9bcacc] py-7 text-center font-mono text-xs text-slate-600">01</span><span
+                class="px-4 text-base font-bold leading-tight sm:text-lg">Common Off Janata Party</span></div>
+            <div class="flex items-center justify-center border-x border-[#9bcacc]"><span id="led-1"
+                class="h-4 w-4 rounded-full border-2 border-red-800 bg-red-500 shadow-[inset_0_1px_2px_rgba(0,0,0,.35)]"
+                aria-label="Red status LED"></span></div>
+            <button type="button" data-vote="yesCommonOff" data-led="led-1"
+              aria-label="Vote for Common Off Janata Party"
+              class="vote-button m-3 rounded-full border-2 border-blue-900 bg-blue-700 shadow-[inset_0_2px_3px_rgba(255,255,255,.45),0_2px_2px_rgba(0,0,0,.2)] transition hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-amber-400"></button>
+          </div>
+          <div
+            class="mt-2 grid grid-cols-[minmax(0,1fr)_2.5rem_4.5rem] overflow-hidden rounded-lg border border-[#9bcacc] bg-white sm:grid-cols-[minmax(0,1fr)_3rem_5.5rem]">
+            <div class="grid min-h-20 grid-cols-[2.5rem_1fr] items-center"><span
+                class="self-stretch border-r border-[#9bcacc] py-7 text-center font-mono text-xs text-slate-600">02</span><span
+                class="px-4 text-base font-bold leading-tight sm:text-lg">Full Attendance Janata Party</span></div>
+            <div class="flex items-center justify-center border-x border-[#9bcacc]"><span id="led-2"
+                class="h-4 w-4 rounded-full border-2 border-red-800 bg-red-500 shadow-[inset_0_1px_2px_rgba(0,0,0,.35)]"
+                aria-label="Red status LED"></span></div>
+            <button type="button" data-vote="noCommonOff" data-led="led-2"
+              aria-label="Vote for Full Attendance Janata Party"
+              class="vote-button m-3 rounded-full border-2 border-blue-900 bg-blue-700 shadow-[inset_0_2px_3px_rgba(255,255,255,.45),0_2px_2px_rgba(0,0,0,.2)] transition hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-amber-400"></button>
+          </div>
+          <div class="mt-2 space-y-2 opacity-35" aria-label="Future ballot positions unavailable">
+            <div
+              class="grid grid-cols-[minmax(0,1fr)_2.5rem_4.5rem] overflow-hidden rounded-lg border border-[#9bcacc] bg-white sm:grid-cols-[minmax(0,1fr)_3rem_5.5rem]">
+              <div class="grid min-h-16 grid-cols-[2.5rem_1fr] items-center"><span
+                  class="self-stretch border-r border-[#9bcacc] py-5 text-center font-mono text-xs">03</span><span
+                  class="px-4 text-sm font-medium text-slate-600">Unavailable ballot position</span></div>
+              <div class="flex items-center justify-center border-x border-[#9bcacc]"><span
+                  class="h-4 w-4 rounded-full border-2 border-slate-500 bg-slate-300"></span></div><span
+                class="m-3 rounded-full border-2 border-slate-500 bg-slate-300"></span>
+            </div>
+            <div
+              class="grid grid-cols-[minmax(0,1fr)_2.5rem_4.5rem] overflow-hidden rounded-lg border border-[#9bcacc] bg-white sm:grid-cols-[minmax(0,1fr)_3rem_5.5rem]">
+              <div class="grid min-h-16 grid-cols-[2.5rem_1fr] items-center"><span
+                  class="self-stretch border-r border-[#9bcacc] py-5 text-center font-mono text-xs">04</span><span
+                  class="px-4 text-sm font-medium text-slate-600">Unavailable ballot position</span></div>
+              <div class="flex items-center justify-center border-x border-[#9bcacc]"><span
+                  class="h-4 w-4 rounded-full border-2 border-slate-500 bg-slate-300"></span></div><span
+                class="m-3 rounded-full border-2 border-slate-500 bg-slate-300"></span>
+            </div>
+          </div>
+        </form>
+        <p id="ballot-status"
+          class="border-t border-[#9bcacc] bg-[#d1f1f1] px-4 py-3 text-center text-sm font-semibold text-slate-700"
+          aria-live="polite">Press one blue button to cast your vote.</p>
+      </div>
+    </section>
+  </main>
+  <button id="debug-reset" type="button"
+    class="fixed bottom-4 right-4 rounded-lg border border-slate-400 bg-white px-3 py-2 font-mono text-xs font-bold text-slate-600 shadow-md transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-amber-400"
+    aria-label="Reset locally stored vote for debugging">Debug: reset vote</button>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    const voteStorageKey = 'gpp-evm-vote';
+    const ballotVersionKey = 'gpp-evm-ballot-version';
+    const ballotVersion = '2';
+
+    // Clear only the previous prototype vote once; all new votes persist.
+    if (localStorage.getItem(ballotVersionKey) !== ballotVersion) {
+      localStorage.removeItem(voteStorageKey);
+      localStorage.setItem(ballotVersionKey, ballotVersion);
+    }
+
+    const savedVote = localStorage.getItem(voteStorageKey);
+    const buttons = document.querySelectorAll('.vote-button');
+    const status = document.getElementById('ballot-status');
+
+    function showSelectedVote(voteName) {
+      const selectedButton = document.querySelector(`[data-vote="${voteName}"]`);
+      const selectedLed = document.getElementById(selectedButton.dataset.led);
+      selectedLed.className = 'h-4 w-4 rounded-full border-2 border-emerald-800 bg-emerald-500 shadow-[0_0_12px_rgba(34,197,94,.9),inset_0_1px_2px_rgba(0,0,0,.35)]';
+      buttons.forEach((button) => { button.disabled = true; button.classList.add('cursor-not-allowed', 'opacity-60'); });
+      status.textContent = 'Vote recorded on this device. Thank you for participating.';
+    }
+
+    if (savedVote) showSelectedVote(savedVote);
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      if (localStorage.getItem(voteStorageKey)) return;
+      localStorage.setItem(voteStorageKey, button.dataset.vote);
+      showSelectedVote(button.dataset.vote);
+    }));
+
+    document.getElementById('debug-reset').addEventListener('click', () => {
+      localStorage.removeItem(voteStorageKey);
+      localStorage.removeItem(ballotVersionKey);
+      window.location.reload();
+    });
+  </script>
+</body>
+
+</html>
