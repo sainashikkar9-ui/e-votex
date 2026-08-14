@@ -10,11 +10,11 @@ const port = 5000;
 const _dirname = path.dirname(fileURLToPath(import.meta.url));
 const sessionSecret = process.env.SESSION_SECRET || "gpp-evm-development-session-secret";
 const db = new pg.Client({
-    user: "postgres",
-    host: "localhost",
-    database: "GPP_EVM",
-    password: "Sai@2009",
-    port: 3000,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: Number(process.env.DB_PORT),
     connectionTimeoutMillis: 5000
 });
 
