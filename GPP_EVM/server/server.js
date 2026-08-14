@@ -31,6 +31,7 @@ app.use(session({
         secure: false
     }
 }));
+app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(_dirname, "../views"));
 //console.log("Checking Session : " + process.env.SESSION_SECRET);
@@ -39,22 +40,89 @@ app.set("views", path.join(_dirname, "../views"));
 //    let noCommonOff = 0;
 
 app.get("/", (req, res) => {
-    res.render("index");
-//  res.render("confirmedProt2");
+    if (req.session.isVoted === 3) {
+        res.redirect("/confirmed");
+    }
+    else {
+        res.render("index");
+        req.session.isVoted = 1;
+    }
 });
 
-app.get("/prot4", (req, res) => {
-    const voteResponse = req.session.voteResponse || {};
-    const partyName = voteResponse.partyName || "Common Off Janata Party";
-    res.render("prot4", { partyName });
+app.post("/vote", (req, res) => {
+
+    if (req.session.isVoted === 1) {
+        req.session.voteResponse = req.body["yesCommonOff"] || req.body["noCommonOff"];
+        const partyName = req.session.voteResponse;
+        res.render("confirmVote", { partyName });
+        console.log('Entered /vote 2');
+        req.session.isVoted = 2;
+    }
+
+    else if (req.session.isVoted === 3) {
+        res.redirect("/confirmed");
+    }
+
+    else {
+        res.redirect("/");
+    }
 });
 
-app.get("/confirmedVote", (req, res) => {
-    const voteResponse = req.session.voteResponse || {};
-    const partyName = voteResponse.partyName || "Common Off Janata Party";
-    res.render("confirmed", { partyName });
+app.post("/confirmVote", async (req, res) => {
+    if (req.session.isVoted === 2) {
+        const partyName = req.session.voteResponse;
+        const buttonName = req.body["edit"] || req.body["confirm"];
+
+        console.log('Entered /confirmVote 3');
+
+
+        if (buttonName === 'confirm') {
+            try {
+                if (partyName === "Common Off Janata Party") {
+                    await db.query('UPDATE "commonOffVote" SET yes = yes + 1 WHERE id = 1');
+                    const status = await db.query('SELECT yes FROM "commonOffVote"');
+                    console.log("Status : yes = " + status.rows[0].yes);
+                    console.log("Done db 1");
+                    req.session.isVoted = 3;
+                }
+                else {
+                    await db.query('UPDATE "commonOffVote" SET no = no + 1 WHERE id = 1');
+                    const status = await db.query('SELECT no FROM "commonOffVote"');
+                    console.log("Status : no = " + status.rows[0].no);
+                    console.log("Done db 2");
+                    req.session.isVoted = 3;
+                }
+                return res.redirect("/confirmed");
+            } catch (err) {
+                console.log(err);
+                return res.status(500).send("Database error occured!");
+            }
+        }
+
+        else {
+            return res.redirect("/");
+        }
+    }
+
+    else if (req.session.isVoted === 3) { res.redirect("/confirmed"); }
+
+    else { res.redirect("/"); }
 });
 
+app.get("/confirmed", (req, res) => {
+    if (req.session.isVoted === 3) {
+        const partyName = req.session.voteResponse;
+        res.render("confirmed", { partyName });
+        console.log('Entered /confirmed 4');
+    }
+    else {
+        res.redirect("/");
+    }
+    console.log("Session ID:", req.sessionID);
+console.log("Session:", req.session);
+});
+
+/*
 app.post("/vote", (req, res) => {
     const selectedValue = req.body['yesCommonOff'] === '1' ? 'yes' : req.body['noCommonOff'] === '1' ? 'no' : null;
 
@@ -72,34 +140,8 @@ app.post("/vote", (req, res) => {
     req.session.voteResponse = voteResponse;
     return res.render("prot4", { partyName: voteResponse.partyName });
 });
+*/
 
-app.post("/confirmVote", async (req, res) => {
-    const voteResponse = req.session.voteResponse || {};
-    const yesCommonOff = voteResponse.yesCommonOff || 0;
-    const noCommonOff = voteResponse.noCommonOff || 0;
-
-    if (req.body['confirm'] === 'confirm') {
-        try {
-            if (yesCommonOff === 1) {
-                await db.query('UPDATE "commonOffVote" SET yes = yes + 1 WHERE id = 1');
-                const status = await db.query('SELECT yes FROM "commonOffVote"');
-                console.log("Status : yes = " + status.rows[0].yes);
-            }
-            else {
-                await db.query('UPDATE "commonOffVote" SET no = no + 1 WHERE id = 1');
-                const status = await db.query('SELECT no FROM "commonOffVote"');
-                console.log("Status : no = " + status.rows[0].no);
-            }
-            return res.redirect("/confirmedVote");
-        } catch (err) {
-            console.log(err);
-            return res.status(500).send("Database error occured!");
-        }
-    }
-
-    req.session.voteResponse = {};
-    return res.redirect("/");
-});
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
