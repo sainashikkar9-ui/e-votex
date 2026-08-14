@@ -91,6 +91,11 @@
                     class="rounded-xl border-2 border-slate-300 px-4 py-3 font-semibold">Edit Selection</button><button
                     id="confirm" class="rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white">Confirm</button></div>
         </div>
+            <footer
+      class="mt-5 text-center text-sm font-semibold text-slate-600 sm:mt-6"
+    >
+      Made with passion by Sai N.
+    </footer>
     </main>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>const party = new URLSearchParams(location.search).get('party'); if (party) document.getElementById('party').textContent = party; const slip = document.getElementById('slip'), stamp = document.getElementById('stamp'), actions = document.getElementById('actions'), status = document.getElementById('status'); document.getElementById('edit').onclick = () => location.href = '/'; document.getElementById('confirm').onclick = () => { actions.hidden = true; status.textContent = 'Confirmed. Securing your VVPAT slip...'; stamp.classList.remove('opacity-0'); stamp.classList.add('stamp'); setTimeout(() => slip.classList.add('drop'), 700); setTimeout(() => location.href = '/confirmedVote', 2700) };</script>
