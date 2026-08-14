@@ -40,6 +40,7 @@ app.set("views", path.join(_dirname, "../views"));
 
 app.get("/", (req, res) => {
     res.render("index");
+//  res.render("confirmedProt2");
 });
 
 app.get("/prot4", (req, res) => {

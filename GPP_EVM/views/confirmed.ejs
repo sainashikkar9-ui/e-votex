@@ -1,319 +1,1008 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vote Confirmed</title>
-  <link rel="stylesheet" href="/css/output.css">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Vote Recorded</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap"
+    rel="stylesheet"
+  >
+
   <style>
-    :root {
-      --bg: #f5f0e7;
-      --card: #ffffff;
-      --panel: #b9dddd;
-      --panel-dark: #769294;
-      --paper: #fffcf3;
-      --ink: #0f172a;
-      --muted: #64748b;
-      --success: #0f766e;
-      --success-bright: #10b981;
-      --shadow: rgba(15, 23, 42, 0.18);
-    }
 
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background: var(--bg);
-      font-family: 'Hind Madurai', sans-serif;
-      color: var(--ink);
-    }
+    /* =========================================================
+       PAPER BACKGROUND
+       ========================================================= */
 
     body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.8), transparent 32%), linear-gradient(180deg, #f8f2eb 0%, #f1ebdf 100%);
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(255,255,255,0.8),
+          transparent 35%
+        ),
+        linear-gradient(
+          180deg,
+          #f8f2eb 0%,
+          #f1ebdf 100%
+        );
     }
 
-    .page-shell {
-      width: min(100%, 56rem);
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+
+    /* =========================================================
+       PAPER TEXTURE
+       ========================================================= */
+
+    .paper {
+      background-color: #fffdf7;
+
+      background-image:
+        linear-gradient(
+          rgba(255,255,255,0.45),
+          rgba(255,255,255,0.45)
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(100,116,139,0.025) 0px,
+          rgba(100,116,139,0.025) 1px,
+          transparent 1px,
+          transparent 4px
+        );
     }
 
-    .party-header {
-      text-align: center;
-      margin-bottom: 1.25rem;
-      width: min(100%, 38rem);
-    }
 
-    .party-header .eyebrow {
-      margin: 0;
-      font-family: 'Roboto Mono', monospace;
-      font-size: clamp(0.62rem, 1vw + 0.44rem, 0.76rem);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #b45309;
-      font-weight: 700;
-    }
+    /* =========================================================
+       PAPER EDGE
+       ========================================================= */
 
-    .party-header h1 {
-      margin: 0.8rem 0 0;
-      font-size: clamp(2rem, 2.5vw + 1rem, 3rem);
-      line-height: 1.12;
-      font-weight: 700;
-    }
-
-    .vvpat-card {
-      width: min(100%, 39rem);
-      background: var(--card);
-      border-radius: 1.7rem;
-      padding: clamp(1rem, 2vw, 1.6rem);
-      box-shadow: 0 24px 42px var(--shadow);
-    }
-
-    .machine-panel {
-      border-radius: 1.5rem;
-      border: 7px solid var(--panel-dark);
-      background: var(--panel);
-      padding: 1rem;
-    }
-
-    .machine-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #334155;
-    }
-
-    .paper-window {
-      margin-top: 0.9rem;
-      height: clamp(14rem, 33vw, 19rem);
-      overflow: hidden;
-      border-radius: 0.9rem;
-      border: 8px solid #1f2937;
-      background: #0f172a;
-      padding: 1rem;
-    }
-
-    .slip {
+    .paper-document {
       position: relative;
-      min-height: 11rem;
-      background: var(--paper);
-      padding: 1.1rem 1.1rem 1rem;
-      color: var(--ink);
-      box-shadow: 0 18px 22px rgba(15, 23, 42, 0.12);
-      border-radius: 0.4rem;
-      overflow: hidden;
-      transform-origin: top center;
+
+      box-shadow:
+        0 18px 35px rgba(15, 23, 42, 0.16),
+        0 3px 8px rgba(15, 23, 42, 0.08);
     }
 
-    .slip::before {
-      content: "";
+
+    /* =========================================================
+       USER ROW
+       ========================================================= */
+
+    .current-voter {
+      position: relative;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(16,185,129,0.075),
+          rgba(16,185,129,0.025),
+          transparent
+        );
+
+      box-shadow:
+        inset 4px 0 0 #0f766e;
+    }
+
+
+    /* =========================================================
+       OTHER VOTER ROWS
+       ========================================================= */
+
+    .other-voter {
+      opacity: 0.38;
+
+      transition:
+        opacity 180ms ease,
+        background-color 180ms ease;
+    }
+
+
+    .other-voter:hover {
+      opacity: 0.52;
+    }
+
+
+    /* =========================================================
+       VOTED STAMP
+       ========================================================= */
+
+    .voted-stamp {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(148,163,184,0.08));
+
+      z-index: 20;
+
+      left: 50%;
+      top: 50%;
+
+      transform-origin: center;
+
+      color: #10b981;
+
+      border: 5px solid #10b981;
+
+      padding: 0.35rem 1.25rem;
+
+      font-family: 'Roboto Mono', monospace;
+
+      font-size: clamp(
+        2.3rem,
+        7vw,
+        4.8rem
+      );
+
+      font-weight: 700;
+
+      letter-spacing: 0.12em;
+
+      line-height: 1;
+
+      white-space: nowrap;
+
       pointer-events: none;
-    }
 
-    .slip > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .slip-label {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.7rem;
-      color: #64748b;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .party-box {
-      margin: 1.2rem 0;
-      padding: 0.9rem 0;
-      border-top: 1px dashed rgba(51, 65, 85, 0.8);
-      border-bottom: 1px dashed rgba(51, 65, 85, 0.8);
-    }
-
-    .party-box label {
-      display: block;
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-bottom: 0.35rem;
-    }
-
-    .party-name {
-      font-size: clamp(1.35rem, 2vw + 0.7rem, 2.15rem);
-      font-weight: 700;
-      line-height: 1.18;
-      word-break: break-word;
-    }
-
-    .slip-footer {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.68rem;
-      color: #64748b;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .stamp {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      font-family: 'Roboto Mono', monospace;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: rgba(16, 185, 129, 0.98);
-      opacity: 1;
-      text-shadow: 0 0 18px rgba(16, 185, 129, 0.25);
       user-select: none;
-      pointer-events: none;
-      transform: rotate(-20deg) scale(1);
-      animation: stamp 0.55s linear both;
+
+      opacity: 0;
+
+      transform:
+        translate(-50%, -50%)
+        rotate(-20deg)
+        scale(2.8);
+
+      filter: blur(2px);
+
+      text-shadow:
+        0 0 18px rgba(16,185,129,0.20);
     }
 
-    @keyframes stamp {
+
+    /* =========================================================
+       PHYSICAL RUBBER-STAMP ANIMATION
+
+       Same feeling as confirmProt4.html.
+       Starts enlarged and blurred, then lands into place.
+       ========================================================= */
+
+    @keyframes physicalStamp {
+
       0% {
         opacity: 0;
-        transform: rotate(-20deg) scale(2.8);
+
+        transform:
+          translate(-50%, -50%)
+          rotate(-20deg)
+          scale(2.8);
+
         filter: blur(2px);
       }
+
       30% {
         opacity: 0.85;
       }
+
       100% {
-        opacity: 1;
-        transform: rotate(-20deg) scale(1);
+        opacity: 0.96;
+
+        transform:
+          translate(-50%, -50%)
+          rotate(-20deg)
+          scale(1);
+
         filter: blur(0);
       }
+
     }
 
-    .confirmation-msg {
-      margin-top: 1.2rem;
-      text-align: center;
-      color: #065f46;
-      font-size: clamp(1.2rem, 1vw + 0.8rem, 1.7rem);
-      font-weight: 800;
-      letter-spacing: 0.03em;
+
+    .stamp-animation {
+      animation:
+        physicalStamp
+        0.55s
+        cubic-bezier(.2, .8, .2, 1)
+        both;
     }
 
-    .secondary-action {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 1.1rem;
-      width: 100%;
-      padding: 0.9rem 1rem;
-      border-radius: 0.9rem;
-      background: linear-gradient(180deg, #10b981 0%, #0f766e 100%);
-      border: none;
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);
+
+    /* =========================================================
+       SUBTLE PAPER NOISE
+       ========================================================= */
+
+    .paper::before {
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0.28;
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 3px,
+          rgba(100,116,139,0.018) 4px
+        );
     }
 
-    footer {
-      margin-top: 1.2rem;
-      width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #334155;
-      opacity: 0.9;
-      letter-spacing: 0.02em;
+
+    /* =========================================================
+       TABLE
+       ========================================================= */
+
+    .voter-table {
+      min-width: 820px;
     }
 
-    @media (max-width: 640px) {
-      body {
-        padding: 0.8rem;
-      }
 
-      .vvpat-card {
-        border-radius: 1.2rem;
-        padding: 0.7rem;
-      }
+    /* =========================================================
+       MOBILE SCROLLBAR
+       ========================================================= */
 
-      .machine-panel {
-        border-width: 5px;
-        padding: 0.7rem;
-      }
-
-      .paper-window {
-        border-width: 6px;
-        padding: 0.7rem;
-      }
-
-      .secondary-action {
-        width: 100%;
-      }
+    .table-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: #94a3b8 transparent;
     }
 
-    @media (min-width: 641px) and (max-width: 1024px) {
-      .vvpat-card {
-        width: min(100%, 42rem);
-      }
-    }
-
-    @media (min-width: 1280px) {
-      .vvpat-card {
-        width: min(100%, 42rem);
-      }
-    }
   </style>
+
 </head>
-<body>
-  <main class="page-shell">
-    <header class="party-header">
-      <p class="eyebrow">Campus Democracy - VVPAT</p>
-      <h1>Vote Recorded</h1>
+
+
+<body
+  class="min-h-screen font-['Hind_Madurai'] text-slate-900"
+>
+
+  <!-- =========================================================
+       MAIN PAGE
+       ========================================================= -->
+
+  <main
+    class="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center px-3 py-8 sm:px-5 sm:py-10"
+  >
+
+
+    <!-- =======================================================
+         HEADER
+         ======================================================= -->
+
+    <header
+      class="mb-6 w-full text-center sm:mb-8"
+    >
+
+      <p
+        class="font-mono text-[10px] font-bold tracking-[0.22em] text-orange-700 sm:text-xs"
+      >
+        CAMPUS DEMOCRACY - VVPAT
+      </p>
+
+
+      <h1
+        class="mt-2 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl md:text-6xl"
+      >
+        Vote Recorded
+      </h1>
+
+
+      <p
+        class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base"
+      >
+        Your vote has been successfully recorded and secured.
+      </p>
+
     </header>
 
-    <div class="vvpat-card">
-      <section class="machine-panel">
-        <div class="machine-top">
-          <span>VVPAT Unit</span>
-          <span>Secure</span>
+
+    <!-- =======================================================
+         REAL PAPER VOTER LIST
+         ======================================================= -->
+
+    <section
+      class="paper-document paper relative w-full overflow-hidden rounded-sm border border-[#d6cdbd] px-4 py-5 sm:px-7 sm:py-7 md:px-10"
+    >
+
+
+      <!-- =====================================================
+           PAPER HEADER
+           ===================================================== -->
+
+      <div
+        class="flex items-start justify-between gap-4 border-b-2 border-slate-800 pb-4"
+      >
+
+        <div>
+
+          <p
+            class="font-mono text-[9px] font-bold tracking-[0.18em] text-slate-500"
+          >
+            CAMPUS DEMOCRACY
+          </p>
+
+          <h2
+            class="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl"
+          >
+            VOTER'S LIST
+          </h2>
+
         </div>
 
-        <div class="paper-window">
-          <article class="slip" aria-live="polite">
-            <p class="slip-label">VVPAT Vote Slip</p>
 
-            <div class="party-box">
-              <label>Your selected party</label>
-              <div class="party-name"><%= partyName %></div>
+        <div
+          class="text-right font-mono text-[8px] font-bold uppercase tracking-[0.14em] text-slate-400 sm:text-[9px]"
+        >
+
+          <p>GPP H2</p>
+
+          <p class="mt-1">
+            VERIFIED RECORD
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           TABLE AREA
+
+           Horizontal scrolling on small devices prevents the
+           voter-list columns from becoming unreadable.
+           ===================================================== -->
+
+      <div
+        class="table-scroll mt-4 overflow-x-auto"
+      >
+
+        <div
+          class="voter-table"
+        >
+
+
+          <!-- =================================================
+               COLUMN HEADINGS
+               ================================================= -->
+
+          <div
+            class="grid grid-cols-[45px_1.45fr_1.45fr_1fr_1.25fr_1.25fr_55px] items-center gap-2 border-b border-slate-400 pb-2 px-2 font-mono text-[9px] font-bold uppercase tracking-wide text-slate-700 sm:text-[10px]"
+          >
+
+            <span>#</span>
+
+            <span>
+              Voter Name
+            </span>
+
+            <span>
+              Enrollment No.
+            </span>
+
+            <span>
+              Member Of
+            </span>
+
+            <span>
+              Date of Voting
+            </span>
+
+            <span>
+              Time of Voting
+            </span>
+
+            <span class="text-center">
+              Photo
+            </span>
+
+          </div>
+
+
+          <!-- =================================================
+               USER'S ACTUAL RECORD
+               ================================================= -->
+
+          <div
+            id="currentVoterRow"
+            class="current-voter grid min-h-[78px] grid-cols-[45px_1.45fr_1.45fr_1fr_1.25fr_1.25fr_55px] items-center gap-2 border-b border-slate-300 px-2 py-2"
+          >
+
+            <!-- Number -->
+
+            <span
+              class="text-sm font-bold text-slate-950 sm:text-base"
+            >
+              01
+            </span>
+
+
+            <!-- Name -->
+
+            <span
+              id="voterName"
+              class="break-words text-sm font-bold text-slate-950 sm:text-base"
+            >
+              Voter
+            </span>
+
+
+            <!-- Enrollment -->
+
+            <span
+              id="enrollmentNumber"
+              class="font-mono text-[10px] font-bold text-slate-900 sm:text-xs"
+            >
+              --------
+            </span>
+
+
+            <!-- Member -->
+
+            <span
+              class="text-xs font-bold text-slate-900 sm:text-sm"
+            >
+              GPP H2
+            </span>
+
+
+            <!-- Date -->
+
+            <span
+              id="votingDate"
+              class="text-xs font-bold text-slate-900 sm:text-sm"
+            >
+              --
+            </span>
+
+
+            <!-- Time -->
+
+            <span
+              id="votingTime"
+              class="font-mono text-[10px] font-bold text-slate-900 sm:text-xs"
+            >
+              --
+            </span>
+
+
+            <!-- User Avatar -->
+
+            <div
+              class="flex justify-center"
+            >
+
+              <img
+                id="currentAvatar"
+                class="h-10 w-10 rounded-full border border-slate-400 bg-slate-100 object-cover shadow-sm"
+                alt="Voter icon"
+              >
+
             </div>
 
-            <p class="slip-footer">Printed for verification</p>
-            <span class="stamp" aria-label="Vote stamped as voted">VOTED</span>
-          </article>
-        </div>
-      </section>
 
-      <p class="confirmation-msg">Your Vote is Considered</p>
-      <a href="/" class="secondary-action">Back to Ballot</a>
-    </div>
+            <!-- ================================================
+                 VOTED STAMP
+
+                 IMPORTANT:
+                 This is INSIDE the user's row.
+
+                 Therefore the stamp specifically marks the
+                 user's record rather than the entire document.
+                 ================================================ -->
+
+            <div
+              id="votedStamp"
+              class="voted-stamp"
+              aria-label="Voted"
+            >
+              VOTED
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               OTHER VOTERS
+
+               Generated dynamically by JavaScript.
+               ================================================= -->
+
+          <div id="otherVoters"></div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           PAPER FOOTER
+           ===================================================== -->
+
+      <div
+        class="mt-5 border-t border-slate-300 pt-3 text-center font-mono text-[8px] uppercase tracking-[0.12em] text-slate-400"
+      >
+
+        Electoral Register • Campus Election Record
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         THANK YOU MESSAGE
+         ======================================================= -->
+
+    <section
+      class="mt-5 w-full max-w-3xl rounded-xl border-2 border-[#e8d9ad] bg-[#fff8e8] px-4 py-4 shadow-sm sm:mt-6 sm:px-7 sm:py-5"
+    >
+
+      <div
+        class="flex items-start justify-center gap-3"
+      >
+
+        <!-- Lock icon -->
+
+        <div
+          class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-800 text-white"
+        >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+
+            <path
+              d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-7-2a2 2 0 0 1 4 0v2h-4V6Zm2 10a2 2 0 1 1 2-2 2 2 0 0 1-2 2Z"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <div>
+
+          <p
+            class="text-sm font-semibold text-emerald-900 sm:text-base"
+          >
+            Thank you for participating in the democratic process.
+          </p>
+
+
+          <p
+            class="mt-1 text-sm font-semibold text-emerald-900 sm:text-base"
+          >
+            Your vote matters!
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         FOOTER
+         ======================================================= -->
+
+    <footer
+      class="mt-5 text-center text-sm font-semibold text-slate-600 sm:mt-6"
+    >
+      Made with passion by Sai N.
+    </footer>
+
+
   </main>
 
-  <footer>Made with passion by Sai N.</footer>
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+
+  <script>
+
+    /* =========================================================
+       1. GET USER INFORMATION FROM EXPRESS / EJS
+       =========================================================
+
+       Your Express route can send:
+
+       {
+         userName: req.session.user.name,
+         enrollmentNo: req.session.user.enrollmentNo
+       }
+
+       ========================================================= */
+
+
+    const userName =
+      <%- JSON.stringify(
+        typeof userName !== "undefined"
+          ? userName
+          : typeof username !== "undefined"
+            ? username
+            : typeof name !== "undefined"
+              ? name
+              : "Voter"
+      ) %>;
+
+
+    const enrollmentNo =
+      <%- JSON.stringify(
+        typeof enrollmentNo !== "undefined"
+          ? enrollmentNo
+          : typeof enrollmentNumber !== "undefined"
+            ? enrollmentNumber
+            : typeof enrollment !== "undefined"
+              ? enrollment
+              : "--------"
+      ) %>;
+
+
+    /* =========================================================
+       2. DISPLAY USER DATA
+       ========================================================= */
+
+    document.getElementById(
+      "voterName"
+    ).textContent = userName;
+
+
+    document.getElementById(
+      "enrollmentNumber"
+    ).textContent = enrollmentNo;
+
+
+
+    /* =========================================================
+       3. PERMANENT FIRST VOTE TIMESTAMP
+       =========================================================
+
+       The timestamp is created ONLY if this account does not
+       already have one stored.
+
+       Therefore:
+
+       First confirmation:
+          → current date/time saved
+
+       Refresh:
+          → same date/time
+
+       Re-open:
+          → same date/time
+
+       ========================================================= */
+
+
+    const timestampKey =
+      `gpp_voted_timestamp_${String(enrollmentNo).trim()}`;
+
+
+    let storedTimestamp =
+      localStorage.getItem(timestampKey);
+
+
+    if (!storedTimestamp) {
+
+      storedTimestamp =
+        new Date().toISOString();
+
+
+      localStorage.setItem(
+        timestampKey,
+        storedTimestamp
+      );
+
+    }
+
+
+    const votingDateTime =
+      new Date(storedTimestamp);
+
+
+
+    /* =========================================================
+       4. FORMAT DATE
+       ========================================================= */
+
+    const formattedDate =
+      votingDateTime.toLocaleDateString(
+        "en-IN",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        }
+      );
+
+
+    document.getElementById(
+      "votingDate"
+    ).textContent = formattedDate;
+
+
+
+    /* =========================================================
+       5. FORMAT TIME
+       ========================================================= */
+
+    const formattedTime =
+      votingDateTime.toLocaleTimeString(
+        "en-IN",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        }
+      );
+
+
+    document.getElementById(
+      "votingTime"
+    ).textContent = formattedTime;
+
+
+
+    /* =========================================================
+       6. CURRENT USER AVATAR
+
+       Abstract shapes → deliberately gender-neutral.
+       ========================================================= */
+
+    const avatarSeed =
+      encodeURIComponent(
+        `${enrollmentNo}-current-voter`
+      );
+
+
+    document.getElementById(
+      "currentAvatar"
+    ).src =
+      `https://api.dicebear.com/9.x/shapes/svg?seed=${avatarSeed}`;
+
+
+
+    /* =========================================================
+       7. OTHER VOTER RECORDS
+
+       These are decorative/fictitious records intended to make
+       the interface resemble a voter-register page.
+
+       They deliberately remain visually dull.
+       ========================================================= */
+
+
+    const backgroundRows = [
+
+      ["02", "rwef p.", "230701A5678"],
+      ["03", "kdjff l.", "230701A4321"],
+      ["04", "mnbh t.", "230701A8765"],
+      ["05", "qwer a.", "230701A2468"],
+      ["06", "zxcv b.", "230701A1357"],
+      ["07", "lkjn c.", "230701A9082"],
+      ["08", "asdf g.", "230701A3149"],
+      ["09", "yuiop h.", "230701A6258"],
+      ["10", "poiuy z.", "230701A5566"],
+      ["11", "bnm q.", "230701A7788"],
+      ["12", "hjkl m.", "230701A8899"],
+      ["13", "wer t.", "230701A4521"],
+      ["14", "plmk r.", "230701A7314"],
+      ["15", "qaz x.", "230701A6198"]
+
+    ];
+
+
+    const otherVoters =
+      document.getElementById(
+        "otherVoters"
+      );
+
+
+
+    /* =========================================================
+       8. CREATE EACH BACKGROUND ROW
+       ========================================================= */
+
+
+    backgroundRows.forEach(
+      ([number, name, enrollment], index) => {
+
+
+        const row =
+          document.createElement("div");
+
+
+        row.className =
+          "other-voter grid min-h-[72px] grid-cols-[45px_1.45fr_1.45fr_1fr_1.25fr_1.25fr_55px] items-center gap-2 border-b border-slate-300 px-2 py-2";
+
+
+
+        /*
+          Decorative previous voting times.
+          These are intentionally NOT presented as real data.
+        */
+
+
+        const minutesAgo =
+          (index + 1) * 6 +
+          Math.floor(Math.random() * 5);
+
+
+        const fakeDate =
+          new Date(
+            Date.now() -
+            minutesAgo * 60 * 1000
+          );
+
+
+        const fakeDateText =
+          fakeDate.toLocaleDateString(
+            "en-IN",
+            {
+              day: "2-digit",
+              month: "short",
+              year: "numeric"
+            }
+          );
+
+
+        const fakeTimeText =
+          fakeDate.toLocaleTimeString(
+            "en-IN",
+            {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            }
+          );
+
+
+        const fakeAvatarSeed =
+          encodeURIComponent(
+            `background-voter-${number}-${index}`
+          );
+
+
+
+        row.innerHTML = `
+
+          <span
+            class="text-sm font-semibold text-slate-400 sm:text-base"
+          >
+            ${number}
+          </span>
+
+
+          <span
+            class="break-words text-sm font-medium text-slate-400 sm:text-base"
+          >
+            ${name}
+          </span>
+
+
+          <span
+            class="font-mono text-[10px] font-medium text-slate-400 sm:text-xs"
+          >
+            ${enrollment}
+          </span>
+
+
+          <span
+            class="text-xs font-medium text-slate-400 sm:text-sm"
+          >
+            GPP H2
+          </span>
+
+
+          <span
+            class="text-xs font-medium text-slate-400 sm:text-sm"
+          >
+            ${fakeDateText}
+          </span>
+
+
+          <span
+            class="font-mono text-[10px] font-medium text-slate-400 sm:text-xs"
+          >
+            ${fakeTimeText}
+          </span>
+
+
+          <div class="flex justify-center">
+
+            <img
+              src="https://api.dicebear.com/9.x/shapes/svg?seed=${fakeAvatarSeed}"
+              class="h-10 w-10 rounded-full border border-slate-300 bg-slate-100 object-cover opacity-70"
+              alt="Voter icon"
+              loading="lazy"
+            >
+
+          </div>
+
+        `;
+
+
+        otherVoters.appendChild(row);
+
+      }
+    );
+
+
+
+    /* =========================================================
+       9. VOTED STAMP
+
+       EXACT BEHAVIOUR REQUESTED:
+
+       Page loads
+          ↓
+       Wait 500 ms
+          ↓
+       Stamp animation starts
+          ↓
+       Physical rubber-stamp effect
+
+       ========================================================= */
+
+
+    const votedStamp =
+      document.getElementById(
+        "votedStamp"
+      );
+
+
+    setTimeout(() => {
+
+      votedStamp.classList.add(
+        "stamp-animation"
+      );
+
+    }, 500);
+
+
+
+    /* =========================================================
+       10. PROTECT THE CONFIRMATION PAGE FROM NORMAL
+           BACK-NAVIGATION
+
+       NOTE:
+       This is UX behaviour only.
+
+       Actual one-vote protection must remain server-side.
+       ========================================================= */
+
+
+    history.replaceState(
+      null,
+      "",
+      location.href
+    );
+
+
+  </script>
+
 </body>
+
 </html>
