@@ -4,6 +4,7 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import pg from "pg";
+import { createClient } from "@supabase/supabase-js";
 
 const app = express();
 const port = 5000;
@@ -17,6 +18,10 @@ const db = new pg.Client({
     port: Number(process.env.DB_PORT),
     connectionTimeoutMillis: 5000
 });
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY
+);
 
 db.connect();
 app.use(express.urlencoded({ extended: true }));
@@ -39,7 +44,7 @@ app.set("views", path.join(_dirname, "../views"));
 //    let yesCommonOff = 0;
 //    let noCommonOff = 0;
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     if (req.session.isVoted === 3) {
         res.redirect("/confirmed");
     }
