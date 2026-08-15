@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>E-VOTEX - Secure Voter Authentication</title>
+
+    <link rel="stylesheet" href="/css/output.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+    /* =========================================================
+       BASE
+    ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100dvh;
+        overflow: hidden;
+
+        background:
+            radial-gradient(
+                circle at center,
+                #faf7f0 0%,
+                #f4efe5 65%,
+                #eee7da 100%
+            );
+
+        color: #0f172a;
+
+        font-family: "Hind Madurai", sans-serif;
+    }
+
+
+    /* =========================================================
+       MAIN LAYOUT
+    ========================================================= */
+
+    .login-page {
+        width: 100%;
+        height: 100dvh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding:
+            clamp(0.4rem, 1.5vh, 1.25rem)
+            clamp(0.5rem, 2vw, 2rem);
+
+        overflow: hidden;
+    }
+
+
+    .page-layout {
+        width: min(1200px, 100%);
+        height: min(760px, 94dvh);
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(230px, 0.7fr)
+            minmax(430px, 1.3fr);
+
+        align-items: center;
+
+        gap: clamp(1.5rem, 4vw, 4.5rem);
+    }
+
+
+    /* =========================================================
+       LEFT INFORMATION PANEL
+    ========================================================= */
+
+    .intro-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        padding: 1rem;
+    }
+
+
+    .intro-kicker {
+        font-family: "Roboto Mono", monospace;
+
+        font-size: clamp(0.65rem, 1vw, 0.8rem);
+
+        font-weight: 700;
+
+        letter-spacing: 0.22em;
+
+        color: #c2410c;
+    }
+
+
+    .intro-title {
+        margin-top: 0.7rem;
+
+        font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+
+        line-height: 0.98;
+
+        font-weight: 700;
+
+        letter-spacing: -0.03em;
+    }
+
+
+    .intro-text {
+        max-width: 390px;
+
+        margin-top: 1.2rem;
+
+        color: #475569;
+
+        font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+
+        line-height: 1.55;
+    }
+
+
+    .machine-note {
+        margin-top: 1.5rem;
+
+        max-width: 390px;
+
+        padding: 0.85rem 1rem;
+
+        border-left: 4px solid #059669;
+
+        background: rgba(236, 253, 245, 0.85);
+
+        color: #064e3b;
+
+        font-size: 0.85rem;
+
+        font-weight: 700;
+
+        line-height: 1.4;
+    }
+
+
+    /* =========================================================
+       MACHINE
+    ========================================================= */
+
+    .machine {
+        width: 100%;
+        height: 100%;
+
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: clamp(0.65rem, 1.4vw, 1.15rem);
+
+        border:
+            clamp(4px, 0.55vw, 7px)
+            solid
+            #63787a;
+
+        border-radius:
+            clamp(1.2rem, 2.5vw, 2rem);
+
+        background:
+            linear-gradient(
+                145deg,
+                #b9dddd,
+                #9fcacc
+            );
+
+        box-shadow:
+            0 22px 46px rgba(48, 65, 68, .28);
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+       MACHINE HEADER
+    ========================================================= */
+
+    .machine-header {
+        flex: 0 0 auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding:
+            0.15rem
+            0.35rem
+            0.7rem;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size: clamp(0.65rem, 1vw, 0.8rem);
+
+        font-weight: 700;
+
+        letter-spacing: 0.06em;
+
+        color: #1e293b;
+    }
+
+
+    .ready {
+        display: flex;
+        align-items: center;
+
+        gap: 0.45rem;
+    }
+
+
+    .ready-dot {
+        width: 8px;
+        height: 8px;
+
+        flex-shrink: 0;
+
+        border-radius: 50%;
+
+        background: #059669;
+
+        box-shadow:
+            0 0 8px rgba(5, 150, 105, .7);
+    }
+
+
+    /* =========================================================
+       DISPLAY / PRINTER WINDOW
+    ========================================================= */
+
+    .display-frame {
+        /*
+         * Responsive printer window.
+         *
+         * 29dvh gives the display enough room on normal screens,
+         * while clamp() prevents it from becoming huge or tiny.
+         */
+        flex: 0 0 clamp(185px, 29dvh, 250px);
+
+        min-height: 0;
+
+        padding: clamp(0.35rem, 1vw, 0.6rem);
+
+        border-radius: 1.1rem;
+
+        background: #07101f;
+
+        border: 2px solid #526b72;
+
+        box-shadow:
+            inset 0 0 0 3px #020617,
+            inset 0 0 25px rgba(0, 0, 0, .8);
+
+        overflow: hidden;
+    }
+
+
+    .display {
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+
+        border-radius: 0.7rem;
+
+        background:
+            repeating-linear-gradient(
+                0deg,
+                rgba(255,255,255,.015) 0px,
+                rgba(255,255,255,.015) 1px,
+                transparent 1px,
+                transparent 3px
+            ),
+            #020817;
+
+        color: #d1fae5;
+
+        font-family: "Roboto Mono", monospace;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+    }
+
+
+    /* =========================================================
+       DISPLAY IDLE CONTENT
+    ========================================================= */
+
+    .display-idle {
+        transition:
+            opacity .2s linear,
+            transform .2s linear;
+    }
+
+
+    .display-idle.hidden-state {
+        opacity: 0;
+
+        transform: translateY(-10px);
+
+        pointer-events: none;
+    }
+
+
+    .display-brand {
+        font-size: clamp(0.7rem, 1.2vw, 1rem);
+
+        color: #064e3b;
+
+        font-weight: 700;
+
+        letter-spacing: 0.18em;
+    }
+
+
+    .display-title {
+        margin-top: 1rem;
+
+        color: #f8fafc;
+
+        font-size: clamp(1rem, 2vw, 1.35rem);
+
+        font-weight: 700;
+
+        letter-spacing: 0.05em;
+    }
+
+
+    .display-subtitle {
+        margin-top: 0.8rem;
+
+        color: #0f172a;
+
+        font-size: clamp(0.55rem, 1vw, 0.75rem);
+
+        letter-spacing: 0.1em;
+    }
+
+
+    /* =========================================================
+       CHIT / PRINTED AUTHENTICATION SLIP
+    ========================================================= */
+
+    .chit {
+        position: absolute;
+
+        /*
+         * Center the chit inside the printer window.
+         */
+        top: 50%;
+        left: 50%;
+
+        width: min(92%, 440px);
+
+        /*
+         * IMPORTANT:
+         *
+         * The old min-height: 85% allowed the chit content
+         * to become taller than the printer window.
+         *
+         * The chit is now explicitly constrained to the
+         * available display height.
+         */
+        height: calc(100% - 0.3rem);
+
+        max-height: calc(100% - 0.3rem);
+
+        min-height: 0;
+
+        transform:
+            translate(-50%, -150%);
+
+        padding:
+            clamp(0.6rem, 1.2vw, 0.9rem);
+
+        background:
+            repeating-linear-gradient(
+                0deg,
+                #fffdf5 0px,
+                #fffdf5 3px,
+                #f8f5eb 3px,
+                #f8f5eb 4px
+            );
+
+        color: #0f172a;
+
+        box-shadow:
+            0 8px 18px rgba(0,0,0,.35);
+
+        text-align: left;
+
+        opacity: 0;
+
+        z-index: 5;
+
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    /* =========================================================
+       CHIT PRINTING ANIMATION
+    ========================================================= */
+
+    .chit.printing {
+        animation:
+            chitPrint
+            .9s
+            cubic-bezier(.2,.8,.25,1)
+            forwards;
+    }
+
+
+    @keyframes chitPrint {
+
+        from {
+            opacity: 0;
+
+            transform:
+                translate(-50%, -150%);
+        }
+
+        to {
+            opacity: 1;
+
+            /*
+             * Fully inside the display.
+             */
+            transform:
+                translate(-50%, -50%);
+        }
+    }
+
+
+    /* =========================================================
+       CHIT CONTENT
+    ========================================================= */
+
+    .chit-header {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        flex-shrink: 0;
+
+        padding-bottom: 0.3rem;
+
+        border-bottom: 1px dashed #94a3b8;
+
+        font-size:
+            clamp(0.48rem, 0.9vw, 0.65rem);
+
+        font-weight: 700;
+    }
+
+
+    .chit-title {
+        margin-top: 0.35rem;
+
+        flex-shrink: 0;
+
+        font-size:
+            clamp(0.62rem, 1.15vw, 0.85rem);
+
+        font-weight: 700;
+    }
+
+
+    .chit-row {
+        margin-top: 0.3rem;
+
+        padding: 0.3rem 0;
+
+        flex-shrink: 0;
+
+        border-bottom: 1px dashed #cbd5e1;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(0.5rem, 0.9vw, 0.65rem);
+    }
+
+
+    .chit-label {
+        color: #64748b;
+
+        font-size:
+            clamp(0.45rem, 0.75vw, 0.55rem);
+
+        font-weight: 700;
+    }
+
+
+    .chit-value {
+        margin-top: 0.1rem;
+
+        word-break: break-all;
+
+        font-weight: 700;
+
+        line-height: 1.25;
+    }
+
+
+    /* =========================================================
+       AUTHENTICATION STAMP
+    ========================================================= */
+
+    .auth-stamp {
+        position: absolute;
+
+        left: 50%;
+        top: 53%;
+
+        z-index: 20;
+
+        transform:
+            translate(-50%, -50%)
+            rotate(-14deg)
+            scale(2.7);
+
+        opacity: 0;
+
+        pointer-events: none;
+
+        padding:
+            0.25rem 0.55rem;
+
+        border:
+            clamp(2px, .3vw, 4px)
+            solid
+            currentColor;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(1rem, 2.3vw, 1.65rem);
+
+        font-weight: 700;
+
+        letter-spacing: 0.04em;
+
+        white-space: nowrap;
+
+        background: rgba(255,255,255,.2);
+
+        mix-blend-mode: multiply;
+    }
+
+
+    .auth-stamp.show {
+        animation:
+            stampIn
+            .65s
+            cubic-bezier(.2,.85,.35,1)
+            forwards;
+    }
+
+
+    @keyframes stampIn {
+
+        from {
+            opacity: 0;
+
+            transform:
+                translate(-50%, -50%)
+                rotate(-14deg)
+                scale(2.7);
+        }
+
+        to {
+            opacity: .9;
+
+            transform:
+                translate(-50%, -50%)
+                rotate(-14deg)
+                scale(1);
+        }
+    }
+
+
+    .stamp-success {
+        color: #047857;
+
+        border-color: #047857;
+    }
+
+
+    .stamp-error {
+        color: #dc2626;
+
+        border-color: #dc2626;
+    }
+
+
+    /* =========================================================
+       LOGIN CONTROL PANEL
+    ========================================================= */
+
+    .control-panel {
+        flex: 1;
+
+        min-height: 0;
+
+        margin-top:
+            clamp(.5rem, 1vw, .8rem);
+
+        padding:
+            clamp(.75rem, 1.5vw, 1.15rem);
+
+        border-radius: 1.1rem;
+
+        background:
+            repeating-linear-gradient(
+                0deg,
+                rgba(255,255,255,.018) 0px,
+                rgba(255,255,255,.018) 1px,
+                transparent 1px,
+                transparent 3px
+            ),
+            #071211;
+
+        border: 2px solid #527375;
+
+        box-shadow:
+            inset 0 0 25px rgba(0,0,0,.5);
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+    }
+
+
+    .control-title {
+        margin-bottom:
+            clamp(.45rem, 1vh, .75rem);
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(.65rem, 1vw, .8rem);
+
+        font-weight: 700;
+
+        color: #a7f3d0;
+
+        letter-spacing: .08em;
+    }
+
+
+    .terminal-label {
+        display: block;
+
+        margin-bottom: .25rem;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(.55rem, .9vw, .7rem);
+
+        font-weight: 700;
+
+        color: #94a3b8;
+
+        letter-spacing: .08em;
+    }
+
+
+    .terminal-input {
+        width: 100%;
+
+        height:
+            clamp(2.15rem, 5dvh, 2.8rem);
+
+        padding:
+            0 .8rem;
+
+        border: 1px solid #36545a;
+
+        border-radius: .25rem;
+
+        outline: none;
+
+        background: #020b0a;
+
+        color: #d1fae5;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(.7rem, 1.2vw, .85rem);
+
+        box-shadow:
+            inset 0 0 10px rgba(0,0,0,.65);
+    }
+
+
+    .terminal-input::placeholder {
+        color: #475569;
+
+        opacity: 1;
+    }
+
+
+    .terminal-input:focus {
+        border-color: #10b981;
+
+        box-shadow:
+            0 0 0 2px rgba(16,185,129,.12),
+            inset 0 0 10px rgba(0,0,0,.65);
+    }
+
+
+    .input-group + .input-group {
+        margin-top:
+            clamp(.4rem, 1vh, .65rem);
+    }
+
+
+    /* =========================================================
+       SIGN IN BUTTON
+    ========================================================= */
+
+    .sign-button {
+        width: 100%;
+
+        height:
+            clamp(2.15rem, 5dvh, 2.8rem);
+
+        margin-top:
+            clamp(.55rem, 1.2vh, .8rem);
+
+        border: 2px solid #065f46;
+
+        border-radius: .3rem;
+
+        background:
+            linear-gradient(
+                #059669,
+                #047857
+            );
+
+        color: white;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(.7rem, 1.1vw, .85rem);
+
+        font-weight: 700;
+
+        letter-spacing: .08em;
+
+        cursor: pointer;
+
+        box-shadow:
+            inset 0 1px 2px rgba(255,255,255,.35),
+            0 2px 3px rgba(0,0,0,.3);
+
+        transition:
+            transform .12s linear,
+            filter .12s linear;
+    }
+
+
+    .sign-button:hover {
+        filter: brightness(1.08);
+    }
+
+
+    .sign-button:active {
+        transform: translateY(1px);
+    }
+
+
+    .sign-button:disabled {
+        cursor: not-allowed;
+
+        opacity: .55;
+    }
+
+
+    /* =========================================================
+       OR DIVIDER
+    ========================================================= */
+
+    .or-line {
+        display: flex;
+
+        align-items: center;
+
+        gap: .65rem;
+
+        margin:
+            clamp(.45rem, 1vh, .7rem)
+            0;
+    }
+
+
+    .or-line::before,
+    .or-line::after {
+        content: "";
+
+        flex: 1;
+
+        height: 1px;
+
+        background: #334155;
+    }
+
+
+    .or-line span {
+        color: #64748b;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size: .6rem;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       GOOGLE BUTTON
+    ========================================================= */
+
+    .google-button {
+        width: 100%;
+
+        height:
+            clamp(2rem, 4.5dvh, 2.65rem);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: .6rem;
+
+        border: 1px solid #64748b;
+
+        border-radius: .3rem;
+
+        background: #e6ffff;
+
+        color: #172033;
+
+        font-family: "Roboto Mono", monospace;
+
+        font-size:
+            clamp(.6rem, 1vw, .75rem);
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+
+    .google-dot {
+        width: 12px;
+        height: 12px;
+
+        flex-shrink: 0;
+
+        border-radius: 50%;
+
+        background:
+            linear-gradient(
+                135deg,
+                #4285f4 25%,
+                #34a853 25%,
+                #34a853 50%,
+                #fbbc05 50%,
+                #fbbc05 75%,
+                #ea4335 75%
+            );
+    }
+
+
+    /* =========================================================
+       CREATE ACCOUNT
+    ========================================================= */
+
+    .create-account {
+        margin-top:
+            clamp(.45rem, 1vh, .7rem);
+
+        text-align: center;
+
+        color: #64748b;
+
+        font-size:
+            clamp(.6rem, .9vw, .7rem);
+    }
+
+
+    .create-account a {
+        color: #ea580c;
+
+        font-weight: 700;
+
+        text-decoration: none;
+    }
+
+
+    /* =========================================================
+       MACHINE STATUS
+    ========================================================= */
+
+    .machine-status {
+        flex: 0 0 auto;
+
+        margin-top: .5rem;
+
+        padding:
+            .45rem
+            .5rem;
+
+        border-radius: .4rem;
+
+        background: #d1f1f1;
+
+        color: #334155;
+
+        text-align: center;
+
+        font-size:
+            clamp(.6rem, 1vw, .75rem);
+
+        font-weight: 700;
+
+        min-height: 1.8rem;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+    }
+
+
+    .machine-footer {
+        flex: 0 0 auto;
+
+        margin-top: .45rem;
+
+        text-align: center;
+
+        color: #334155;
+
+        font-size:
+            clamp(.55rem, .8vw, .7rem);
+
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       TABLET / MOBILE
+    ========================================================= */
+
+    @media (max-width: 900px) {
+
+        body {
+            overflow: hidden;
+        }
+
+
+        .login-page {
+            padding: .5rem;
+        }
+
+
+        .page-layout {
+            width: min(620px, 100%);
+
+            height: 98dvh;
+
+            display: block;
+        }
+
+
+        .intro-panel {
+            display: none;
+        }
+
+
+        .machine {
+            height: 100%;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 500px) {
+
+        .machine {
+            padding: .45rem;
+
+            border-width: 4px;
+
+            border-radius: 1.2rem;
+        }
+
+
+        .machine-header {
+            padding-bottom: .45rem;
+        }
+
+
+        .display-frame {
+            /*
+             * Smaller but still large enough to show
+             * the complete authentication chit.
+             */
+            flex-basis:
+                clamp(165px, 25dvh, 205px);
+        }
+
+
+        .chit {
+            width: 94%;
+
+            padding: .5rem;
+
+            /*
+             * Maintain complete chit visibility
+             * on narrow displays.
+             */
+            height: calc(100% - .5rem);
+
+            max-height: calc(100% - .5rem);
+        }
+
+
+        .chit-header {
+            padding-bottom: .2rem;
+        }
+
+
+        .chit-title {
+            margin-top: .25rem;
+        }
+
+
+        .chit-row {
+            margin-top: .2rem;
+
+            padding: .2rem 0;
+        }
+
+
+        .control-panel {
+            padding: .7rem;
+        }
+
+
+        .machine-status {
+            margin-top: .35rem;
+        }
+
+
+        .machine-footer {
+            margin-top: .3rem;
+        }
+    }
+
+
+    /* =========================================================
+       VERY SMALL / SHORT PHONES
+    ========================================================= */
+
+    @media (max-height: 650px) {
+
+        .display-frame {
+            flex-basis: 155px;
+        }
+
+
+        .chit {
+            width: 94%;
+
+            padding: .45rem;
+
+            height: calc(100% - .45rem);
+
+            max-height: calc(100% - .45rem);
+        }
+
+
+        .chit-header {
+            padding-bottom: .2rem;
+        }
+
+
+        .chit-title {
+            margin-top: .2rem;
+
+            font-size: .65rem;
+        }
+
+
+        .chit-row {
+            margin-top: .15rem;
+
+            padding: .18rem 0;
+
+            font-size: .5rem;
+        }
+
+
+        .chit-label {
+            font-size: .45rem;
+        }
+
+
+        .control-panel {
+            padding: .55rem;
+        }
+
+
+        .input-group + .input-group {
+            margin-top: .3rem;
+        }
+
+
+        .sign-button {
+            margin-top: .4rem;
+        }
+
+
+        .or-line {
+            margin: .3rem 0;
+        }
+
+
+        .create-account {
+            margin-top: .3rem;
+        }
+    }
+
+
+    /* =========================================================
+       EXTRA SMALL WIDTH
+    ========================================================= */
+
+    @media (max-width: 360px) {
+
+        .login-page {
+            padding: .25rem;
+        }
+
+
+        .machine {
+            padding: .35rem;
+
+            border-width: 3px;
+        }
+
+
+        .machine-header {
+            font-size: .58rem;
+
+            padding-bottom: .3rem;
+        }
+
+
+        .display-frame {
+            flex-basis: 150px;
+
+            padding: .3rem;
+        }
+
+
+        .chit {
+            width: 95%;
+
+            padding: .4rem;
+        }
+
+
+        .auth-stamp {
+            font-size: .85rem;
+
+            padding: .2rem .35rem;
+        }
+
+
+        .control-panel {
+            padding: .45rem;
+        }
+
+
+        .terminal-input {
+            height: 2rem;
+
+            padding: 0 .6rem;
+
+            font-size: .65rem;
+        }
+
+
+        .sign-button {
+            height: 2rem;
+
+            font-size: .65rem;
+        }
+
+
+        .google-button {
+            height: 1.9rem;
+
+            font-size: .58rem;
+        }
+    }
+
+
+    /* =========================================================
+       LARGE DISPLAYS
+    ========================================================= */
+
+    @media (min-width: 1500px) {
+
+        .page-layout {
+            max-width: 1350px;
+
+            grid-template-columns:
+                minmax(300px, .8fr)
+                minmax(600px, 1.2fr);
+        }
+    }
+
+
+    /* =========================================================
+       VERY SHORT DESKTOP / LAPTOP
+    ========================================================= */
+
+    @media (min-width: 901px) and (max-height: 720px) {
+
+        .page-layout {
+            height: 96dvh;
+
+            gap: 2rem;
+        }
+
+
+        .display-frame {
+            flex-basis: 190px;
+        }
+
+
+        .machine-header {
+            padding-bottom: .45rem;
+        }
+
+
+        .control-panel {
+            padding: .7rem;
+        }
+
+
+        .input-group + .input-group {
+            margin-top: .35rem;
+        }
+
+
+        .sign-button {
+            margin-top: .45rem;
+        }
+
+
+        .or-line {
+            margin: .35rem 0;
+        }
+
+
+        .create-account {
+            margin-top: .35rem;
+        }
+    }
+
+</style>
+</head>
+
+
+<body>
+
+<main class="login-page">
+
+    <div class="page-layout">
+
+
+        <!-- =====================================================
+             LEFT SIDE - DESKTOP
+        ====================================================== -->
+
+        <section class="intro-panel">
+
+            <p class="intro-kicker">
+                CAMPUS DEMOCRACY - E-VOTEX
+            </p>
+
+            <h1 class="intro-title">
+                Secure voter<br>
+                authentication.
+            </h1>
+
+            <p class="intro-text">
+                Enter your registered credentials through the
+                electronic voting terminal. Your identity is verified
+                before access to the ballot unit is granted.
+            </p>
+
+            <div class="machine-note">
+                🔒 AUTHORIZED VOTER ACCESS ONLY<br>
+                The verification slip is printed electronically
+                for authentication confirmation.
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             E-VOTEX MACHINE
+        ====================================================== -->
+
+        <section class="machine"
+            aria-label="E-VOTEX electronic voter authentication unit">
+
+
+            <!-- MACHINE HEADER -->
+
+            <header class="machine-header">
+
+                <span>
+                    E-VOTEX UNIT
+                </span>
+
+                <span class="ready">
+                    <span class="ready-dot"></span>
+                    READY
+                </span>
+
+            </header>
+
+
+            <!-- =================================================
+                 TOP DISPLAY / CHIT PRINTER
+            ================================================== -->
+
+            <div class="display-frame">
+
+                <div class="display">
+
+
+                    <!-- DEFAULT DISPLAY -->
+
+                    <div id="displayIdle"
+                        class="display-idle">
+
+                        <div class="display-brand">
+                            E-VOTEX
+                        </div>
+
+                        <div class="display-title">
+                            SIGN IN TO CONTINUE
+                        </div>
+
+                        <div class="display-subtitle">
+                            AUTHORIZED VOTER ACCESS ONLY
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PRINTED CHIT
+                    ================================================== -->
+
+                    <article id="chit"
+                        class="chit"
+                        aria-live="polite">
+
+                        <div class="chit-header">
+
+                            <span>
+                                E-VOTEX
+                            </span>
+
+                            <span>
+                                AUTH-01
+                            </span>
+
+                        </div>
+
+
+                        <div class="chit-title">
+                            VOTER AUTHENTICATION SLIP
+                        </div>
+
+
+                        <div class="chit-row">
+
+                            <div class="chit-label">
+                                REGISTERED EMAIL
+                            </div>
+
+                            <div id="chitEmail"
+                                class="chit-value">
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div class="chit-row">
+
+                            <div class="chit-label">
+                                PASSWORD
+                            </div>
+
+                            <div id="chitPassword"
+                                class="chit-value">
+                                ****
+                            </div>
+
+                        </div>
+
+
+                        <div class="chit-row">
+
+                            <div class="chit-label">
+                                VERIFICATION STATUS
+                            </div>
+
+                            <div id="chitStatus"
+                                class="chit-value">
+                                VERIFYING...
+                            </div>
+
+                        </div>
+
+
+                        <!-- STAMP -->
+
+                        <span id="authStamp"
+                            class="auth-stamp">
+                        </span>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DIGITAL CONTROL PANEL
+            ================================================== -->
+
+            <div class="control-panel">
+
+                <div class="control-title">
+                    &gt; VOTER AUTHENTICATION TERMINAL
+                </div>
+
+
+                <form id="loginForm"
+                    autocomplete="on">
+
+
+                    <!-- EMAIL -->
+
+                    <div class="input-group">
+
+                        <label
+                            for="email"
+                            class="terminal-label">
+
+                            EMAIL
+
+                        </label>
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autocomplete="username"
+                            placeholder="ENTER REGISTERED EMAIL"
+                            required
+                            class="terminal-input">
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="input-group">
+
+                        <label
+                            for="password"
+                            class="terminal-label">
+
+                            PASSWORD
+
+                        </label>
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="ENTER PASSWORD"
+                            required
+                            class="terminal-input">
+
+                    </div>
+
+
+                    <!-- SIGN IN -->
+
+                    <button
+                        id="signInButton"
+                        type="submit"
+                        class="sign-button">
+
+                        SIGN IN
+
+                    </button>
+
+
+                    <!-- OR -->
+
+                    <div class="or-line">
+                        <span>OR</span>
+                    </div>
+
+
+                    <!-- GOOGLE -->
+
+                    <button
+                        id="googleButton"
+                        type="button"
+                        class="google-button">
+
+                        <span class="google-dot"></span>
+
+                        CONTINUE WITH GOOGLE
+
+                    </button>
+
+
+                    <!-- CREATE ACCOUNT -->
+
+                    <div class="create-account">
+
+                        DON'T HAVE AN ACCOUNT?
+
+                        <a href="/register">
+                            CREATE ACCOUNT
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- MACHINE STATUS -->
+
+            <div id="machineStatus"
+                class="machine-status"
+                aria-live="polite">
+
+                Enter your registered credentials to continue.
+
+            </div>
+
+
+            <footer class="machine-footer">
+
+                Made with passion by Sai N.
+
+            </footer>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =============================================================
+     SUPABASE
+============================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+    /*
+     * ============================================================
+     * SUPABASE CONFIGURATION
+     * ============================================================
+     *
+     * Put the SAME values that are already working in your current
+     * authentication page here.
+     *
+     * IMPORTANT:
+     * Use the SUPABASE PUBLISHABLE KEY.
+     *
+     */
+
+    const SUPABASE_URL = 'https://xnbuddwzpbqbowkcfocf.supabase.co';
+
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Y3D-em6cYVXp8l6wGtPaWQ_4CTiabhR';
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    /*
+     * ============================================================
+     * ELEMENTS
+     * ============================================================
+     */
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const emailInput =
+        document.getElementById("email");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const signInButton =
+        document.getElementById("signInButton");
+
+    const googleButton =
+        document.getElementById("googleButton");
+
+    const chit =
+        document.getElementById("chit");
+
+    const chitEmail =
+        document.getElementById("chitEmail");
+
+    const chitPassword =
+        document.getElementById("chitPassword");
+
+    const chitStatus =
+        document.getElementById("chitStatus");
+
+    const authStamp =
+        document.getElementById("authStamp");
+
+    const displayIdle =
+        document.getElementById("displayIdle");
+
+    const machineStatus =
+        document.getElementById("machineStatus");
+
+
+    /*
+     * ============================================================
+     * RESET CHIT
+     *
+     * THIS IS THE IMPORTANT BUG FIX.
+     *
+     * Every authentication attempt completely resets:
+     *
+     * - old stamp
+     * - old animation
+     * - old status
+     * - old chit animation
+     *
+     * Therefore:
+     *
+     * Attempt 1:
+     * VOTER NOT FOUND
+     *
+     * Attempt 2:
+     * VERIFIED VOTER
+     *
+     * will NEVER show both stamps together.
+     * ============================================================
+     */
+
+    function resetChit() {
+
+        /* Stop every previous animation */
+
+        chit.classList.remove("printing");
+
+        authStamp.classList.remove("show");
+
+        authStamp.classList.remove(
+            "stamp-success",
+            "stamp-error"
+        );
+
+
+        /* Force browser to forget previous animation state */
+
+        void chit.offsetWidth;
+        void authStamp.offsetWidth;
+
+
+        /* Completely reset content */
+
+        authStamp.textContent = "";
+
+        chitEmail.textContent = "—";
+
+        chitPassword.textContent = "****";
+
+        chitStatus.textContent = "VERIFYING...";
+
+
+        /* Reset status colors */
+
+        chitStatus.style.color = "";
+
+
+        /* Hide the chit */
+
+        chit.style.opacity = "0";
+
+        chit.style.transform =
+            "translateX(-50%) translateY(-120%)";
+
+
+        displayIdle.classList.remove("hidden-state");
+
+    }
+
+
+    /*
+     * ============================================================
+     * START NEW CHIT
+     * ============================================================
+     */
+
+    function printChit(email) {
+
+        resetChit();
+
+
+        /* Put current credentials on the NEW chit */
+
+        chitEmail.textContent = email;
+
+        chitPassword.textContent = "****";
+
+        chitStatus.textContent =
+            "VERIFYING...";
+
+
+        chitStatus.style.color =
+            "#475569";
+
+
+        /* Hide idle display */
+
+        displayIdle.classList.add(
+            "hidden-state"
+        );
+
+
+        /*
+         * Start fresh printing animation
+         */
+
+        void chit.offsetWidth;
+
+        chit.classList.add("printing");
+
+    }
+
+
+    /*
+     * ============================================================
+     * AUTHENTICATION RESULT
+     * ============================================================
+     */
+
+    function showAuthenticationResult(isVerified) {
+
+        /*
+         * Remove previous stamp FIRST.
+         *
+         * This is another layer of protection against the
+         * "old stamp appears underneath the new one" bug.
+         */
+
+        authStamp.classList.remove(
+            "show",
+            "stamp-success",
+            "stamp-error"
+        );
+
+        void authStamp.offsetWidth;
+
+
+        if (isVerified) {
+
+            /* GREEN */
+
+            authStamp.textContent =
+                "VERIFIED VOTER";
+
+            authStamp.classList.add(
+                "stamp-success"
+            );
+
+            chitStatus.textContent =
+                "VERIFIED";
+
+            chitStatus.style.color =
+                "#047857";
+
+            machineStatus.textContent =
+                "Voter verified. Authentication successful.";
+
+        }
+
+        else {
+
+            /* RED */
+
+            authStamp.textContent =
+                "VOTER NOT FOUND";
+
+            authStamp.classList.add(
+                "stamp-error"
+            );
+
+            chitStatus.textContent =
+                "NOT VERIFIED";
+
+            chitStatus.style.color =
+                "#dc2626";
+
+            machineStatus.textContent =
+                "Voter not found. Check your credentials.";
+
+        }
+
+
+        /*
+         * Start stamp animation ONLY after the previous animation
+         * has been completely removed.
+         */
+
+        void authStamp.offsetWidth;
+
+        authStamp.classList.add("show");
+    }
+
+
+    /*
+     * ============================================================
+     * SIGN IN
+     * ============================================================
+     */
+
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+
+            if (!email || !password) {
+
+                machineStatus.textContent =
+                    "EMAIL AND PASSWORD ARE REQUIRED.";
+
+                return;
+            }
+
+
+            /*
+             * PRINT A COMPLETELY FRESH CHIT
+             */
+
+            printChit(email);
+
+
+            /*
+             * Lock controls while authentication is running
+             */
+
+            signInButton.disabled = true;
+
+            googleButton.disabled = true;
+
+            signInButton.textContent =
+                "VERIFYING...";
+
+
+            machineStatus.textContent =
+                "Contacting voter authentication service...";
+
+
+            try {
+
+                /*
+                 * SUPABASE AUTHENTICATION
+                 */
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+                            email: email,
+                            password: password
+                        });
+
+
+                /*
+                 * WRONG CREDENTIALS
+                 */
+
+                if (error || !data.user) {
+
+                    showAuthenticationResult(false);
+
+                    /*
+                     * Keep password field available for another
+                     * attempt, but do NOT touch the current chit.
+                     *
+                     * The next attempt will reset it properly.
+                     */
+
+                    passwordInput.focus();
+
+                    return;
+                }
+
+
+                /*
+                 * CORRECT CREDENTIALS
+                 */
+
+                showAuthenticationResult(true);
+
+
+                /*
+                 * Give the user time to see the stamp.
+                 *
+                 * Change this route if your voting page uses
+                 * another endpoint.
+                 */
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "/";
+
+                }, 1800);
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Authentication error:",
+                    error
+                );
+
+
+                showAuthenticationResult(false);
+
+                machineStatus.textContent =
+                    "Authentication service unavailable.";
+
+            }
+
+
+            finally {
+
+                /*
+                 * Re-enable controls.
+                 *
+                 * On successful login the page will redirect,
+                 * so this mainly matters for failed attempts.
+                 */
+
+                signInButton.disabled = false;
+
+                googleButton.disabled = false;
+
+                signInButton.textContent =
+                    "SIGN IN";
+
+            }
+
+        }
+    );
+
+
+    /*
+     * ============================================================
+     * GOOGLE AUTHENTICATION
+     * ============================================================
+     */
+
+    googleButton.addEventListener(
+        "click",
+        async function () {
+
+            resetChit();
+
+
+            machineStatus.textContent =
+                "Starting Google authentication...";
+
+
+            googleButton.disabled = true;
+
+            signInButton.disabled = true;
+
+
+            try {
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth
+                        .signInWithOAuth({
+
+                            provider: "google",
+
+                            options: {
+
+                                redirectTo:
+                                    window.location.origin + "/"
+
+                            }
+
+                        });
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    machineStatus.textContent =
+                        "Google authentication failed.";
+
+                    googleButton.disabled = false;
+
+                    signInButton.disabled = false;
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                machineStatus.textContent =
+                    "Unable to start Google authentication.";
+
+                googleButton.disabled = false;
+
+                signInButton.disabled = false;
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

@@ -49,7 +49,14 @@ app.get("/", async (req, res) => {
         res.redirect("/confirmed");
     }
     else {
-        res.render("index");
+        res.render("signIn", {
+
+        supabaseUrl: process.env.SUPABASE_URL,
+
+        supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
+
+    });
+//        res.render("index");
         req.session.isVoted = 1;
     }
 });
