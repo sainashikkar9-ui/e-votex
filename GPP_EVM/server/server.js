@@ -49,13 +49,14 @@ app.get("/", async (req, res) => {
         res.redirect("/confirmed");
     }
     else {
-        res.render("signIn", {
-
-        supabaseUrl: process.env.SUPABASE_URL,
-
-        supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
-
-    });
+                res.render("signin", {
+        
+                supabaseUrl: process.env.SUPABASE_URL,
+        
+                supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
+        
+            });
+        
 //        res.render("index");
         req.session.isVoted = 1;
     }
@@ -131,7 +132,7 @@ app.get("/confirmed", (req, res) => {
         res.redirect("/");
     }
     console.log("Session ID:", req.sessionID);
-console.log("Session:", req.session);
+    console.log("Session:", req.session);
 });
 
 /*
