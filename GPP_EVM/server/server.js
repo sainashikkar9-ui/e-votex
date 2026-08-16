@@ -37,14 +37,21 @@ app.use(session({
     }
 }));
 app.use(express.json());
+
+
+
 app.set("view engine", "ejs");
 app.set("views", path.join(_dirname, "../views"));
-//console.log("Checking Session : " + process.env.SESSION_SECRET);
 
-//    let yesCommonOff = 0;
-//    let noCommonOff = 0;
 
-app.get("/", async (req, res) => {
+
+app.get("/", (req, res) => {
+    res.render("dashboardProt");
+});
+
+
+
+app.get("/test", async (req, res) => {
     if (req.session.isVoted === 3) {
         res.redirect("/confirmed");
     }
@@ -61,6 +68,8 @@ app.get("/", async (req, res) => {
         req.session.isVoted = 1;
     }
 });
+
+
 
 app.post("/vote", (req, res) => {
 
@@ -80,6 +89,8 @@ app.post("/vote", (req, res) => {
         res.redirect("/");
     }
 });
+
+
 
 app.post("/confirmVote", async (req, res) => {
     if (req.session.isVoted === 2) {
@@ -122,6 +133,8 @@ app.post("/confirmVote", async (req, res) => {
     else { res.redirect("/"); }
 });
 
+
+
 app.get("/confirmed", (req, res) => {
     if (req.session.isVoted === 3) {
         const partyName = req.session.voteResponse;
@@ -135,25 +148,7 @@ app.get("/confirmed", (req, res) => {
     console.log("Session:", req.session);
 });
 
-/*
-app.post("/vote", (req, res) => {
-    const selectedValue = req.body['yesCommonOff'] === '1' ? 'yes' : req.body['noCommonOff'] === '1' ? 'no' : null;
 
-    if (!selectedValue) {
-        return res.redirect("/");
-    }
-
-    const voteResponse = {
-        selected: selectedValue,
-        yesCommonOff: selectedValue === 'yes' ? 1 : 0,
-        noCommonOff: selectedValue === 'no' ? 1 : 0,
-        partyName: selectedValue === 'yes' ? "Common Off Janata Party" : "Full Attendance Janata Party"
-    };
-
-    req.session.voteResponse = voteResponse;
-    return res.render("prot4", { partyName: voteResponse.partyName });
-});
-*/
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

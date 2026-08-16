@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>E-VOTEX - Dashboard</title>
+
+    <link rel="stylesheet" href="/css/output.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: #f8fafc;
+        }
+
+        body {
+            font-family: 'Hind Madurai', sans-serif;
+        }
+
+        .mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        .dashboard-scroll::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .dashboard-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        .profile-menu {
+            transform-origin: top right;
+            transition:
+                opacity 150ms ease,
+                transform 150ms ease;
+        }
+
+        .profile-menu.hidden-menu {
+            opacity: 0;
+            transform: scale(.96) translateY(-4px);
+            pointer-events: none;
+        }
+
+        .profile-menu.visible-menu {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .action-card {
+            transition:
+                transform 180ms ease,
+                box-shadow 180ms ease,
+                border-color 180ms ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
+        }
+
+        .mobile-sidebar {
+            transition: transform 220ms ease;
+        }
+
+        .mobile-sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        @media (max-width: 767px) {
+            .desktop-sidebar {
+                display: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body class="min-h-screen bg-slate-50 text-slate-900">
+
+    <!-- ========================================================= -->
+    <!-- TOP NAVBAR -->
+    <!-- ========================================================= -->
+
+    <nav
+        class="fixed left-0 right-0 top-0 z-50 h-16 border-b border-slate-200 bg-white">
+
+        <div class="flex h-full items-center justify-between px-4 sm:px-6">
+
+            <!-- LEFT SIDE -->
+
+            <div class="flex items-center gap-4">
+
+                <!-- Mobile Menu -->
+
+                <button
+                    id="mobileMenuButton"
+                    type="button"
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 md:hidden"
+                    aria-label="Open navigation menu">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4 6h16M4 12h16M4 18h16" />
+
+                    </svg>
+
+                </button>
+
+
+                <!-- E-VOTEX LOGO -->
+
+                <a
+                    href="/dashboard"
+                    class="flex items-center gap-3">
+
+                    <div
+                        class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
+
+                        <svg
+                            class="h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 3v18M5 7h14M5 17h14M7 7v10M17 7v10" />
+
+                        </svg>
+
+                    </div>
+
+                    <div class="hidden sm:block">
+
+                        <div
+                            class="text-base font-bold tracking-tight text-slate-900">
+
+                            E-VOTEX
+
+                        </div>
+
+                        <div
+                            class="mono text-[9px] font-semibold tracking-[.18em] text-emerald-600">
+
+                            DIGITAL DEMOCRACY
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- DIVIDER -->
+
+                <div class="hidden h-6 w-px bg-slate-200 md:block"></div>
+
+
+                <!-- USERNAME -->
+
+                <div class="hidden items-center gap-2 md:flex">
+
+                    <span class="text-sm text-slate-500">
+                        Workspace
+                    </span>
+
+                    <span class="font-semibold text-slate-800">
+                        <%= (user && user.username) ? user.username : "User" %>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+
+            <div class="flex items-center gap-2 sm:gap-4">
+
+                <!-- FEEDBACK -->
+
+                <a
+                    href="/feedback"
+                    class="hidden rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:inline-flex">
+
+                    Feedback
+
+                </a>
+
+
+                <!-- HELP ICON -->
+
+                <a
+                    href="/help"
+                    aria-label="Help"
+                    class="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700 sm:flex">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <circle cx="12" cy="12" r="9" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M12 16.5h.01" />
+
+                    </svg>
+
+                </a>
+
+
+                <!-- PROFILE -->
+
+                <div class="relative">
+
+                    <button
+                        id="profileButton"
+                        type="button"
+                        class="flex items-center gap-2 rounded-lg p-1.5 transition hover:bg-slate-100"
+                        aria-expanded="false">
+
+                        <img
+                            src="<%= (user && user.profile_image) ? user.profile_image : '/images/default-avatar.png' %>"
+                            alt="Profile"
+                            class="h-8 w-8 rounded-full border border-slate-200 object-cover"
+                            onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent((user && user.username) ? user.username : 'User') %>&background=10b981&color=ffffff';">
+
+                        <span
+                            class="hidden max-w-32 truncate text-sm font-semibold text-slate-700 lg:block">
+
+                            <%= (user && user.username) ? user.username : "User" %>
+
+                        </span>
+
+                        <svg
+                            class="hidden h-4 w-4 text-slate-500 lg:block"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m6 9 6 6 6-6" />
+
+                        </svg>
+
+                    </button>
+
+
+                    <!-- PROFILE DROPDOWN -->
+
+                    <div
+                        id="profileMenu"
+                        class="profile-menu hidden-menu absolute right-0 top-12 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+
+                        <div
+                            class="border-b border-slate-100 px-4 py-3">
+
+                            <p class="text-sm font-bold text-slate-900">
+                                <%= (user && user.username) ? user.username : "User" %>
+                            </p>
+
+                            <p class="mt-0.5 truncate text-xs text-slate-500">
+                                <%= (user && user.email) ? user.email : "E-VOTEX Account" %>
+                            </p>
+
+                        </div>
+
+
+                        <div class="p-1.5">
+
+                            <a
+                                href="/account-settings"
+                                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+
+                                <svg
+                                    class="h-4 w-4 text-slate-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 1.7-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.09a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.7-1.7.06-.06A1.7 1.7 0 0 0 8.46 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.9A1.7 1.7 0 0 0 8.46 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.7-1.7.06.06A1.7 1.7 0 0 0 11.7 6.08V6h2.4v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.7 1.7-.06.06A1.7 1.7 0 0 0 18.46 10c.2.62.78 1.03 1.43 1.03H20v2.4h-.11A1.7 1.7 0 0 0 19.4 15Z" />
+
+                                </svg>
+
+                                Account Settings
+
+                            </a>
+
+
+                            <a
+                                href="/help"
+                                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+
+                                <svg
+                                    class="h-4 w-4 text-slate-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    viewBox="0 0 24 24">
+
+                                    <circle cx="12" cy="12" r="9" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+
+                                </svg>
+
+                                Help & Support
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="border-t border-slate-100 p-1.5">
+
+                            <a
+                                href="/logout"
+                                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50">
+
+                                <svg
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M10 17l5-5-5-5M15 12H3" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M21 19V5a2 2 0 0 0-2-2h-6" />
+
+                                </svg>
+
+                                Sign Out
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ========================================================= -->
+    <!-- DESKTOP SIDEBAR -->
+    <!-- ========================================================= -->
+
+    <aside
+        class="desktop-sidebar fixed bottom-0 left-0 top-16 z-40 flex w-60 flex-col border-r border-slate-200 bg-white">
+
+        <!-- MAIN NAVIGATION -->
+
+        <div class="sidebar-scroll flex-1 overflow-y-auto px-3 py-5">
+
+            <p
+                class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+
+                Workspace
+
+            </p>
+
+
+            <nav class="space-y-1">
+
+                <a
+                    href="/dashboard"
+                    class="flex items-center gap-3 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm font-bold text-emerald-700">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+
+                    </svg>
+
+                    Dashboard
+
+                </a>
+
+
+                <a
+                    href="/my-polls"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M5 4h14v16H5z" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M8 8h8M8 12h8M8 16h5" />
+
+                    </svg>
+
+                    My Polls
+
+                </a>
+
+
+                <a
+                    href="/joined-polls"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16 11a4 4 0 1 0-8 0" />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4 20a6 6 0 0 1 16 0" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M18 8h3M19.5 6.5v3" />
+
+                    </svg>
+
+                    Joined Polls
+
+                </a>
+
+
+                <a
+                    href="/quizzes"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M5 4h14v16H5z" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M8 9h8M8 13h5" />
+
+                    </svg>
+
+                    My Quizzes
+
+                </a>
+
+            </nav>
+
+
+            <!-- DIVIDER -->
+
+            <div class="my-6 border-t border-slate-100"></div>
+
+
+            <!-- SUPPORT -->
+
+            <p
+                class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+
+                Resources
+
+            </p>
+
+
+            <nav class="space-y-1">
+
+                <a
+                    href="/help"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <circle cx="12" cy="12" r="9" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M12 16.5h.01" />
+
+                    </svg>
+
+                    Help Center
+
+                </a>
+
+
+                <a
+                    href="/feedback"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.3 9.3 0 0 1-4.2-1L3 20l1.5-4.2A8.4 8.4 0 1 1 21 11.5Z" />
+
+                    </svg>
+
+                    Feedback
+
+                </a>
+
+
+                <a
+                    href="/about-us"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24">
+
+                        <circle cx="12" cy="12" r="9" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M12 11v5" />
+
+                        <path
+                            stroke-linecap="round"
+                            d="M12 8h.01" />
+
+                    </svg>
+
+                    About E-VOTEX
+
+                </a>
+
+            </nav>
+
+
+            <div class="my-6 border-t border-slate-100"></div>
+
+
+            <!-- LEGAL -->
+
+            <p
+                class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+
+                Legal
+
+            </p>
+
+
+            <nav class="space-y-1">
+
+                <a
+                    href="/privacy-policy"
+                    class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+
+                    Privacy Policy
+
+                </a>
+
+
+                <a
+                    href="/terms-and-conditions"
+                    class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+
+                    Terms & Conditions
+
+                </a>
+
+
+                <a
+                    href="/security"
+                    class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+
+                    Security
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="border-t border-slate-200 p-4">
+
+            <div class="rounded-xl bg-slate-50 p-3">
+
+                <div class="flex items-center gap-2">
+
+                    <span
+                        class="h-2 w-2 rounded-full bg-emerald-500">
+                    </span>
+
+                    <span class="text-xs font-bold text-slate-700">
+                        All systems operational
+                    </span>
+
+                </div>
+
+                <p class="mt-1 text-[11px] leading-relaxed text-slate-500">
+                    E-VOTEX services are running normally.
+                </p>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ========================================================= -->
+    <!-- MOBILE SIDEBAR -->
+    <!-- ========================================================= -->
+
+    <div
+        id="mobileOverlay"
+        class="fixed inset-0 z-40 hidden bg-slate-900/20 backdrop-blur-sm md:hidden">
+    </div>
+
+
+    <aside
+        id="mobileSidebar"
+        class="mobile-sidebar closed fixed bottom-0 left-0 top-16 z-50 w-72 border-r border-slate-200 bg-white shadow-xl md:hidden">
+
+        <div class="sidebar-scroll h-full overflow-y-auto p-4">
+
+            <div class="mb-5 flex items-center justify-between">
+
+                <span class="mono text-xs font-bold uppercase tracking-widest text-slate-400">
+                    Navigation
+                </span>
+
+                <button
+                    id="closeMobileMenu"
+                    type="button"
+                    class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+
+            <nav class="space-y-1">
+
+                <a href="/dashboard"
+                    class="block rounded-lg bg-emerald-50 px-3 py-3 text-sm font-bold text-emerald-700">
+                    Dashboard
+                </a>
+
+                <a href="/my-polls"
+                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    My Polls
+                </a>
+
+                <a href="/joined-polls"
+                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    Joined Polls
+                </a>
+
+                <a href="/quizzes"
+                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    My Quizzes
+                </a>
+
+                <div class="my-4 border-t border-slate-100"></div>
+
+                <a href="/help"
+                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    Help Center
+                </a>
+
+                <a href="/feedback"
+                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    Feedback
+                </a>
+
+                <a href="/about-us"
+                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    About E-VOTEX
+                </a>
+
+                <div class="my-4 border-t border-slate-100"></div>
+
+                <a href="/privacy-policy"
+                    class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+                    Privacy Policy
+                </a>
+
+                <a href="/terms-and-conditions"
+                    class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+                    Terms & Conditions
+                </a>
+
+                <a href="/security"
+                    class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+                    Security
+                </a>
+
+            </nav>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ========================================================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================================================= -->
+
+    <main
+        class="dashboard-scroll ml-0 min-h-screen overflow-y-auto pt-16 md:ml-60">
+
+        <div class="mx-auto max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
+
+
+            <!-- BREADCRUMB -->
+
+            <div class="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
+
+                <span>Workspace</span>
+
+                <span>/</span>
+
+                <span class="text-slate-600">
+                    Dashboard
+                </span>
+
+            </div>
+
+
+            <!-- WELCOME -->
+
+            <section class="mb-8">
+
+                <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+
+                    <div>
+
+                        <p
+                            class="mono mb-2 text-xs font-bold uppercase tracking-[.18em] text-emerald-600">
+
+                            E-VOTEX DASHBOARD
+
+                        </p>
+
+                        <h1
+                            class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+
+                            Welcome back,
+                            <%= (user && user.username) ? user.username : "User" %>.
+
+                        </h1>
+
+                        <p class="mt-2 max-w-2xl text-base leading-relaxed text-slate-500">
+
+                            Create polls, participate in decisions, and build interactive
+                            quizzes from one simple workspace.
+
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
+
+                        <span
+                            class="h-2 w-2 animate-pulse rounded-full bg-emerald-500">
+                        </span>
+
+                        Platform operational
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- STATISTICS -->
+            <!-- ================================================= -->
+
+            <section
+                class="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+
+                <div
+                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+
+                    <p class="text-xs font-semibold text-slate-500">
+                        Created Polls
+                    </p>
+
+                    <p class="mt-2 text-2xl font-bold text-slate-900">
+                        0
+                    </p>
+
+                    <p class="mt-1 text-xs text-slate-400">
+                        Total created
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+
+                    <p class="text-xs font-semibold text-slate-500">
+                        Joined Polls
+                    </p>
+
+                    <p class="mt-2 text-2xl font-bold text-slate-900">
+                        0
+                    </p>
+
+                    <p class="mt-1 text-xs text-slate-400">
+                        Participated
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+
+                    <p class="text-xs font-semibold text-slate-500">
+                        Quizzes
+                    </p>
+
+                    <p class="mt-2 text-2xl font-bold text-slate-900">
+                        0
+                    </p>
+
+                    <p class="mt-1 text-xs text-slate-400">
+                        Created quizzes
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+
+                    <p class="text-xs font-semibold text-slate-500">
+                        Account Status
+                    </p>
+
+                    <div class="mt-3 flex items-center gap-2">
+
+                        <span
+                            class="h-2.5 w-2.5 rounded-full bg-emerald-500">
+                        </span>
+
+                        <span class="text-sm font-bold text-emerald-700">
+                            Active
+                        </span>
+
+                    </div>
+
+                    <p class="mt-1 text-xs text-slate-400">
+                        Account in good standing
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- PRIMARY ACTIONS -->
+            <!-- ================================================= -->
+
+            <section class="mb-10">
+
+                <div class="mb-4">
+
+                    <h2 class="text-xl font-bold text-slate-900">
+                        What would you like to do?
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Choose an action to get started.
+                    </p>
+
+                </div>
+
+
+                <div class="space-y-3">
+
+
+                    <!-- CREATE POLL -->
+
+                    <a
+                        href="/create-poll"
+                        class="action-card group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+                        <div class="flex items-center gap-5">
+
+                            <div
+                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+
+                                <svg
+                                    class="h-7 w-7"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    viewBox="0 0 24 24">
+
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        d="M8 12h8M12 8v8" />
+
+                                </svg>
+
+                            </div>
+
+
+                            <div class="min-w-0 flex-1">
+
+                                <div class="flex items-center gap-2">
+
+                                    <h3
+                                        class="text-lg font-bold text-slate-900 group-hover:text-emerald-700">
+
+                                        Create New Poll
+
+                                    </h3>
+
+                                    <span
+                                        class="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
+
+                                        Creator
+
+                                    </span>
+
+                                </div>
+
+                                <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                                    Create a question, add your options, configure
+                                    participation rules, and share your poll.
+
+                                </p>
+
+                            </div>
+
+
+                            <div
+                                class="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition group-hover:bg-emerald-50 group-hover:text-emerald-600 sm:flex">
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m9 18 6-6-6-6" />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- JOIN POLL -->
+
+                    <a
+                        href="/join-poll"
+                        class="action-card group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+                        <div class="flex items-center gap-5">
+
+                            <div
+                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                                <svg
+                                    class="h-7 w-7"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15 11a4 4 0 1 0-8 0" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3 20a6 6 0 0 1 12 0" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        d="M17 8h4M19 6v4" />
+
+                                </svg>
+
+                            </div>
+
+
+                            <div class="min-w-0 flex-1">
+
+                                <div class="flex items-center gap-2">
+
+                                    <h3
+                                        class="text-lg font-bold text-slate-900 group-hover:text-blue-700">
+
+                                        Join a Poll
+
+                                    </h3>
+
+                                    <span
+                                        class="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-blue-700">
+
+                                        Participant
+
+                                    </span>
+
+                                </div>
+
+                                <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                                    Enter a poll code or invitation link and participate
+                                    in an active decision.
+
+                                </p>
+
+                            </div>
+
+
+                            <div
+                                class="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition group-hover:bg-blue-50 group-hover:text-blue-600 sm:flex">
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m9 18 6-6-6-6" />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- CREATE QUIZ -->
+
+                    <a
+                        href="/create-quiz"
+                        class="action-card group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+                        <div class="flex items-center gap-5">
+
+                            <div
+                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+
+                                <svg
+                                    class="h-7 w-7"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 4h14v16H5z" />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        d="M8 9h8M8 13h5M8 17h3" />
+
+                                </svg>
+
+                            </div>
+
+
+                            <div class="min-w-0 flex-1">
+
+                                <div class="flex items-center gap-2">
+
+                                    <h3
+                                        class="text-lg font-bold text-slate-900 group-hover:text-violet-700">
+
+                                        Create a Quiz
+
+                                    </h3>
+
+                                    <span
+                                        class="rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-violet-700">
+
+                                        Interactive
+
+                                    </span>
+
+                                </div>
+
+                                <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                                    Build interactive quizzes with questions,
+                                    answers, scoring, and participant results.
+
+                                </p>
+
+                            </div>
+
+
+                            <div
+                                class="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition group-hover:bg-violet-50 group-hover:text-violet-600 sm:flex">
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m9 18 6-6-6-6" />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- RECENT ACTIVITY -->
+            <!-- ================================================= -->
+
+            <section class="mb-10">
+
+                <div class="mb-4 flex items-end justify-between">
+
+                    <div>
+
+                        <h2 class="text-xl font-bold text-slate-900">
+                            Recent activity
+                        </h2>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Your latest polls, quizzes and participation.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="/activity"
+                        class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+
+                        View all
+
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                    <!-- EMPTY STATE -->
+
+                    <div class="px-6 py-12 text-center">
+
+                        <div
+                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+
+                            <svg
+                                class="h-6 w-6 text-slate-400"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M8 7h8M8 11h5M5 4h14v16H5z" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <h3 class="mt-4 text-sm font-bold text-slate-800">
+                            No recent activity
+                        </h3>
+
+                        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+
+                            Once you create or participate in polls and quizzes,
+                            your recent activity will appear here.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- INFORMATION CARDS -->
+            <!-- ================================================= -->
+
+            <section
+                class="grid gap-4 md:grid-cols-2">
+
+
+                <!-- PRIVACY -->
+
+                <a
+                    href="/privacy-policy"
+                    class="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-200 hover:shadow-sm">
+
+                    <div class="flex gap-4">
+
+                        <div
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 3 5 6v5c0 4.5 2.9 8.5 7 10 4.1-1.5 7-5.5 7-10V6l-7-3Z" />
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="m9 12 2 2 4-4" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="font-bold text-slate-900 group-hover:text-emerald-700">
+
+                                Your privacy matters
+
+                            </h3>
+
+                            <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                                Learn how E-VOTEX handles account information,
+                                poll data and participant privacy.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- HELP -->
+
+                <a
+                    href="/help"
+                    class="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+
+                    <div class="flex gap-4">
+
+                        <div
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <circle cx="12" cy="12" r="9" />
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M12 16.5h.01" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="font-bold text-slate-900 group-hover:text-blue-700">
+
+                                Need help?
+
+                            </h3>
+
+                            <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                                Browse the E-VOTEX help center or contact us
+                                if you need assistance.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+
+            <footer
+                class="mt-12 border-t border-slate-200 py-6">
+
+                <div
+                    class="flex flex-col gap-3 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+
+                    <p>
+                        © 2026 E-VOTEX. All rights reserved.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4">
+
+                        <a
+                            href="/privacy-policy"
+                            class="hover:text-slate-600">
+
+                            Privacy
+
+                        </a>
+
+                        <a
+                            href="/terms-and-conditions"
+                            class="hover:text-slate-600">
+
+                            Terms
+
+                        </a>
+
+                        <a
+                            href="/security"
+                            class="hover:text-slate-600">
+
+                            Security
+
+                        </a>
+
+                        <a
+                            href="/about-us"
+                            class="hover:text-slate-600">
+
+                            About
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <p class="mt-3 text-center text-xs font-semibold text-slate-400">
+
+                    Made with passion by Sai N.
+
+                </p>
+
+            </footer>
+
+        </div>
+
+    </main>
+
+
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================================================= -->
+
+    <script>
+
+        /*
+        ============================================================
+        PROFILE DROPDOWN
+        ============================================================
+        */
+
+        const profileButton =
+            document.getElementById('profileButton');
+
+        const profileMenu =
+            document.getElementById('profileMenu');
+
+
+        profileButton.addEventListener('click', (event) => {
+
+            event.stopPropagation();
+
+            const isVisible =
+                profileMenu.classList.contains('visible-menu');
+
+            if (isVisible) {
+
+                profileMenu.classList.remove('visible-menu');
+
+                profileMenu.classList.add('hidden-menu');
+
+                profileButton.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+
+            } else {
+
+                profileMenu.classList.remove('hidden-menu');
+
+                profileMenu.classList.add('visible-menu');
+
+                profileButton.setAttribute(
+                    'aria-expanded',
+                    'true'
+                );
+
+            }
+
+        });
+
+
+        document.addEventListener('click', () => {
+
+            profileMenu.classList.remove('visible-menu');
+
+            profileMenu.classList.add('hidden-menu');
+
+            profileButton.setAttribute(
+                'aria-expanded',
+                'false'
+            );
+
+        });
+
+
+        profileMenu.addEventListener('click', (event) => {
+
+            event.stopPropagation();
+
+        });
+
+
+        /*
+        ============================================================
+        MOBILE SIDEBAR
+        ============================================================
+        */
+
+        const mobileMenuButton =
+            document.getElementById('mobileMenuButton');
+
+        const mobileSidebar =
+            document.getElementById('mobileSidebar');
+
+        const mobileOverlay =
+            document.getElementById('mobileOverlay');
+
+        const closeMobileMenu =
+            document.getElementById('closeMobileMenu');
+
+
+        function openMobileSidebar() {
+
+            mobileSidebar.classList.remove('closed');
+
+            mobileOverlay.classList.remove('hidden');
+
+            document.body.classList.add('overflow-hidden');
+
+        }
+
+
+        function closeSidebar() {
+
+            mobileSidebar.classList.add('closed');
+
+            mobileOverlay.classList.add('hidden');
+
+            document.body.classList.remove('overflow-hidden');
+
+        }
+
+
+        mobileMenuButton.addEventListener(
+            'click',
+            openMobileSidebar
+        );
+
+
+        closeMobileMenu.addEventListener(
+            'click',
+            closeSidebar
+        );
+
+
+        mobileOverlay.addEventListener(
+            'click',
+            closeSidebar
+        );
+
+
+        /*
+        ============================================================
+        CLOSE MOBILE SIDEBAR WHEN LINK IS CLICKED
+        ============================================================
+        */
+
+        mobileSidebar
+            .querySelectorAll('a')
+            .forEach((link) => {
+
+                link.addEventListener(
+                    'click',
+                    closeSidebar
+                );
+
+            });
+
+    </script>
+
+
+    <!-- Tailwind CDN fallback -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</body>
+
+</html>
