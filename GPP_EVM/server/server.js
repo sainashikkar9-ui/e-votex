@@ -46,9 +46,155 @@ app.set("views", path.join(_dirname, "../views"));
 
 
 app.get("/", (req, res) => {
-    res.render("dashboardProt");
+    res.redirect("/login");
 });
 
+
+
+app.get("/login", (req, res) => {
+    res.render("login");
+});
+
+
+
+app.get("/signin", (req, res) => {
+    res.render("signin");
+    console.log(req.body);
+});
+
+
+
+app.post("/register", async (req, res) => {
+
+    try {
+
+        const {
+            email,
+            username,
+            password
+        } = req.body;
+
+        console.log("EMAIL:", email);
+        console.log("USERNAME:", username);
+        console.log("PASSWORD:", password);
+
+
+        // ==========================================
+        // 2. Check username
+        // ==========================================
+
+        const {
+            data: existingUser,
+            error: checkError
+        } = await supabase
+            .from("Profiles")
+            .select("user_id")
+            .eq("user_name", username)
+            .maybeSingle();
+
+
+        if (checkError) {
+
+            console.error(
+                "Username check error:",
+                checkError
+            );
+
+            return res.status(500).json({
+                status: "error",
+                message: "Unable to verify username."
+            });
+
+        }
+
+
+        // ==========================================
+        // 3. Username already exists
+        // ==========================================
+
+        if (existingUser) {
+
+            return res.status(409).json({
+                status: "exists",
+                message: "Voter already exists."
+            });
+
+        }
+
+
+        // ==========================================
+        // 4. Create Supabase Auth user
+        // ==========================================
+
+        const {
+            data: authData,
+            error: authError
+        } = await supabase.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+                data: {
+                    username: username
+                }
+            }
+
+        });
+
+
+        // ==========================================
+        // 5. Supabase Auth error
+        // ==========================================
+
+        if (authError) {
+
+            console.error(
+                "Supabase Auth error:",
+                authError
+            );
+
+            return res.status(400).json({
+                status: "error",
+                message: authError.message
+            });
+
+        }
+
+
+        // ==========================================
+        // 6. SUCCESS
+        // ==========================================
+
+        console.log(
+            "AUTH USER CREATED:",
+            authData.user.id
+        );
+
+
+        return res.status(200).json({
+            status: "success",
+            message: "Voter registered successfully."
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "REGISTER ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            status: "error",
+            message: "Registration service unavailable."
+        });
+
+    }
+
+});
 
 
 app.get("/test", async (req, res) => {
