@@ -18,11 +18,11 @@ const db = new pg.Client({
     port: Number(process.env.DB_PORT),
     connectionTimeoutMillis: 5000
 });
+
 const supabase = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY
+    process.env.SUPABASE_SERVICE_KEY
 );
-
 db.connect();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(_dirname + "/../public"));
@@ -57,6 +57,179 @@ app.get("/login", (req, res) => {
 
 
 
+app.post("/loginCheck", async (req, res) => {
+
+    try {
+
+        const {
+            username,
+            password
+        } = req.body;
+
+
+        /* =====================================================
+           BASIC VALIDATION
+        ===================================================== */
+
+        if (!username || !password) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Username and password are required."
+            });
+
+        }
+
+
+        /* =====================================================
+           NORMALIZE USERNAME
+        ===================================================== */
+
+        const normalizedUsername = username.trim();
+
+        /* =====================================================
+           FIND USERNAME IN PROFILES TABLE
+        ===================================================== */
+
+        const {
+            data: Profiles,
+            error: ProfilesError
+        } = await supabase
+            .from("Profiles")
+            .select("user_email, user_name")
+            .eq("user_name", normalizedUsername)
+            .maybeSingle();
+
+
+        /* =====================================================
+           PROFILE DATABASE ERROR
+        ===================================================== */
+
+        if (ProfilesError) {
+
+            console.error(
+                "Profile lookup error:",
+                ProfilesError
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Unable to verify account."
+            });
+
+        }
+
+
+        /* =====================================================
+           USERNAME DOES NOT EXIST
+        ===================================================== */
+
+        if (!Profiles) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Invalid username or password."
+            });
+
+        }
+
+
+        /* =====================================================
+           VERIFY PASSWORD USING SUPABASE AUTH
+        ===================================================== */
+
+        const {
+            data: authData,
+            error: authError
+        } = await supabase.auth.signInWithPassword({
+
+            email: Profiles.user_email,
+
+            password: password
+
+        });
+
+
+        /* =====================================================
+           AUTHENTICATION FAILED
+        ===================================================== */
+
+        if (authError || !authData?.user) {
+
+            console.log(
+                "Supabase login failed:",
+                authError?.message
+            );
+
+            return res.status(401).json({
+                success: false,
+                message: "Invalid username or password."
+            });
+
+        }
+
+
+        /* =====================================================
+           CREATE EXPRESS SESSION
+        ===================================================== */
+
+        req.session.user = {
+
+            id: authData.user.id,
+
+            username: Profiles.user_name,
+
+            email: Profiles.user_email
+
+        };
+
+
+        req.session.isAuthenticated = true;
+
+
+        /* =====================================================
+           SUCCESS
+        ===================================================== */
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Login successful. Redirecting to dashboard...",
+
+            redirect: "/Dashboard"
+
+        });
+
+    }
+
+
+    /* =========================================================
+       UNEXPECTED ERROR
+    ========================================================= */
+
+    catch (error) {
+
+        console.error(
+            "POST /loginCheck error:",
+            error
+        );
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Authentication service unavailable."
+
+        });
+
+    }
+
+});
+
+
 app.get("/signin", (req, res) => {
     res.render("signin");
     console.log(req.body);
@@ -74,56 +247,163 @@ app.post("/register", async (req, res) => {
             password
         } = req.body;
 
+
         console.log("EMAIL:", email);
         console.log("USERNAME:", username);
         console.log("PASSWORD:", password);
 
 
         // ==========================================
-        // 2. Check username
+        // 1. BASIC SERVER-SIDE VALIDATION
         // ==========================================
 
-        const {
-            data: existingUser,
-            error: checkError
-        } = await supabase
-            .from("Profiles")
-            .select("user_id")
-            .eq("user_name", username)
-            .maybeSingle();
+        if (
+            !email ||
+            !username ||
+            !password
+        ) {
 
+            return res.status(400).json({
 
-        if (checkError) {
-
-            console.error(
-                "Username check error:",
-                checkError
-            );
-
-            return res.status(500).json({
                 status: "error",
-                message: "Unable to verify username."
+
+                message:
+                    "Email, username and password are required."
+
             });
 
         }
 
 
         // ==========================================
-        // 3. Username already exists
+        // 2. NORMALIZE EMAIL / USERNAME
+        // ==========================================
+
+        const normalizedEmail =
+            email.trim().toLowerCase();
+
+        const normalizedUsername =
+            username.trim();
+
+
+        // ==========================================
+        // 3. CHECK EMAIL
+        // ==========================================
+
+        const {
+            data: existingEmail,
+            error: emailCheckError
+        } = await supabase
+
+            .from("Profiles")
+
+            .select("user_id")
+
+            .eq("user_email", normalizedEmail)
+
+            .maybeSingle();
+
+
+        if (emailCheckError) {
+
+            console.error(
+                "Email check error:",
+                emailCheckError
+            );
+
+
+            return res.status(500).json({
+
+                status: "error",
+
+                message:
+                    "Unable to verify email."
+
+            });
+
+        }
+
+
+        // ==========================================
+        // 4. EMAIL ALREADY EXISTS
+        // ==========================================
+
+        if (existingEmail) {
+
+            return res.status(409).json({
+
+                status: "exists",
+
+                field: "email",
+
+                message:
+                    "Email already exists."
+
+            });
+
+        }
+
+
+        // ==========================================
+        // 5. CHECK USERNAME
+        // ==========================================
+
+        const {
+            data: existingUser,
+            error: usernameCheckError
+        } = await supabase
+
+            .from("Profiles")
+
+            .select("user_id")
+
+            .eq("user_name", normalizedUsername)
+
+            .maybeSingle();
+
+
+        if (usernameCheckError) {
+
+            console.error(
+                "Username check error:",
+                usernameCheckError
+            );
+
+
+            return res.status(500).json({
+
+                status: "error",
+
+                message:
+                    "Unable to verify username."
+
+            });
+
+        }
+
+
+        // ==========================================
+        // 6. USERNAME ALREADY EXISTS
         // ==========================================
 
         if (existingUser) {
 
             return res.status(409).json({
+
                 status: "exists",
-                message: "Voter already exists."
+
+                field: "username",
+
+                message:
+                    "Username already exists."
+
             });
 
         }
 
 
         // ==========================================
-        // 4. Create Supabase Auth user
+        // 7. CREATE SUPABASE AUTH USER
         // ==========================================
 
         const {
@@ -131,21 +411,26 @@ app.post("/register", async (req, res) => {
             error: authError
         } = await supabase.auth.signUp({
 
-            email: email,
+            email: normalizedEmail,
 
             password: password,
 
             options: {
+
                 data: {
-                    username: username
+
+                    username:
+                        normalizedUsername
+
                 }
+
             }
 
         });
 
 
         // ==========================================
-        // 5. Supabase Auth error
+        // 8. SUPABASE AUTH ERROR
         // ==========================================
 
         if (authError) {
@@ -155,30 +440,44 @@ app.post("/register", async (req, res) => {
                 authError
             );
 
+
             return res.status(400).json({
+
                 status: "error",
-                message: authError.message
+
+                message:
+                    authError.message
+
             });
 
         }
 
 
         // ==========================================
-        // 6. SUCCESS
+        // 9. SUCCESS
         // ==========================================
 
         console.log(
             "AUTH USER CREATED:",
-            authData.user.id
+            authData.user?.id
         );
 
 
         return res.status(200).json({
+
             status: "success",
-            message: "Voter registered successfully."
+
+            message:
+                "Voter registered successfully."
+
         });
 
     }
+
+
+    // ==========================================
+    // 10. UNEXPECTED SERVER ERROR
+    // ==========================================
 
     catch (error) {
 
@@ -187,14 +486,20 @@ app.post("/register", async (req, res) => {
             error
         );
 
+
         return res.status(500).json({
+
             status: "error",
-            message: "Registration service unavailable."
+
+            message:
+                "Registration service unavailable."
+
         });
 
     }
 
 });
+
 
 
 app.get("/test", async (req, res) => {
@@ -206,7 +511,7 @@ app.get("/test", async (req, res) => {
         
                 supabaseUrl: process.env.SUPABASE_URL,
         
-                supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
+                supabasePublishableKey: process.env.SUPABASE_SERVICE_KEY
         
             });
         
