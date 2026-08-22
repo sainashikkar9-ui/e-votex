@@ -230,46 +230,6 @@ app.post("/loginCheck", async (req, res) => {
 });
 
 
-// Add this route to handle the frontend check after Google authentication
-// Corrected route for /auth/google/check in server.js
-app.get("/auth/google/check", async (req, res) => {
-    try {
-        if (!req.session.user) {
-            return res.status(401).json({ registered: false, message: "Not authenticated with Google." });
-        }
-
-        const { data: profile, error } = await supabase
-            .from("Profiles")
-            .select("user_email, user_name")
-            .eq("user_email", req.session.user.email)
-            .maybeSingle();
-
-        if (error || !profile) {
-            return res.status(200).json({ 
-                registered: false, 
-                message: "Email not registered. Please sign up." 
-            });
-        }
-
-        return res.status(200).json({ 
-            registered: true, 
-            redirect: "/dashboard" 
-        });
-    } catch (err) {
-        console.error("Google check error:", err);
-        return res.status(500).json({ registered: false, message: "Server error during registration check." });
-    }
-});
-
-
-
-// 1. Handle the redirect from Google cleanly
-app.get("/google-callback", (req, res) => {
-    // Supabase passes tokens via URL hash on the frontend, 
-    // so we redirect back to /login where the client SDK captures it.
-    res.redirect("/login");
-});
-
 
 // 2. Verify the Google email against your Supabase Profiles table and set the session
 app.post("/auth/google-verify", async (req, res) => {
