@@ -19,7 +19,6 @@
         rel="stylesheet">
 
     <style>
-
         /* =========================================================
            BASE
         ========================================================= */
@@ -65,8 +64,7 @@
             justify-content: center;
 
             padding:
-                clamp(0.4rem, 1.5vh, 1.25rem)
-                clamp(0.5rem, 2vw, 2rem);
+                clamp(0.4rem, 1.5vh, 1.25rem) clamp(0.5rem, 2vw, 2rem);
 
             overflow-x: hidden;
         }
@@ -81,8 +79,7 @@
             display: grid;
 
             grid-template-columns:
-                minmax(230px, 0.7fr)
-                minmax(430px, 1.3fr);
+                minmax(230px, 0.7fr) minmax(430px, 1.3fr);
 
             align-items: center;
 
@@ -534,9 +531,7 @@
             z-index: 20;
 
             transform:
-                translate(-50%, -50%)
-                rotate(-14deg)
-                scale(2.7);
+                translate(-50%, -50%) rotate(-14deg) scale(2.7);
 
             opacity: 0;
 
@@ -546,8 +541,7 @@
                 .25rem .55rem;
 
             border:
-                clamp(2px, .3vw, 4px)
-                solid currentColor;
+                clamp(2px, .3vw, 4px) solid currentColor;
 
             font-family:
                 "Roboto Mono", monospace;
@@ -584,18 +578,14 @@
                 opacity: 0;
 
                 transform:
-                    translate(-50%, -50%)
-                    rotate(-14deg)
-                    scale(2.7);
+                    translate(-50%, -50%) rotate(-14deg) scale(2.7);
             }
 
             to {
                 opacity: .9;
 
                 transform:
-                    translate(-50%, -50%)
-                    rotate(-14deg)
-                    scale(1);
+                    translate(-50%, -50%) rotate(-14deg) scale(1);
             }
         }
 
@@ -751,7 +741,7 @@
         }
 
 
-        .input-group + .input-group {
+        .input-group+.input-group {
             margin-top:
                 clamp(.4rem, 1vh, .65rem);
         }
@@ -976,7 +966,7 @@
                 padding: .55rem;
             }
 
-            .input-group + .input-group {
+            .input-group+.input-group {
                 margin-top: .3rem;
             }
 
@@ -1040,8 +1030,7 @@
                 max-width: 1350px;
 
                 grid-template-columns:
-                    minmax(300px, .8fr)
-                    minmax(600px, 1.2fr);
+                    minmax(300px, .8fr) minmax(600px, 1.2fr);
             }
         }
 
@@ -1062,7 +1051,7 @@
                 padding: .7rem;
             }
 
-            .input-group + .input-group {
+            .input-group+.input-group {
                 margin-top: .35rem;
             }
 
@@ -1070,7 +1059,6 @@
                 margin-top: .45rem;
             }
         }
-
     </style>
 
 </head>
@@ -1125,9 +1113,7 @@
                  E-VOTEX MACHINE
             ====================================================== -->
 
-            <section
-                class="machine"
-                aria-label="E-VOTEX voter registration unit">
+            <section class="machine" aria-label="E-VOTEX voter registration unit">
 
 
                 <!-- MACHINE HEADER -->
@@ -1159,9 +1145,7 @@
 
                         <!-- DEFAULT DISPLAY -->
 
-                        <div
-                            id="displayIdle"
-                            class="display-idle">
+                        <div id="displayIdle" class="display-idle">
 
                             <div class="display-brand">
                                 E-VOTEX
@@ -1182,10 +1166,7 @@
 
                         <!-- CHIT -->
 
-                        <article
-                            id="chit"
-                            class="chit"
-                            aria-live="polite">
+                        <article id="chit" class="chit" aria-live="polite">
 
 
                             <div class="chit-header">
@@ -1218,9 +1199,7 @@
                                 </div>
 
 
-                                <div
-                                    id="chitEmail"
-                                    class="chit-value">
+                                <div id="chitEmail" class="chit-value">
 
                                     —
 
@@ -1238,9 +1217,7 @@
                                 </div>
 
 
-                                <div
-                                    id="chitUsername"
-                                    class="chit-value">
+                                <div id="chitUsername" class="chit-value">
 
                                     —
 
@@ -1258,9 +1235,7 @@
                                 </div>
 
 
-                                <div
-                                    id="chitPassword"
-                                    class="chit-value">
+                                <div id="chitPassword" class="chit-value">
 
                                     ****
 
@@ -1278,9 +1253,7 @@
                                 </div>
 
 
-                                <div
-                                    id="chitConfirmPassword"
-                                    class="chit-value">
+                                <div id="chitConfirmPassword" class="chit-value">
 
                                     ****
 
@@ -1298,9 +1271,7 @@
                                 </div>
 
 
-                                <div
-                                    id="chitStatus"
-                                    class="chit-value">
+                                <div id="chitStatus" class="chit-value">
 
                                     VERIFYING...
 
@@ -1311,9 +1282,7 @@
 
                             <!-- STAMP -->
 
-                            <span
-                                id="authStamp"
-                                class="auth-stamp">
+                            <span id="authStamp" class="auth-stamp">
                             </span>
 
 
@@ -1337,32 +1306,26 @@
 
                     </div>
 
+                    <div id="verifiedEmailStatus" class="machine-status" style="margin-bottom: .6rem;">
 
-                    <form
-                        id="loginForm"
-                        autocomplete="on">
+                        Checking Google verification...
+
+                    </div>
+                    <form id="loginForm" autocomplete="on">
 
                         <!-- USERNAME -->
 
                         <div class="input-group">
 
-                            <label
-                                for="username"
-                                class="terminal-label">
+                            <label for="username" class="terminal-label">
 
                                 USERNAME
 
                             </label>
 
 
-                            <input
-                                id="username"
-                                name="username"
-                                type="text"
-                                autocomplete="username"
-                                placeholder="ENTER USERNAME"
-                                required
-                                class="terminal-input">
+                            <input id="username" name="username" type="text" autocomplete="username"
+                                placeholder="ENTER USERNAME" required class="terminal-input">
 
                         </div>
 
@@ -1371,23 +1334,15 @@
 
                         <div class="input-group">
 
-                            <label
-                                for="password"
-                                class="terminal-label">
+                            <label for="password" class="terminal-label">
 
                                 PASSWORD
 
                             </label>
 
 
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                autocomplete="new-password"
-                                placeholder="ENTER PASSWORD"
-                                required
-                                class="terminal-input">
+                            <input id="password" name="password" type="password" autocomplete="new-password"
+                                placeholder="ENTER PASSWORD" required class="terminal-input">
 
                         </div>
 
@@ -1396,22 +1351,15 @@
 
                         <div class="input-group">
 
-                            <label
-                                for="confirmPassword"
-                                class="terminal-label">
+                            <label for="confirmPassword" class="terminal-label">
 
                                 CONFIRM PASSWORD
 
                             </label>
 
 
-                            <input
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                autocomplete="new-password"
-                                placeholder="CONFIRM PASSWORD"
-                                required
+                            <input id="confirmPassword" name="confirmPassword" type="password"
+                                autocomplete="new-password" placeholder="CONFIRM PASSWORD" required
                                 class="terminal-input">
 
                         </div>
@@ -1419,10 +1367,7 @@
 
                         <!-- REGISTER -->
 
-                        <button
-                            id="loginButton"
-                            type="submit"
-                            class="login-button">
+                        <button id="loginButton" type="submit" class="login-button">
 
                             LOGIN
 
@@ -1436,10 +1381,7 @@
 
                 <!-- STATUS -->
 
-                <div
-                    id="machineStatus"
-                    class="machine-status"
-                    aria-live="polite">
+                <div id="machineStatus" class="machine-status" aria-live="polite">
 
                     Enter your username and password to create your E-VOTEX account.
 
@@ -1460,10 +1402,6 @@
 
         const loginForm =
             document.getElementById("loginForm");
-
-
-        const emailInput =
-            document.getElementById("email");
 
 
         const usernameInput =
@@ -1517,7 +1455,61 @@
         const machineStatus =
             document.getElementById("machineStatus");
 
+        async function loadRegistrationStatus() {
 
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/registration-status",
+                        {
+                            credentials: "include"
+                        }
+                    );
+
+                const result =
+                    await response.json();
+
+                const status =
+                    document.getElementById(
+                        "verifiedEmailStatus"
+                    );
+
+                if (
+                    result.verified === true
+                ) {
+
+                    status.textContent =
+                        "✓ GOOGLE EMAIL VERIFIED: " +
+                        result.email;
+
+                    status.style.color =
+                        "#047857";
+
+                }
+
+                else {
+
+                    status.textContent =
+                        "Google verification required.";
+
+                    status.style.color =
+                        "#dc2626";
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Registration status error:",
+                    error
+                );
+
+            }
+
+        }
         /* ============================================================
            RESET CHIT
         ============================================================ */
@@ -1877,7 +1869,7 @@
 
                 setTimeout(() => {
 
-                    emailInput.focus();
+                    usernameInput.focus();
 
                 }, 700);
 
@@ -1962,7 +1954,7 @@
 
                 setTimeout(() => {
 
-                    emailInput.focus();
+                    usernameInput.focus();
 
                 }, 700);
 
@@ -2006,9 +1998,6 @@
                 event.preventDefault();
 
 
-                const email =
-                    emailInput.value.trim();
-
 
                 const username =
                     usernameInput.value.trim();
@@ -2027,7 +2016,6 @@
                 ==================================================== */
 
                 if (
-                    !email ||
                     !username ||
                     !password ||
                     !confirmPassword
@@ -2039,22 +2027,6 @@
                     return;
                 }
 
-
-                /* ====================================================
-                   EMAIL VALIDATION
-                ==================================================== */
-
-                if (
-                    !emailInput.checkValidity()
-                ) {
-
-                    machineStatus.textContent =
-                        "ENTER A VALID EMAIL ADDRESS.";
-
-                    emailInput.focus();
-
-                    return;
-                }
 
 
                 /* ====================================================
@@ -2110,9 +2082,6 @@
                                 },
 
                                 body: JSON.stringify({
-
-                                    email:
-                                        email,
 
                                     username:
                                         username,
@@ -2345,6 +2314,158 @@
             }
         );
 
+        // ============================================================
+        // GOOGLE REGISTRATION RETURN
+        // ============================================================
+
+        async function verifyGoogleRegistrationReturn() {
+
+            const params =
+                new URLSearchParams(window.location.search);
+
+            const googleRegistration =
+                params.get("googleRegistration");
+
+            // Not returning from Google registration
+            if (googleRegistration !== "true") {
+                return;
+            }
+
+            machineStatus.textContent =
+                "Processing Google verification...";
+
+            loginButton.disabled = true;
+
+            try {
+
+                // Get Supabase session created by Google OAuth
+                const {
+                    data,
+                    error
+                } = await supabaseClient.auth.getSession();
+
+                if (
+                    error ||
+                    !data?.session
+                ) {
+
+                    console.error(
+                        "Google session error:",
+                        error
+                    );
+
+                    machineStatus.textContent =
+                        "Google verification failed.";
+
+                    loginButton.disabled = false;
+
+                    return;
+                }
+
+                // Get access token
+                const accessToken =
+                    data.session.access_token;
+
+                // Send token to our Express server
+                const response =
+                    await fetch(
+                        "/auth/google-registration",
+                        {
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    "Bearer " + accessToken
+
+                            },
+
+                            credentials: "include"
+
+                        }
+                    );
+
+                let result = {};
+
+                try {
+
+                    result =
+                        await response.json();
+
+                }
+
+                catch {
+
+                    result = {};
+
+                }
+
+                if (
+                    !response.ok ||
+                    result.success !== true
+                ) {
+
+                    console.error(
+                        "Google registration verification failed:",
+                        result
+                    );
+
+                    machineStatus.textContent =
+                        result.message ||
+                        "Google verification failed.";
+
+                    loginButton.disabled = false;
+
+                    return;
+                }
+
+                // ==========================================
+                // GOOGLE EMAIL VERIFIED
+                // ==========================================
+
+                console.log(
+                    "Google registration email verified."
+                );
+
+                machineStatus.textContent =
+                    "Google email verified. Complete your voter registration.";
+
+                // Remove OAuth query parameter from URL
+                window.history.replaceState(
+                    {},
+                    document.title,
+                    "/signin"
+                );
+
+                // Optional: clear Supabase browser session
+                await supabaseClient.auth.signOut();
+
+                loginButton.disabled = false;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Google registration return error:",
+                    error
+                );
+
+                machineStatus.textContent =
+                    "Unable to complete Google verification.";
+
+                loginButton.disabled = false;
+
+            }
+
+        }
+
+
+        // Execute when signin page loads
+        verifyGoogleRegistrationReturn();
     </script>
 
 </body>

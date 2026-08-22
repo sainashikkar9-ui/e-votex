@@ -357,9 +357,145 @@ app.get("/dashboard", (req, res) => {
 });
 
 
+
 app.get("/signin", (req, res) => {
-    res.render("signin");
-    console.log(req.body);
+
+    res.render("signin", {
+
+        registrationEmail:
+            req.session.registrationEmail || null
+
+    });
+
+});
+
+
+
+app.post("/auth/google-registration", async (req, res) => {
+
+    try {
+
+        const authHeader = req.headers.authorization;
+
+        if (
+            !authHeader ||
+            !authHeader.startsWith("Bearer ")
+        ) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Google authentication required."
+            });
+
+        }
+
+        // Extract Supabase access token
+        const accessToken =
+            authHeader.substring("Bearer ".length);
+
+        // Verify token with Supabase
+        const {
+            data,
+            error
+        } = await supabase.auth.getUser(accessToken);
+
+        if (error || !data?.user) {
+
+            console.error(
+                "Google registration authentication error:",
+                error
+            );
+
+            return res.status(401).json({
+                success: false,
+                message: "Invalid Google authentication."
+            });
+
+        }
+
+        // Get verified Google email
+        const googleEmail =
+            data.user.email?.trim().toLowerCase();
+
+        if (!googleEmail) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Google email could not be obtained."
+            });
+
+        }
+
+        console.log(
+            "Verified Google registration email:",
+            googleEmail
+        );
+
+        // ==========================================
+        // STORE VERIFIED EMAIL SERVER-SIDE
+        // ==========================================
+
+        req.session.registrationEmail =
+            googleEmail;
+
+        // Make sure this is NOT an authenticated login
+        req.session.isAuthenticated = false;
+
+        return res.status(200).json({
+
+            success: true,
+
+            email: googleEmail,
+
+            redirect: "/signin"
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Google registration error:",
+            error
+        );
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to verify Google account."
+
+        });
+
+    }
+
+});
+
+
+
+app.get("/api/registration-status", (req, res) => {
+
+    if (!req.session.registrationEmail) {
+
+        return res.json({
+
+            verified: false
+
+        });
+
+    }
+
+    return res.json({
+
+        verified: true,
+
+        email:
+            req.session.registrationEmail
+
+    });
+
 });
 
 
@@ -369,23 +505,35 @@ app.post("/register", async (req, res) => {
     try {
 
         const {
-            email,
             username,
             password
         } = req.body;
 
+        // ==========================================
+        // 1. GET VERIFIED EMAIL FROM SESSION
+        // ==========================================
 
-        console.log("EMAIL:", email);
-        console.log("USERNAME:", username);
-        console.log("PASSWORD:", password);
+        const registrationEmail =
+            req.session.registrationEmail;
 
+        if (!registrationEmail) {
+
+            return res.status(401).json({
+
+                status: "error",
+
+                message:
+                    "Google email verification is required before registration."
+
+            });
+
+        }
 
         // ==========================================
-        // 1. BASIC SERVER-SIDE VALIDATION
+        // 2. BASIC VALIDATION
         // ==========================================
 
         if (
-            !email ||
             !username ||
             !password
         ) {
@@ -395,41 +543,34 @@ app.post("/register", async (req, res) => {
                 status: "error",
 
                 message:
-                    "Email, username and password are required."
+                    "Username and password are required."
 
             });
 
         }
 
-
         // ==========================================
-        // 2. NORMALIZE EMAIL / USERNAME
+        // 3. NORMALIZE DATA
         // ==========================================
 
         const normalizedEmail =
-            email.trim().toLowerCase();
+            registrationEmail.trim().toLowerCase();
 
         const normalizedUsername =
             username.trim();
 
-
         // ==========================================
-        // 3. CHECK EMAIL
+        // 4. CHECK EMAIL
         // ==========================================
 
         const {
             data: existingEmail,
             error: emailCheckError
         } = await supabase
-
             .from("Profiles")
-
             .select("user_id")
-
             .eq("user_email", normalizedEmail)
-
             .maybeSingle();
-
 
         if (emailCheckError) {
 
@@ -437,7 +578,6 @@ app.post("/register", async (req, res) => {
                 "Email check error:",
                 emailCheckError
             );
-
 
             return res.status(500).json({
 
@@ -450,9 +590,8 @@ app.post("/register", async (req, res) => {
 
         }
 
-
         // ==========================================
-        // 4. EMAIL ALREADY EXISTS
+        // 5. EMAIL ALREADY EXISTS
         // ==========================================
 
         if (existingEmail) {
@@ -470,24 +609,18 @@ app.post("/register", async (req, res) => {
 
         }
 
-
         // ==========================================
-        // 5. CHECK USERNAME
+        // 6. CHECK USERNAME
         // ==========================================
 
         const {
             data: existingUser,
             error: usernameCheckError
         } = await supabase
-
             .from("Profiles")
-
             .select("user_id")
-
             .eq("user_name", normalizedUsername)
-
             .maybeSingle();
-
 
         if (usernameCheckError) {
 
@@ -495,7 +628,6 @@ app.post("/register", async (req, res) => {
                 "Username check error:",
                 usernameCheckError
             );
-
 
             return res.status(500).json({
 
@@ -508,9 +640,8 @@ app.post("/register", async (req, res) => {
 
         }
 
-
         // ==========================================
-        // 6. USERNAME ALREADY EXISTS
+        // 7. USERNAME ALREADY EXISTS
         // ==========================================
 
         if (existingUser) {
@@ -528,9 +659,8 @@ app.post("/register", async (req, res) => {
 
         }
 
-
         // ==========================================
-        // 7. CREATE SUPABASE AUTH USER
+        // 8. CREATE SUPABASE AUTH USER
         // ==========================================
 
         const {
@@ -555,9 +685,8 @@ app.post("/register", async (req, res) => {
 
         });
 
-
         // ==========================================
-        // 8. SUPABASE AUTH ERROR
+        // 9. SUPABASE AUTH ERROR
         // ==========================================
 
         if (authError) {
@@ -566,7 +695,6 @@ app.post("/register", async (req, res) => {
                 "Supabase Auth error:",
                 authError
             );
-
 
             return res.status(400).json({
 
@@ -579,9 +707,8 @@ app.post("/register", async (req, res) => {
 
         }
 
-
         // ==========================================
-        // 9. SUCCESS
+        // 10. SUCCESS
         // ==========================================
 
         console.log(
@@ -589,6 +716,10 @@ app.post("/register", async (req, res) => {
             authData.user?.id
         );
 
+        // Registration is complete.
+        // Remove temporary Google registration email.
+
+        delete req.session.registrationEmail;
 
         return res.status(200).json({
 
@@ -601,18 +732,12 @@ app.post("/register", async (req, res) => {
 
     }
 
-
-    // ==========================================
-    // 10. UNEXPECTED SERVER ERROR
-    // ==========================================
-
     catch (error) {
 
         console.error(
             "REGISTER ERROR:",
             error
         );
-
 
         return res.status(500).json({
 

@@ -5,8 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>E-VOTEX - Secure Voter Authentication</title>
 
@@ -21,440 +20,421 @@
 
 
     <style>
-
-    /* =========================================================
+        /* =========================================================
        BASE
     ========================================================= */
 
-    * {
-        box-sizing: border-box;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
+        body {
 
-        min-height: 100dvh;
+            min-height: 100dvh;
 
-        overflow: hidden;
+            overflow: hidden;
 
-        background:
-            radial-gradient(
-                circle at center,
-                #faf7f0 0%,
-                #f4efe5 65%,
-                #eee7da 100%
-            );
+            background:
+                radial-gradient(circle at center,
+                    #faf7f0 0%,
+                    #f4efe5 65%,
+                    #eee7da 100%);
 
-        color: #0f172a;
+            color: #0f172a;
 
-        font-family: "Hind Madurai", sans-serif;
-    }
+            font-family: "Hind Madurai", sans-serif;
+        }
 
 
-    /* =========================================================
+        /* =========================================================
        MAIN LAYOUT
     ========================================================= */
 
-    .login-page {
+        .login-page {
 
-        width: 100%;
-        height: 100dvh;
+            width: 100%;
+            height: 100dvh;
 
-        display: flex;
+            display: flex;
 
-        align-items: center;
-        justify-content: center;
+            align-items: center;
+            justify-content: center;
 
-        padding:
-            clamp(0.4rem, 1.5vh, 1.25rem)
-            clamp(0.5rem, 2vw, 2rem);
+            padding:
+                clamp(0.4rem, 1.5vh, 1.25rem) clamp(0.5rem, 2vw, 2rem);
 
-        overflow: hidden;
-    }
-
-
-    .page-layout {
-
-        width: min(1200px, 100%);
-        height: min(760px, 94dvh);
-
-        display: grid;
-
-        grid-template-columns:
-            minmax(230px, 0.7fr)
-            minmax(430px, 1.3fr);
-
-        align-items: center;
-
-        gap:
-            clamp(1.5rem, 4vw, 4.5rem);
-    }
+            overflow: hidden;
+        }
 
 
-    /* =========================================================
+        .page-layout {
+
+            width: min(1200px, 100%);
+            height: min(760px, 94dvh);
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(230px, 0.7fr) minmax(430px, 1.3fr);
+
+            align-items: center;
+
+            gap:
+                clamp(1.5rem, 4vw, 4.5rem);
+        }
+
+
+        /* =========================================================
        LEFT INFORMATION PANEL
     ========================================================= */
 
-    .intro-panel {
+        .intro-panel {
 
-        display: flex;
+            display: flex;
 
-        flex-direction: column;
+            flex-direction: column;
 
-        justify-content: center;
+            justify-content: center;
 
-        padding: 1rem;
-    }
-
-
-    .intro-kicker {
-
-        font-family: "Roboto Mono", monospace;
-
-        font-size:
-            clamp(0.65rem, 1vw, 0.8rem);
-
-        font-weight: 700;
-
-        letter-spacing: 0.22em;
-
-        color: #c2410c;
-    }
+            padding: 1rem;
+        }
 
 
-    .intro-title {
+        .intro-kicker {
 
-        margin-top: 0.7rem;
+            font-family: "Roboto Mono", monospace;
 
-        font-size:
-            clamp(2.2rem, 4.5vw, 4.2rem);
+            font-size:
+                clamp(0.65rem, 1vw, 0.8rem);
 
-        line-height: 0.98;
+            font-weight: 700;
 
-        font-weight: 700;
+            letter-spacing: 0.22em;
 
-        letter-spacing: -0.03em;
-    }
-
-
-    .intro-text {
-
-        max-width: 390px;
-
-        margin-top: 1.2rem;
-
-        color: #475569;
-
-        font-size:
-            clamp(0.85rem, 1.4vw, 1.05rem);
-
-        line-height: 1.55;
-    }
+            color: #c2410c;
+        }
 
 
-    .machine-note {
+        .intro-title {
 
-        margin-top: 1.5rem;
+            margin-top: 0.7rem;
 
-        max-width: 390px;
+            font-size:
+                clamp(2.2rem, 4.5vw, 4.2rem);
 
-        padding:
-            0.85rem 1rem;
+            line-height: 0.98;
 
-        border-left:
-            4px solid #059669;
+            font-weight: 700;
 
-        background:
-            rgba(236, 253, 245, 0.85);
-
-        color: #064e3b;
-
-        font-size: 0.85rem;
-
-        font-weight: 700;
-
-        line-height: 1.4;
-    }
+            letter-spacing: -0.03em;
+        }
 
 
-    /* =========================================================
+        .intro-text {
+
+            max-width: 390px;
+
+            margin-top: 1.2rem;
+
+            color: #475569;
+
+            font-size:
+                clamp(0.85rem, 1.4vw, 1.05rem);
+
+            line-height: 1.55;
+        }
+
+
+        .machine-note {
+
+            margin-top: 1.5rem;
+
+            max-width: 390px;
+
+            padding:
+                0.85rem 1rem;
+
+            border-left:
+                4px solid #059669;
+
+            background:
+                rgba(236, 253, 245, 0.85);
+
+            color: #064e3b;
+
+            font-size: 0.85rem;
+
+            font-weight: 700;
+
+            line-height: 1.4;
+        }
+
+
+        /* =========================================================
        MACHINE
     ========================================================= */
 
-    .machine {
+        .machine {
 
-        width: 100%;
-        height: 100%;
+            width: 100%;
+            height: 100%;
 
-        min-height: 0;
+            min-height: 0;
 
-        display: flex;
+            display: flex;
 
-        flex-direction: column;
+            flex-direction: column;
 
-        padding:
-            clamp(0.65rem, 1.4vw, 1.15rem);
+            padding:
+                clamp(0.65rem, 1.4vw, 1.15rem);
 
-        border:
-            clamp(4px, 0.55vw, 7px)
-            solid
-            #63787a;
+            border:
+                clamp(4px, 0.55vw, 7px) solid #63787a;
 
-        border-radius:
-            clamp(1.2rem, 2.5vw, 2rem);
+            border-radius:
+                clamp(1.2rem, 2.5vw, 2rem);
 
-        background:
-            linear-gradient(
-                145deg,
-                #b9dddd,
-                #9fcacc
-            );
+            background:
+                linear-gradient(145deg,
+                    #b9dddd,
+                    #9fcacc);
 
-        box-shadow:
-            0 22px 46px
-            rgba(48, 65, 68, .28);
+            box-shadow:
+                0 22px 46px rgba(48, 65, 68, .28);
 
-        overflow: hidden;
-    }
+            overflow: hidden;
+        }
 
 
-    /* =========================================================
+        /* =========================================================
        MACHINE HEADER
     ========================================================= */
 
-    .machine-header {
+        .machine-header {
 
-        flex: 0 0 auto;
+            flex: 0 0 auto;
 
-        display: flex;
+            display: flex;
 
-        align-items: center;
+            align-items: center;
 
-        justify-content: space-between;
+            justify-content: space-between;
 
-        padding:
-            0.15rem
-            0.35rem
-            0.7rem;
+            padding:
+                0.15rem 0.35rem 0.7rem;
 
-        font-family: "Roboto Mono", monospace;
+            font-family: "Roboto Mono", monospace;
 
-        font-size:
-            clamp(0.65rem, 1vw, 0.8rem);
+            font-size:
+                clamp(0.65rem, 1vw, 0.8rem);
 
-        font-weight: 700;
+            font-weight: 700;
 
-        letter-spacing: 0.06em;
+            letter-spacing: 0.06em;
 
-        color: #1e293b;
-    }
+            color: #1e293b;
+        }
 
 
-    .ready {
+        .ready {
 
-        display: flex;
+            display: flex;
 
-        align-items: center;
+            align-items: center;
 
-        gap: 0.45rem;
-    }
-
-
-    .ready-dot {
-
-        width: 8px;
-        height: 8px;
-
-        flex-shrink: 0;
-
-        border-radius: 50%;
-
-        background: #059669;
-
-        box-shadow:
-            0 0 8px
-            rgba(5, 150, 105, .7);
-    }
+            gap: 0.45rem;
+        }
 
 
-    /* =========================================================
+        .ready-dot {
+
+            width: 8px;
+            height: 8px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #059669;
+
+            box-shadow:
+                0 0 8px rgba(5, 150, 105, .7);
+        }
+
+
+        /* =========================================================
        DISPLAY / PRINTER WINDOW
     ========================================================= */
 
-    .display-frame {
+        .display-frame {
 
-        flex: 0 0
-            clamp(185px, 29dvh, 250px);
+            flex: 0 0 clamp(185px, 29dvh, 250px);
 
-        min-height: 0;
+            min-height: 0;
 
-        padding:
-            clamp(0.35rem, 1vw, 0.6rem);
+            padding:
+                clamp(0.35rem, 1vw, 0.6rem);
 
-        border-radius: 1.1rem;
+            border-radius: 1.1rem;
 
-        background: #07101f;
+            background: #07101f;
 
-        border: 2px solid #526b72;
+            border: 2px solid #526b72;
 
-        box-shadow:
-            inset 0 0 0 3px #020617,
-            inset 0 0 25px
-            rgba(0, 0, 0, .8);
+            box-shadow:
+                inset 0 0 0 3px #020617,
+                inset 0 0 25px rgba(0, 0, 0, .8);
 
-        overflow: hidden;
-    }
+            overflow: hidden;
+        }
 
 
-    .display {
+        .display {
 
-        position: relative;
+            position: relative;
 
-        width: 100%;
-        height: 100%;
+            width: 100%;
+            height: 100%;
 
-        overflow: hidden;
+            overflow: hidden;
 
-        border-radius: 0.7rem;
+            border-radius: 0.7rem;
 
-        background:
-            repeating-linear-gradient(
-                0deg,
-                rgba(255,255,255,.015) 0px,
-                rgba(255,255,255,.015) 1px,
-                transparent 1px,
-                transparent 3px
-            ),
-            #020817;
+            background:
+                repeating-linear-gradient(0deg,
+                    rgba(255, 255, 255, .015) 0px,
+                    rgba(255, 255, 255, .015) 1px,
+                    transparent 1px,
+                    transparent 3px),
+                #020817;
 
-        color: #d1fae5;
+            color: #d1fae5;
 
-        font-family:
-            "Roboto Mono", monospace;
+            font-family:
+                "Roboto Mono", monospace;
 
-        display: flex;
+            display: flex;
 
-        flex-direction: column;
+            flex-direction: column;
 
-        align-items: center;
-        justify-content: center;
+            align-items: center;
+            justify-content: center;
 
-        text-align: center;
-    }
+            text-align: center;
+        }
 
 
-    /* =========================================================
+        /* =========================================================
        DISPLAY IDLE CONTENT
     ========================================================= */
 
-    .display-idle {
+        .display-idle {
 
-        transition:
-            opacity .2s linear,
-            transform .2s linear;
-    }
-
-
-    .display-idle.hidden-state {
-
-        opacity: 0;
-
-        transform:
-            translateY(-10px);
-
-        pointer-events: none;
-    }
+            transition:
+                opacity .2s linear,
+                transform .2s linear;
+        }
 
 
-    .display-brand {
+        .display-idle.hidden-state {
 
-        font-size:
-            clamp(0.7rem, 1.2vw, 1rem);
+            opacity: 0;
 
-        color: #064e3b;
+            transform:
+                translateY(-10px);
 
-        font-weight: 700;
-
-        letter-spacing: 0.18em;
-    }
+            pointer-events: none;
+        }
 
 
-    .display-title {
+        .display-brand {
 
-        margin-top: 1rem;
+            font-size:
+                clamp(0.7rem, 1.2vw, 1rem);
 
-        color: #f8fafc;
+            color: #064e3b;
 
-        font-size:
-            clamp(1rem, 2vw, 1.35rem);
+            font-weight: 700;
 
-        font-weight: 700;
-
-        letter-spacing: 0.05em;
-    }
+            letter-spacing: 0.18em;
+        }
 
 
-    .display-subtitle {
+        .display-title {
 
-        margin-top: 0.8rem;
+            margin-top: 1rem;
 
-        color: #c8c8c8;
+            color: #f8fafc;
 
-        font-size:
-            clamp(0.55rem, 1vw, 0.75rem);
+            font-size:
+                clamp(1rem, 2vw, 1.35rem);
 
-        letter-spacing: 0.1em;
-    }
+            font-weight: 700;
+
+            letter-spacing: 0.05em;
+        }
 
 
-    /* =========================================================
+        .display-subtitle {
+
+            margin-top: 0.8rem;
+
+            color: #c8c8c8;
+
+            font-size:
+                clamp(0.55rem, 1vw, 0.75rem);
+
+            letter-spacing: 0.1em;
+        }
+
+
+        /* =========================================================
        CHIT
     ========================================================= */
 
-    .chit {
+        .chit {
 
-        position: absolute;
+            position: absolute;
 
-        top: 50%;
-        left: 50%;
+            top: 50%;
+            left: 50%;
 
-        width: min(92%, 440px);
+            width: min(92%, 440px);
 
-        height: calc(100% - 0.3rem);
-        max-height: calc(100% - 0.3rem);
+            height: calc(100% - 0.3rem);
+            max-height: calc(100% - 0.3rem);
 
-        min-height: 0;
+            min-height: 0;
 
-        transform:
-            translate(-50%, -150%);
+            transform:
+                translate(-50%, -150%);
 
-        padding:
-            clamp(0.6rem, 1.2vw, 0.9rem);
+            padding:
+                clamp(0.6rem, 1.2vw, 0.9rem);
 
-        background:
-            repeating-linear-gradient(
-                0deg,
-                #fffdf5 0px,
-                #fffdf5 3px,
-                #f8f5eb 3px,
-                #f8f5eb 4px
-            );
+            background:
+                repeating-linear-gradient(0deg,
+                    #fffdf5 0px,
+                    #fffdf5 3px,
+                    #f8f5eb 3px,
+                    #f8f5eb 4px);
 
-        color: #0f172a;
+            color: #0f172a;
 
-        box-shadow:
-            0 8px 18px rgba(0,0,0,.35);
+            box-shadow:
+                0 8px 18px rgba(0, 0, 0, .35);
 
-        text-align: left;
+            text-align: left;
 
-        /*
+            /*
          * VERY IMPORTANT:
          *
          * The chit is completely hidden when the page loads.
@@ -462,1081 +442,1047 @@
          * the Login button is submitted with both fields filled.
          */
 
-        display: none;
+            display: none;
 
-        opacity: 0;
+            opacity: 0;
 
-        z-index: 5;
+            z-index: 5;
 
-        overflow: hidden;
+            overflow: hidden;
 
-        flex-direction: column;
-    }
+            flex-direction: column;
+        }
 
 
-    /* =========================================================
+        /* =========================================================
        CHIT PRINTING
     ========================================================= */
 
-    .chit.printing {
+        .chit.printing {
 
-        animation:
-            chitPrint
-            .9s
-            cubic-bezier(.2,.8,.25,1)
-            forwards;
-    }
-
-
-    @keyframes chitPrint {
-
-        from {
-
-            opacity: 0;
-
-            transform:
-                translate(-50%, -150%);
+            animation:
+                chitPrint .9s cubic-bezier(.2, .8, .25, 1) forwards;
         }
 
-        to {
 
-            opacity: 1;
+        @keyframes chitPrint {
 
-            transform:
-                translate(-50%, -50%);
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -150%);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%);
+            }
         }
-    }
 
 
-    /* =========================================================
+        /* =========================================================
        CHIT CONTENT
     ========================================================= */
 
-    .chit-header {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        flex-shrink: 0;
-
-        padding-bottom: .3rem;
-
-        border-bottom:
-            1px dashed #94a3b8;
-
-        font-size:
-            clamp(.48rem, .9vw, .65rem);
-
-        font-weight: 700;
-    }
-
-
-    .chit-title {
-
-        margin-top: .35rem;
-
-        flex-shrink: 0;
-
-        font-size:
-            clamp(.62rem, 1.15vw, .85rem);
-
-        font-weight: 700;
-    }
-
-
-    .chit-row {
-
-        margin-top: .3rem;
-
-        padding: .3rem 0;
-
-        flex-shrink: 0;
-
-        border-bottom:
-            1px dashed #cbd5e1;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(.5rem, .9vw, .65rem);
-    }
-
-
-    .chit-label {
-
-        color: #64748b;
-
-        font-size:
-            clamp(.45rem, .75vw, .55rem);
-
-        font-weight: 700;
-    }
-
-
-    .chit-value {
-
-        margin-top: .1rem;
-
-        word-break: break-all;
-
-        font-weight: 700;
-
-        line-height: 1.25;
-    }
-
-
-    /* =========================================================
-       AUTHENTICATION STAMP
-    ========================================================= */
-
-    .auth-stamp {
-
-        position: absolute;
-
-        left: 50%;
-        top: 53%;
-
-        z-index: 20;
-
-        transform:
-            translate(-50%, -50%)
-            rotate(-14deg)
-            scale(2.7);
-
-        opacity: 0;
-
-        pointer-events: none;
-
-        padding:
-            .25rem .55rem;
-
-        border:
-            clamp(2px, .3vw, 4px)
-            solid
-            currentColor;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(1rem, 2.3vw, 1.65rem);
-
-        font-weight: 700;
-
-        letter-spacing: .04em;
-
-        white-space: nowrap;
-
-        background:
-            rgba(255,255,255,.2);
-
-        mix-blend-mode: multiply;
-    }
-
-
-    .auth-stamp.show {
-
-        animation:
-            stampIn
-            .65s
-            cubic-bezier(.2,.85,.35,1)
-            forwards;
-    }
-
-
-    @keyframes stampIn {
-
-        from {
-
-            opacity: 0;
-
-            transform:
-                translate(-50%, -50%)
-                rotate(-14deg)
-                scale(2.7);
-        }
-
-        to {
-
-            opacity: .9;
-
-            transform:
-                translate(-50%, -50%)
-                rotate(-14deg)
-                scale(1);
-        }
-    }
-
-
-    .stamp-success {
-
-        color: #047857;
-
-        border-color: #047857;
-    }
-
-
-    .stamp-error {
-
-        color: #dc2626;
-
-        border-color: #dc2626;
-    }
-
-
-    /* =========================================================
-       BALLOT-STYLE CONTROL PANEL
-    ========================================================= */
-
-    .control-panel {
-
-        flex: 1;
-
-        min-height: 0;
-
-        margin-top:
-            clamp(.5rem, 1vw, .8rem);
-
-        padding:
-            clamp(.75rem, 1.5vw, 1.15rem);
-
-        border-radius: 1.1rem;
-
-        background:
-            linear-gradient(
-                180deg,
-                #e6ffff 0%,
-                #dff7f7 100%
-            );
-
-        border:
-            2px solid #84b6b8;
-
-        box-shadow:
-            inset 0 0 0 1px
-            rgba(255,255,255,.65),
-
-            inset 0 0 20px
-            rgba(61, 126, 130, .10),
-
-            0 2px 5px
-            rgba(48,65,68,.12);
-
-        display: flex;
-
-        flex-direction: column;
-
-        justify-content: center;
-    }
-
-
-    /* =========================================================
-       CONTROL TITLE
-    ========================================================= */
-
-    .control-title {
-
-        margin-bottom:
-            clamp(.45rem, 1vh, .75rem);
-
-        padding-bottom: .35rem;
-
-        border-bottom:
-            1px solid #9bcacc;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(.65rem, 1vw, .8rem);
-
-        font-weight: 700;
-
-        color: #334155;
-
-        letter-spacing: .08em;
-    }
-
-
-    /* =========================================================
-       TERMINAL LABEL
-    ========================================================= */
-
-    .terminal-label {
-
-        display: block;
-
-        margin-bottom: .3rem;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(.55rem, .9vw, .7rem);
-
-        font-weight: 700;
-
-        color: #475569;
-
-        letter-spacing: .08em;
-    }
-
-
-    /* =========================================================
-       BALLOT INPUT
-    ========================================================= */
-
-    .terminal-input {
-
-        width: 100%;
-
-        height:
-            clamp(2.15rem, 5dvh, 2.8rem);
-
-        padding:
-            0 .8rem;
-
-        border:
-            1px solid #9bcacc;
-
-        border-radius: .35rem;
-
-        outline: none;
-
-        background: #ffffff;
-
-        color: #172033;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(.7rem, 1.2vw, .85rem);
-
-        box-shadow:
-            inset 0 1px 3px
-            rgba(48,65,68,.10),
-
-            0 1px 2px
-            rgba(48,65,68,.06);
-
-        transition:
-            border-color .15s ease,
-            box-shadow .15s ease,
-            background .15s ease;
-    }
-
-
-    .terminal-input::placeholder {
-
-        color: #94a3b8;
-
-        opacity: 1;
-    }
-
-
-    .terminal-input:hover {
-
-        border-color: #78abad;
-
-        background: #fcffff;
-    }
-
-
-    .terminal-input:focus {
-
-        border-color: #059669;
-
-        background: #ffffff;
-
-        box-shadow:
-            0 0 0 2px
-            rgba(16,185,129,.14),
-
-            inset 0 1px 3px
-            rgba(48,65,68,.08);
-    }
-
-
-    .input-group + .input-group {
-
-        margin-top:
-            clamp(.4rem, 1vh, .65rem);
-    }
-
-
-    /* =========================================================
-       LOGIN BUTTON
-    ========================================================= */
-
-    .sign-button {
-
-        width: 100%;
-
-        height:
-            clamp(2.15rem, 5dvh, 2.8rem);
-
-        margin-top:
-            clamp(.55rem, 1.2vh, .8rem);
-
-        border:
-            2px solid #065f46;
-
-        border-radius: .35rem;
-
-        background:
-            linear-gradient(
-                #059669,
-                #047857
-            );
-
-        color: white;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(.7rem, 1.1vw, .85rem);
-
-        font-weight: 700;
-
-        letter-spacing: .08em;
-
-        cursor: pointer;
-
-        box-shadow:
-            inset 0 1px 2px
-            rgba(255,255,255,.35),
-
-            0 2px 3px
-            rgba(0,0,0,.18);
-
-        transition:
-            transform .12s linear,
-            filter .12s linear;
-    }
-
-
-    .sign-button:hover {
-
-        filter: brightness(1.08);
-    }
-
-
-    .sign-button:active {
-
-        transform:
-            translateY(1px);
-    }
-
-
-    .sign-button:disabled {
-
-        cursor: not-allowed;
-
-        opacity: .55;
-    }
-
-
-    /* =========================================================
-       OR DIVIDER
-    ========================================================= */
-
-    .or-line {
-
-        display: flex;
-
-        align-items: center;
-
-        gap: .65rem;
-
-        margin:
-            clamp(.45rem, 1vh, .7rem)
-            0;
-    }
-
-
-    .or-line::before,
-    .or-line::after {
-
-        content: "";
-
-        flex: 1;
-
-        height: 1px;
-
-        background: #9bcacc;
-    }
-
-
-    .or-line span {
-
-        color: #64748b;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size: .6rem;
-
-        font-weight: 700;
-    }
-
-
-    /* =========================================================
-       GOOGLE BUTTON
-    ========================================================= */
-
-    .google-button {
-
-        width: 100%;
-
-        height:
-            clamp(2rem, 4.5dvh, 2.65rem);
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        gap: .6rem;
-
-        border:
-            1px solid #8aaeb0;
-
-        border-radius: .35rem;
-
-        background: #ffffff;
-
-        color: #172033;
-
-        font-family:
-            "Roboto Mono", monospace;
-
-        font-size:
-            clamp(.6rem, 1vw, .75rem);
-
-        font-weight: 700;
-
-        cursor: pointer;
-
-        box-shadow:
-            0 1px 2px
-            rgba(48,65,68,.10);
-
-        transition:
-            background .15s ease,
-            border-color .15s ease,
-            transform .12s ease;
-    }
-
-
-    .google-button:hover {
-
-        background: #f8ffff;
-
-        border-color: #638f91;
-    }
-
-
-    .google-button:active {
-
-        transform:
-            translateY(1px);
-    }
-
-
-    .google-button:disabled {
-
-        cursor: not-allowed;
-
-        opacity: .55;
-    }
-
-
-    .google-dot {
-
-        width: 12px;
-        height: 12px;
-
-        flex-shrink: 0;
-
-        border-radius: 50%;
-
-        background:
-            linear-gradient(
-                135deg,
-                #4285f4 25%,
-                #34a853 25%,
-                #34a853 50%,
-                #fbbc05 50%,
-                #fbbc05 75%,
-                #ea4335 75%
-            );
-    }
-
-
-    /* =========================================================
-       CREATE ACCOUNT
-    ========================================================= */
-
-    .create-account {
-
-        margin-top:
-            clamp(.45rem, 1vh, .7rem);
-
-        text-align: center;
-
-        color: #64748b;
-
-        font-size:
-            clamp(.6rem, .9vw, .7rem);
-    }
-
-
-    .create-account a {
-
-        color: #ea580c;
-
-        font-weight: 700;
-
-        text-decoration: none;
-    }
-
-
-    .create-account a:hover {
-
-        text-decoration: underline;
-    }
-
-
-    /* =========================================================
-       MACHINE STATUS
-    ========================================================= */
-
-    .machine-status {
-
-        flex: 0 0 auto;
-
-        margin-top: .5rem;
-
-        padding:
-            .45rem
-            .5rem;
-
-        border-radius: .4rem;
-
-        background: #d1f1f1;
-
-        color: #334155;
-
-        text-align: center;
-
-        font-size:
-            clamp(.6rem, 1vw, .75rem);
-
-        font-weight: 700;
-
-        min-height: 1.8rem;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-    }
-
-
-    .machine-footer {
-
-        flex: 0 0 auto;
-
-        margin-top: .45rem;
-
-        text-align: center;
-
-        color: #334155;
-
-        font-size:
-            clamp(.55rem, .8vw, .7rem);
-
-        font-weight: 700;
-    }
-
-
-    /* =========================================================
-       TABLET / MOBILE
-    ========================================================= */
-
-    @media (max-width: 900px) {
-
-        body {
-
-            overflow: hidden;
-        }
-
-
-        .login-page {
-
-            padding: .5rem;
-        }
-
-
-        .page-layout {
-
-            width:
-                min(620px, 100%);
-
-            height: 98dvh;
-
-            display: block;
-        }
-
-
-        .intro-panel {
-
-            display: none;
-        }
-
-
-        .machine {
-
-            height: 100%;
-        }
-    }
-
-
-    /* =========================================================
-       MOBILE
-    ========================================================= */
-
-    @media (max-width: 500px) {
-
-        .machine {
-
-            padding: .45rem;
-
-            border-width: 4px;
-
-            border-radius: 1.2rem;
-        }
-
-
-        .machine-header {
-
-            padding-bottom: .45rem;
-        }
-
-
-        .display-frame {
-
-            flex-basis:
-                clamp(165px, 25dvh, 205px);
-        }
-
-
-        .chit {
-
-            width: 94%;
-
-            padding: .5rem;
-
-            height:
-                calc(100% - .5rem);
-
-            max-height:
-                calc(100% - .5rem);
-        }
-
-
         .chit-header {
 
-            padding-bottom: .2rem;
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            flex-shrink: 0;
+
+            padding-bottom: .3rem;
+
+            border-bottom:
+                1px dashed #94a3b8;
+
+            font-size:
+                clamp(.48rem, .9vw, .65rem);
+
+            font-weight: 700;
         }
 
 
         .chit-title {
-
-            margin-top: .25rem;
-        }
-
-
-        .chit-row {
-
-            margin-top: .2rem;
-
-            padding: .2rem 0;
-        }
-
-
-        .control-panel {
-
-            padding: .7rem;
-        }
-
-
-        .machine-status {
 
             margin-top: .35rem;
-        }
 
+            flex-shrink: 0;
 
-        .machine-footer {
+            font-size:
+                clamp(.62rem, 1.15vw, .85rem);
 
-            margin-top: .3rem;
-        }
-    }
-
-
-    /* =========================================================
-       VERY SMALL / SHORT PHONES
-    ========================================================= */
-
-    @media (max-height: 650px) {
-
-        .display-frame {
-
-            flex-basis: 155px;
-        }
-
-
-        .chit {
-
-            width: 94%;
-
-            padding: .45rem;
-
-            height:
-                calc(100% - .45rem);
-
-            max-height:
-                calc(100% - .45rem);
-        }
-
-
-        .chit-header {
-
-            padding-bottom: .2rem;
-        }
-
-
-        .chit-title {
-
-            margin-top: .2rem;
-
-            font-size: .65rem;
+            font-weight: 700;
         }
 
 
         .chit-row {
 
-            margin-top: .15rem;
+            margin-top: .3rem;
 
-            padding: .18rem 0;
+            padding: .3rem 0;
 
-            font-size: .5rem;
+            flex-shrink: 0;
+
+            border-bottom:
+                1px dashed #cbd5e1;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(.5rem, .9vw, .65rem);
         }
 
 
         .chit-label {
 
-            font-size: .45rem;
+            color: #64748b;
+
+            font-size:
+                clamp(.45rem, .75vw, .55rem);
+
+            font-weight: 700;
         }
 
 
-        .control-panel {
+        .chit-value {
 
-            padding: .55rem;
+            margin-top: .1rem;
+
+            word-break: break-all;
+
+            font-weight: 700;
+
+            line-height: 1.25;
         }
 
 
-        .input-group + .input-group {
-
-            margin-top: .3rem;
-        }
-
-
-        .sign-button {
-
-            margin-top: .4rem;
-        }
-
-
-        .or-line {
-
-            margin: .3rem 0;
-        }
-
-
-        .create-account {
-
-            margin-top: .3rem;
-        }
-    }
-
-
-    /* =========================================================
-       EXTRA SMALL WIDTH
+        /* =========================================================
+       AUTHENTICATION STAMP
     ========================================================= */
-
-    @media (max-width: 360px) {
-
-        .login-page {
-
-            padding: .25rem;
-        }
-
-
-        .machine {
-
-            padding: .35rem;
-
-            border-width: 3px;
-        }
-
-
-        .machine-header {
-
-            font-size: .58rem;
-
-            padding-bottom: .3rem;
-        }
-
-
-        .display-frame {
-
-            flex-basis: 150px;
-
-            padding: .3rem;
-        }
-
-
-        .chit {
-
-            width: 95%;
-
-            padding: .4rem;
-        }
-
 
         .auth-stamp {
 
-            font-size: .85rem;
+            position: absolute;
 
-            padding: .2rem .35rem;
+            left: 50%;
+            top: 53%;
+
+            z-index: 20;
+
+            transform:
+                translate(-50%, -50%) rotate(-14deg) scale(2.7);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            padding:
+                .25rem .55rem;
+
+            border:
+                clamp(2px, .3vw, 4px) solid currentColor;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(1rem, 2.3vw, 1.65rem);
+
+            font-weight: 700;
+
+            letter-spacing: .04em;
+
+            white-space: nowrap;
+
+            background:
+                rgba(255, 255, 255, .2);
+
+            mix-blend-mode: multiply;
         }
 
+
+        .auth-stamp.show {
+
+            animation:
+                stampIn .65s cubic-bezier(.2, .85, .35, 1) forwards;
+        }
+
+
+        @keyframes stampIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -50%) rotate(-14deg) scale(2.7);
+            }
+
+            to {
+
+                opacity: .9;
+
+                transform:
+                    translate(-50%, -50%) rotate(-14deg) scale(1);
+            }
+        }
+
+
+        .stamp-success {
+
+            color: #047857;
+
+            border-color: #047857;
+        }
+
+
+        .stamp-error {
+
+            color: #dc2626;
+
+            border-color: #dc2626;
+        }
+
+
+        /* =========================================================
+       BALLOT-STYLE CONTROL PANEL
+    ========================================================= */
 
         .control-panel {
 
-            padding: .45rem;
+            flex: 1;
+
+            min-height: 0;
+
+            margin-top:
+                clamp(.5rem, 1vw, .8rem);
+
+            padding:
+                clamp(.75rem, 1.5vw, 1.15rem);
+
+            border-radius: 1.1rem;
+
+            background:
+                linear-gradient(180deg,
+                    #e6ffff 0%,
+                    #dff7f7 100%);
+
+            border:
+                2px solid #84b6b8;
+
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, .65),
+
+                inset 0 0 20px rgba(61, 126, 130, .10),
+
+                0 2px 5px rgba(48, 65, 68, .12);
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
         }
 
+
+        /* =========================================================
+       CONTROL TITLE
+    ========================================================= */
+
+        .control-title {
+
+            margin-bottom:
+                clamp(.45rem, 1vh, .75rem);
+
+            padding-bottom: .35rem;
+
+            border-bottom:
+                1px solid #9bcacc;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(.65rem, 1vw, .8rem);
+
+            font-weight: 700;
+
+            color: #334155;
+
+            letter-spacing: .08em;
+        }
+
+
+        /* =========================================================
+       TERMINAL LABEL
+    ========================================================= */
+
+        .terminal-label {
+
+            display: block;
+
+            margin-bottom: .3rem;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(.55rem, .9vw, .7rem);
+
+            font-weight: 700;
+
+            color: #475569;
+
+            letter-spacing: .08em;
+        }
+
+
+        /* =========================================================
+       BALLOT INPUT
+    ========================================================= */
 
         .terminal-input {
 
-            height: 2rem;
+            width: 100%;
 
-            padding: 0 .6rem;
+            height:
+                clamp(2.15rem, 5dvh, 2.8rem);
 
-            font-size: .65rem;
+            padding:
+                0 .8rem;
+
+            border:
+                1px solid #9bcacc;
+
+            border-radius: .35rem;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #172033;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(.7rem, 1.2vw, .85rem);
+
+            box-shadow:
+                inset 0 1px 3px rgba(48, 65, 68, .10),
+
+                0 1px 2px rgba(48, 65, 68, .06);
+
+            transition:
+                border-color .15s ease,
+                box-shadow .15s ease,
+                background .15s ease;
         }
 
+
+        .terminal-input::placeholder {
+
+            color: #94a3b8;
+
+            opacity: 1;
+        }
+
+
+        .terminal-input:hover {
+
+            border-color: #78abad;
+
+            background: #fcffff;
+        }
+
+
+        .terminal-input:focus {
+
+            border-color: #059669;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 0 2px rgba(16, 185, 129, .14),
+
+                inset 0 1px 3px rgba(48, 65, 68, .08);
+        }
+
+
+        .input-group+.input-group {
+
+            margin-top:
+                clamp(.4rem, 1vh, .65rem);
+        }
+
+
+        /* =========================================================
+       LOGIN BUTTON
+    ========================================================= */
 
         .sign-button {
 
-            height: 2rem;
+            width: 100%;
 
-            font-size: .65rem;
+            height:
+                clamp(2.15rem, 5dvh, 2.8rem);
+
+            margin-top:
+                clamp(.55rem, 1.2vh, .8rem);
+
+            border:
+                2px solid #065f46;
+
+            border-radius: .35rem;
+
+            background:
+                linear-gradient(#059669,
+                    #047857);
+
+            color: white;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(.7rem, 1.1vw, .85rem);
+
+            font-weight: 700;
+
+            letter-spacing: .08em;
+
+            cursor: pointer;
+
+            box-shadow:
+                inset 0 1px 2px rgba(255, 255, 255, .35),
+
+                0 2px 3px rgba(0, 0, 0, .18);
+
+            transition:
+                transform .12s linear,
+                filter .12s linear;
         }
 
 
-        .google-button {
+        .sign-button:hover {
 
-            height: 1.9rem;
-
-            font-size: .58rem;
+            filter: brightness(1.08);
         }
-    }
 
 
-    /* =========================================================
-       LARGE DISPLAYS
+        .sign-button:active {
+
+            transform:
+                translateY(1px);
+        }
+
+
+        .sign-button:disabled {
+
+            cursor: not-allowed;
+
+            opacity: .55;
+        }
+
+
+        /* =========================================================
+       OR DIVIDER
     ========================================================= */
-
-    @media (min-width: 1500px) {
-
-        .page-layout {
-
-            max-width: 1350px;
-
-            grid-template-columns:
-                minmax(300px, .8fr)
-                minmax(600px, 1.2fr);
-        }
-    }
-
-
-    /* =========================================================
-       VERY SHORT DESKTOP / LAPTOP
-    ========================================================= */
-
-    @media (min-width: 901px) and (max-height: 720px) {
-
-        .page-layout {
-
-            height: 96dvh;
-
-            gap: 2rem;
-        }
-
-
-        .display-frame {
-
-            flex-basis: 190px;
-        }
-
-
-        .machine-header {
-
-            padding-bottom: .45rem;
-        }
-
-
-        .control-panel {
-
-            padding: .7rem;
-        }
-
-
-        .input-group + .input-group {
-
-            margin-top: .35rem;
-        }
-
-
-        .sign-button {
-
-            margin-top: .45rem;
-        }
-
 
         .or-line {
 
-            margin: .35rem 0;
+            display: flex;
+
+            align-items: center;
+
+            gap: .65rem;
+
+            margin:
+                clamp(.45rem, 1vh, .7rem) 0;
         }
 
+
+        .or-line::before,
+        .or-line::after {
+
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: #9bcacc;
+        }
+
+
+        .or-line span {
+
+            color: #64748b;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size: .6rem;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+       GOOGLE BUTTON
+    ========================================================= */
+
+        .google-button {
+
+            width: 100%;
+
+            height:
+                clamp(2rem, 4.5dvh, 2.65rem);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: .6rem;
+
+            border:
+                1px solid #8aaeb0;
+
+            border-radius: .35rem;
+
+            background: #ffffff;
+
+            color: #172033;
+
+            font-family:
+                "Roboto Mono", monospace;
+
+            font-size:
+                clamp(.6rem, 1vw, .75rem);
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 1px 2px rgba(48, 65, 68, .10);
+
+            transition:
+                background .15s ease,
+                border-color .15s ease,
+                transform .12s ease;
+        }
+
+
+        .google-button:hover {
+
+            background: #f8ffff;
+
+            border-color: #638f91;
+        }
+
+
+        .google-button:active {
+
+            transform:
+                translateY(1px);
+        }
+
+
+        .google-button:disabled {
+
+            cursor: not-allowed;
+
+            opacity: .55;
+        }
+
+
+        .google-dot {
+
+            width: 12px;
+            height: 12px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(135deg,
+                    #4285f4 25%,
+                    #34a853 25%,
+                    #34a853 50%,
+                    #fbbc05 50%,
+                    #fbbc05 75%,
+                    #ea4335 75%);
+        }
+
+
+        /* =========================================================
+       CREATE ACCOUNT
+    ========================================================= */
 
         .create-account {
 
-            margin-top: .35rem;
-        }
-    }
+            margin-top:
+                clamp(.45rem, 1vh, .7rem);
 
+            text-align: center;
+
+            color: #64748b;
+
+            font-size:
+                clamp(.6rem, .9vw, .7rem);
+        }
+
+
+        .create-account a {
+
+            color: #ea580c;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .create-account a:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+       MACHINE STATUS
+    ========================================================= */
+
+        .machine-status {
+
+            flex: 0 0 auto;
+
+            margin-top: .5rem;
+
+            padding:
+                .45rem .5rem;
+
+            border-radius: .4rem;
+
+            background: #d1f1f1;
+
+            color: #334155;
+
+            text-align: center;
+
+            font-size:
+                clamp(.6rem, 1vw, .75rem);
+
+            font-weight: 700;
+
+            min-height: 1.8rem;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .machine-footer {
+
+            flex: 0 0 auto;
+
+            margin-top: .45rem;
+
+            text-align: center;
+
+            color: #334155;
+
+            font-size:
+                clamp(.55rem, .8vw, .7rem);
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+       TABLET / MOBILE
+    ========================================================= */
+
+        @media (max-width: 900px) {
+
+            body {
+
+                overflow: hidden;
+            }
+
+
+            .login-page {
+
+                padding: .5rem;
+            }
+
+
+            .page-layout {
+
+                width:
+                    min(620px, 100%);
+
+                height: 98dvh;
+
+                display: block;
+            }
+
+
+            .intro-panel {
+
+                display: none;
+            }
+
+
+            .machine {
+
+                height: 100%;
+            }
+        }
+
+
+        /* =========================================================
+       MOBILE
+    ========================================================= */
+
+        @media (max-width: 500px) {
+
+            .machine {
+
+                padding: .45rem;
+
+                border-width: 4px;
+
+                border-radius: 1.2rem;
+            }
+
+
+            .machine-header {
+
+                padding-bottom: .45rem;
+            }
+
+
+            .display-frame {
+
+                flex-basis:
+                    clamp(165px, 25dvh, 205px);
+            }
+
+
+            .chit {
+
+                width: 94%;
+
+                padding: .5rem;
+
+                height:
+                    calc(100% - .5rem);
+
+                max-height:
+                    calc(100% - .5rem);
+            }
+
+
+            .chit-header {
+
+                padding-bottom: .2rem;
+            }
+
+
+            .chit-title {
+
+                margin-top: .25rem;
+            }
+
+
+            .chit-row {
+
+                margin-top: .2rem;
+
+                padding: .2rem 0;
+            }
+
+
+            .control-panel {
+
+                padding: .7rem;
+            }
+
+
+            .machine-status {
+
+                margin-top: .35rem;
+            }
+
+
+            .machine-footer {
+
+                margin-top: .3rem;
+            }
+        }
+
+
+        /* =========================================================
+       VERY SMALL / SHORT PHONES
+    ========================================================= */
+
+        @media (max-height: 650px) {
+
+            .display-frame {
+
+                flex-basis: 155px;
+            }
+
+
+            .chit {
+
+                width: 94%;
+
+                padding: .45rem;
+
+                height:
+                    calc(100% - .45rem);
+
+                max-height:
+                    calc(100% - .45rem);
+            }
+
+
+            .chit-header {
+
+                padding-bottom: .2rem;
+            }
+
+
+            .chit-title {
+
+                margin-top: .2rem;
+
+                font-size: .65rem;
+            }
+
+
+            .chit-row {
+
+                margin-top: .15rem;
+
+                padding: .18rem 0;
+
+                font-size: .5rem;
+            }
+
+
+            .chit-label {
+
+                font-size: .45rem;
+            }
+
+
+            .control-panel {
+
+                padding: .55rem;
+            }
+
+
+            .input-group+.input-group {
+
+                margin-top: .3rem;
+            }
+
+
+            .sign-button {
+
+                margin-top: .4rem;
+            }
+
+
+            .or-line {
+
+                margin: .3rem 0;
+            }
+
+
+            .create-account {
+
+                margin-top: .3rem;
+            }
+        }
+
+
+        /* =========================================================
+       EXTRA SMALL WIDTH
+    ========================================================= */
+
+        @media (max-width: 360px) {
+
+            .login-page {
+
+                padding: .25rem;
+            }
+
+
+            .machine {
+
+                padding: .35rem;
+
+                border-width: 3px;
+            }
+
+
+            .machine-header {
+
+                font-size: .58rem;
+
+                padding-bottom: .3rem;
+            }
+
+
+            .display-frame {
+
+                flex-basis: 150px;
+
+                padding: .3rem;
+            }
+
+
+            .chit {
+
+                width: 95%;
+
+                padding: .4rem;
+            }
+
+
+            .auth-stamp {
+
+                font-size: .85rem;
+
+                padding: .2rem .35rem;
+            }
+
+
+            .control-panel {
+
+                padding: .45rem;
+            }
+
+
+            .terminal-input {
+
+                height: 2rem;
+
+                padding: 0 .6rem;
+
+                font-size: .65rem;
+            }
+
+
+            .sign-button {
+
+                height: 2rem;
+
+                font-size: .65rem;
+            }
+
+
+            .google-button {
+
+                height: 1.9rem;
+
+                font-size: .58rem;
+            }
+        }
+
+
+        /* =========================================================
+       LARGE DISPLAYS
+    ========================================================= */
+
+        @media (min-width: 1500px) {
+
+            .page-layout {
+
+                max-width: 1350px;
+
+                grid-template-columns:
+                    minmax(300px, .8fr) minmax(600px, 1.2fr);
+            }
+        }
+
+
+        /* =========================================================
+       VERY SHORT DESKTOP / LAPTOP
+    ========================================================= */
+
+        @media (min-width: 901px) and (max-height: 720px) {
+
+            .page-layout {
+
+                height: 96dvh;
+
+                gap: 2rem;
+            }
+
+
+            .display-frame {
+
+                flex-basis: 190px;
+            }
+
+
+            .machine-header {
+
+                padding-bottom: .45rem;
+            }
+
+
+            .control-panel {
+
+                padding: .7rem;
+            }
+
+
+            .input-group+.input-group {
+
+                margin-top: .35rem;
+            }
+
+
+            .sign-button {
+
+                margin-top: .45rem;
+            }
+
+
+            .or-line {
+
+                margin: .35rem 0;
+            }
+
+
+            .create-account {
+
+                margin-top: .35rem;
+            }
+        }
     </style>
 
 </head>
@@ -1544,112 +1490,108 @@
 
 <body>
 
-<main class="login-page">
+    <main class="login-page">
 
-    <div class="page-layout">
+        <div class="page-layout">
 
 
-        <!-- =====================================================
+            <!-- =====================================================
              LEFT SIDE
         ====================================================== -->
 
-        <section class="intro-panel">
+            <section class="intro-panel">
 
-            <p class="intro-kicker">
-                CAMPUS DEMOCRACY - E-VOTEX
-            </p>
-
-
-            <h1 class="intro-title">
-
-                Secure voter<br>
-                authentication.
-
-            </h1>
+                <p class="intro-kicker">
+                    CAMPUS DEMOCRACY - E-VOTEX
+                </p>
 
 
-            <p class="intro-text">
+                <h1 class="intro-title">
 
-                Sign in using your registered username and
-                password, or continue securely with Google.
+                    Secure voter<br>
+                    authentication.
 
-            </p>
-
-
-            <div class="machine-note">
-
-                🔒 AUTHORIZED VOTER ACCESS ONLY<br>
-
-                Google authentication verifies your identity
-                before E-VOTEX checks your registration status.
-
-            </div>
-
-        </section>
+                </h1>
 
 
-        <!-- =====================================================
+                <p class="intro-text">
+
+                    Sign in using your registered username and
+                    password, or continue securely with Google.
+
+                </p>
+
+
+                <div class="machine-note">
+
+                    🔒 AUTHORIZED VOTER ACCESS ONLY<br>
+
+                    Google authentication verifies your identity
+                    before E-VOTEX checks your registration status.
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
              E-VOTEX MACHINE
         ====================================================== -->
 
-        <section
-            class="machine"
-            aria-label="E-VOTEX electronic voter authentication unit">
+            <section class="machine" aria-label="E-VOTEX electronic voter authentication unit">
 
 
-            <!-- MACHINE HEADER -->
+                <!-- MACHINE HEADER -->
 
-            <header class="machine-header">
+                <header class="machine-header">
 
-                <span>
-                    E-VOTEX UNIT
-                </span>
-
-
-                <span class="ready">
-
-                    <span class="ready-dot"></span>
-
-                    READY
-
-                </span>
-
-            </header>
+                    <span>
+                        E-VOTEX UNIT
+                    </span>
 
 
-            <!-- =================================================
+                    <span class="ready">
+
+                        <span class="ready-dot"></span>
+
+                        READY
+
+                    </span>
+
+                </header>
+
+
+                <!-- =================================================
                  TOP DISPLAY / CHIT PRINTER
             ================================================== -->
 
-            <div class="display-frame">
+                <div class="display-frame">
 
-                <div class="display">
+                    <div class="display">
 
 
-                    <!-- DEFAULT DISPLAY -->
+                        <!-- DEFAULT DISPLAY -->
 
-                    <div
-                        id="displayIdle"
-                        class="display-idle">
+                        <div id="displayIdle" class="display-idle">
 
-                        <div class="display-brand">
-                            E-VOTEX
+                            <div class="display-brand">
+                                E-VOTEX
+                            </div>
+
+
+                            <div class="display-title">
+                                LOGIN TO CONTINUE
+                            </div>
+
+
+                            <div class="display-subtitle">
+                                AUTHORIZED VOTER ACCESS ONLY
+                            </div>
+
                         </div>
 
 
-                        <div class="display-title">
-                            LOGIN TO CONTINUE
-                        </div>
-
-
-                        <div class="display-subtitle">
-                            AUTHORIZED VOTER ACCESS ONLY
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================================
+                        <!-- =================================================
                          PRINTED CHIT
 
                          IMPORTANT:
@@ -1657,596 +1599,612 @@
                          is explicitly called after Login is pressed.
                     ================================================== -->
 
-                    <article
-                        id="chit"
-                        class="chit"
-                        aria-live="polite">
+                        <article id="chit" class="chit" aria-live="polite">
 
 
-                        <div class="chit-header">
+                            <div class="chit-header">
 
-                            <span>
-                                E-VOTEX
+                                <span>
+                                    E-VOTEX
+                                </span>
+
+
+                                <span>
+                                    AUTH-01
+                                </span>
+
+                            </div>
+
+
+                            <div class="chit-title">
+
+                                VOTER AUTHENTICATION SLIP
+
+                            </div>
+
+
+                            <div class="chit-row">
+
+                                <div class="chit-label">
+                                    USERNAME
+                                </div>
+
+
+                                <div id="chitUsername" class="chit-value">
+
+                                    —
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="chit-row">
+
+                                <div class="chit-label">
+                                    AUTHENTICATION METHOD
+                                </div>
+
+
+                                <div id="chitMethod" class="chit-value">
+
+                                    —
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="chit-row">
+
+                                <div class="chit-label">
+                                    VERIFICATION STATUS
+                                </div>
+
+
+                                <div id="chitStatus" class="chit-value">
+
+                                    —
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- AUTHENTICATION STAMP -->
+
+                            <span id="authStamp" class="auth-stamp">
                             </span>
 
 
-                            <span>
-                                AUTH-01
-                            </span>
+                        </article>
 
-                        </div>
-
-
-                        <div class="chit-title">
-
-                            VOTER AUTHENTICATION SLIP
-
-                        </div>
-
-
-                        <div class="chit-row">
-
-                            <div class="chit-label">
-                                USERNAME
-                            </div>
-
-
-                            <div
-                                id="chitUsername"
-                                class="chit-value">
-
-                                —
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="chit-row">
-
-                            <div class="chit-label">
-                                AUTHENTICATION METHOD
-                            </div>
-
-
-                            <div
-                                id="chitMethod"
-                                class="chit-value">
-
-                                —
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="chit-row">
-
-                            <div class="chit-label">
-                                VERIFICATION STATUS
-                            </div>
-
-
-                            <div
-                                id="chitStatus"
-                                class="chit-value">
-
-                                —
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- AUTHENTICATION STAMP -->
-
-                        <span
-                            id="authStamp"
-                            class="auth-stamp">
-                        </span>
-
-
-                    </article>
+                    </div>
 
                 </div>
 
-            </div>
 
-
-            <!-- =================================================
+                <!-- =================================================
                  DIGITAL CONTROL PANEL
             ================================================== -->
 
-            <div class="control-panel">
+                <div class="control-panel">
 
 
-                <div class="control-title">
+                    <div class="control-title">
 
-                    &gt; VOTER AUTHENTICATION TERMINAL
+                        &gt; VOTER AUTHENTICATION TERMINAL
+
+                    </div>
+
+
+                    <form id="loginForm" autocomplete="off">
+
+
+                        <!-- USERNAME -->
+
+                        <div class="input-group">
+
+                            <label for="username" class="terminal-label">
+
+                                USERNAME
+
+                            </label>
+
+
+                            <input id="username" name="username" type="text" autocomplete="off" autocorrect="off"
+                                autocapitalize="none" spellcheck="false" readonly
+                                onfocus="this.removeAttribute('readonly')" placeholder="ENTER REGISTERED USERNAME"
+                                required class="terminal-input">
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="input-group">
+
+                            <label for="password" class="terminal-label">
+
+                                PASSWORD
+
+                            </label>
+
+
+                            <input id="password" name="password" type="password" autocomplete="new-password" readonly
+                                onfocus="this.removeAttribute('readonly')" placeholder="ENTER PASSWORD" required
+                                class="terminal-input">
+
+                        </div>
+
+
+                        <!-- LOG IN -->
+
+                        <button id="loginButton" type="submit" class="sign-button">
+
+                            LOG IN
+
+                        </button>
+
+
+                        <!-- OR -->
+
+                        <div class="or-line">
+
+                            <span>
+                                OR
+                            </span>
+
+                        </div>
+
+
+                        <!-- GOOGLE -->
+
+                        <button id="googleButton" type="button" class="google-button">
+
+                            <span class="google-dot"></span>
+
+                            CONTINUE WITH GOOGLE
+
+                        </button>
+
+
+                        <!-- CREATE ACCOUNT -->
+
+                        <div class="create-account">
+
+                            DON'T HAVE AN ACCOUNT?
+
+                            <a href="/signin?googleRegistration=true" id="createAccountLink">
+                                CREATE ACCOUNT
+                            </a>
+
+                        </div>
+
+
+                    </form>
 
                 </div>
 
 
-                <form
-                    id="loginForm"
-                    autocomplete="off"
-                >
+                <!-- MACHINE STATUS -->
+
+                <div id="machineStatus" class="machine-status" aria-live="polite">
+
+                    Enter your registered credentials to continue.
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
 
 
-                    <!-- USERNAME -->
-
-                    <div class="input-group">
-
-                        <label
-                            for="username"
-                            class="terminal-label">
-
-                            USERNAME
-
-                        </label>
-
-
-                        <input
-                            id="username"
-                            name="username"
-                            type="text"
-
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="none"
-                            spellcheck="false"
-
-                            readonly
-                            onfocus="this.removeAttribute('readonly')"
-
-                            placeholder="ENTER REGISTERED USERNAME"
-
-                            required
-
-                            class="terminal-input">
-
-                    </div>
-
-
-                    <!-- PASSWORD -->
-
-                    <div class="input-group">
-
-                        <label
-                            for="password"
-                            class="terminal-label">
-
-                            PASSWORD
-
-                        </label>
-
-
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-
-                            autocomplete="new-password"
-
-                            readonly
-                            onfocus="this.removeAttribute('readonly')"
-
-                            placeholder="ENTER PASSWORD"
-
-                            required
-
-                            class="terminal-input">
-
-                    </div>
-
-
-                    <!-- LOG IN -->
-
-                    <button
-                        id="loginButton"
-                        type="submit"
-                        class="sign-button">
-
-                        LOG IN
-
-                    </button>
-
-
-                    <!-- OR -->
-
-                    <div class="or-line">
-
-                        <span>
-                            OR
-                        </span>
-
-                    </div>
-
-
-                    <!-- GOOGLE -->
-
-                    <button
-                        id="googleButton"
-                        type="button"
-                        class="google-button">
-
-                        <span class="google-dot"></span>
-
-                        CONTINUE WITH GOOGLE
-
-                    </button>
-
-
-                    <!-- CREATE ACCOUNT -->
-
-                    <div class="create-account">
-
-                        DON'T HAVE AN ACCOUNT?
-
-                        <a href="/signin">
-                            CREATE ACCOUNT
-                        </a>
-
-                    </div>
-
-
-                </form>
-
-            </div>
-
-
-            <!-- MACHINE STATUS -->
-
-            <div
-                id="machineStatus"
-                class="machine-status"
-                aria-live="polite">
-
-                Enter your registered credentials to continue.
-
-            </div>
-
-        </section>
-
-    </div>
-
-</main>
-
-
-<!-- =============================================================
+    <!-- =============================================================
      SUPABASE CLIENT
 ============================================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SUPABASE_URL = 'https://xnbuddwzpbqbowkcfocf.supabase.co';
-    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Y3D-em6cYVXp8l6wGtPaWQ_4CTiabhR';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://xnbuddwzpbqbowkcfocf.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Y3D-em6cYVXp8l6wGtPaWQ_4CTiabhR';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-    const loginForm = document.getElementById("loginForm");
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    const loginButton = document.getElementById("loginButton");
-    const googleButton = document.getElementById("googleButton");
-    const chit = document.getElementById("chit");
-    const chitUsername = document.getElementById("chitUsername");
-    const chitMethod = document.getElementById("chitMethod");
-    const chitStatus = document.getElementById("chitStatus");
-    const authStamp = document.getElementById("authStamp");
-    const displayIdle = document.getElementById("displayIdle");
-    const machineStatus = document.getElementById("machineStatus");
+        const loginForm = document.getElementById("loginForm");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("loginButton");
+        const googleButton = document.getElementById("googleButton");
+        const chit = document.getElementById("chit");
+        const chitUsername = document.getElementById("chitUsername");
+        const chitMethod = document.getElementById("chitMethod");
+        const chitStatus = document.getElementById("chitStatus");
+        const authStamp = document.getElementById("authStamp");
+        const displayIdle = document.getElementById("displayIdle");
+        const machineStatus = document.getElementById("machineStatus");
 
-    window.addEventListener("DOMContentLoaded", () => {
-        usernameInput.value = "";
-        passwordInput.value = "";
-    });
+        window.addEventListener("DOMContentLoaded", () => {
+            usernameInput.value = "";
+            passwordInput.value = "";
+        });
 
-    function hideChit() {
-        chit.classList.remove("printing");
-        authStamp.classList.remove("show", "stamp-success", "stamp-error");
-        authStamp.textContent = "";
-        chit.style.display = "none";
-        chit.style.opacity = "0";
-        chit.style.transform = "translate(-50%, -150%)";
-        displayIdle.classList.remove("hidden-state");
-        chitUsername.textContent = "—";
-        chitMethod.textContent = "—";
-        chitStatus.textContent = "—";
-        chitStatus.style.color = "";
-    }
-
-    function printChit(enteredUsername, authenticationMethod) {
-        if (!enteredUsername) return false;
-        chit.classList.remove("printing");
-        authStamp.classList.remove("show", "stamp-success", "stamp-error");
-        authStamp.textContent = "";
-        chitUsername.textContent = enteredUsername;
-        chitMethod.textContent = authenticationMethod;
-        chitStatus.textContent = "VERIFYING...";
-        chitStatus.style.color = "#475569";
-        chit.style.display = "flex";
-        displayIdle.classList.add("hidden-state");
-        void chit.offsetWidth;
-        chit.classList.add("printing");
-        return true;
-    }
-
-    function showAuthenticationResult(isVerified, message) {
-        authStamp.classList.remove("show", "stamp-success", "stamp-error");
-        void authStamp.offsetWidth;
-        if (isVerified) {
-            authStamp.textContent = "VERIFIED VOTER";
-            authStamp.classList.add("stamp-success");
-            chitStatus.textContent = "VERIFIED";
-            chitStatus.style.color = "#047857";
-            machineStatus.textContent = message || "Voter verified. Authentication successful.";
-        } else {
-            authStamp.textContent = "NOT VERIFIED";
-            authStamp.classList.add("stamp-error");
-            chitStatus.textContent = "NOT VERIFIED";
-            chitStatus.style.color = "#dc2626";
-            machineStatus.textContent = message || "Authentication failed. Check your credentials.";
-        }
-        void authStamp.offsetWidth;
-        authStamp.classList.add("show");
-    }
-
-    function lockAuthentication() {
-        loginButton.disabled = true;
-        googleButton.disabled = true;
-    }
-
-    function unlockAuthentication() {
-        loginButton.disabled = false;
-        googleButton.disabled = false;
-        loginButton.textContent = "LOG IN";
-    }
-
-    // ============================================================
-    // USERNAME + PASSWORD FORM SUBMIT
-    // ============================================================
-    loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        const enteredUsername = usernameInput.value.trim();
-        const enteredPassword = passwordInput.value;
-
-        if (!enteredUsername) {
-            machineStatus.textContent = "USERNAME IS REQUIRED.";
-            usernameInput.focus();
-            return;
-        }
-        if (!enteredPassword) {
-            machineStatus.textContent = "PASSWORD IS REQUIRED.";
-            passwordInput.focus();
-            return;
+        function hideChit() {
+            chit.classList.remove("printing");
+            authStamp.classList.remove("show", "stamp-success", "stamp-error");
+            authStamp.textContent = "";
+            chit.style.display = "none";
+            chit.style.opacity = "0";
+            chit.style.transform = "translate(-50%, -150%)";
+            displayIdle.classList.remove("hidden-state");
+            chitUsername.textContent = "—";
+            chitMethod.textContent = "—";
+            chitStatus.textContent = "—";
+            chitStatus.style.color = "";
         }
 
-        printChit(enteredUsername, "USERNAME + PASSWORD");
-        lockAuthentication();
-        loginButton.textContent = "VERIFYING...";
-        machineStatus.textContent = "Verifying your registered credentials...";
+        function printChit(enteredUsername, authenticationMethod) {
+            if (!enteredUsername) return false;
+            chit.classList.remove("printing");
+            authStamp.classList.remove("show", "stamp-success", "stamp-error");
+            authStamp.textContent = "";
+            chitUsername.textContent = enteredUsername;
+            chitMethod.textContent = authenticationMethod;
+            chitStatus.textContent = "VERIFYING...";
+            chitStatus.style.color = "#475569";
+            chit.style.display = "flex";
+            displayIdle.classList.add("hidden-state");
+            void chit.offsetWidth;
+            chit.classList.add("printing");
+            return true;
+        }
 
-        try {
-            const response = await fetch("/loginCheck", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ username: enteredUsername, password: enteredPassword })
-            });
+        function showAuthenticationResult(isVerified, message) {
+            authStamp.classList.remove("show", "stamp-success", "stamp-error");
+            void authStamp.offsetWidth;
+            if (isVerified) {
+                authStamp.textContent = "VERIFIED VOTER";
+                authStamp.classList.add("stamp-success");
+                chitStatus.textContent = "VERIFIED";
+                chitStatus.style.color = "#047857";
+                machineStatus.textContent = message || "Voter verified. Authentication successful.";
+            } else {
+                authStamp.textContent = "NOT VERIFIED";
+                authStamp.classList.add("stamp-error");
+                chitStatus.textContent = "NOT VERIFIED";
+                chitStatus.style.color = "#dc2626";
+                machineStatus.textContent = message || "Authentication failed. Check your credentials.";
+            }
+            void authStamp.offsetWidth;
+            authStamp.classList.add("show");
+        }
 
-            let result = {};
-            try { result = await response.json(); } catch (e) { result = {}; }
+        function lockAuthentication() {
+            loginButton.disabled = true;
+            googleButton.disabled = true;
+        }
 
-            if (!response.ok || result.success !== true) {
-                showAuthenticationResult(false, result.message || "Invalid username or password.");
-                passwordInput.value = "";
-                unlockAuthentication();
+        function unlockAuthentication() {
+            loginButton.disabled = false;
+            googleButton.disabled = false;
+            loginButton.textContent = "LOG IN";
+        }
+
+        // ============================================================
+        // USERNAME + PASSWORD FORM SUBMIT
+        // ============================================================
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const enteredUsername = usernameInput.value.trim();
+            const enteredPassword = passwordInput.value;
+
+            if (!enteredUsername) {
+                machineStatus.textContent = "USERNAME IS REQUIRED.";
+                usernameInput.focus();
+                return;
+            }
+            if (!enteredPassword) {
+                machineStatus.textContent = "PASSWORD IS REQUIRED.";
                 passwordInput.focus();
                 return;
             }
 
-            showAuthenticationResult(true, result.message || "Login successful. Redirecting to dashboard...");
-            setTimeout(() => {
-                window.location.href = result.redirect || "/dashboard";
-            }, 1500);
+            printChit(enteredUsername, "USERNAME + PASSWORD");
+            lockAuthentication();
+            loginButton.textContent = "VERIFYING...";
+            machineStatus.textContent = "Verifying your registered credentials...";
 
-        } catch (error) {
-            console.error("Login error:", error);
-            showAuthenticationResult(false, "Authentication service unavailable.");
-            unlockAuthentication();
-        }
-    });
+            try {
+                const response = await fetch("/loginCheck", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ username: enteredUsername, password: enteredPassword })
+                });
 
-    // ============================================================
-    // GOOGLE OAUTH BUTTON CLICK
-    // ============================================================
-    googleButton.addEventListener("click", async function () {
-        machineStatus.textContent = "Starting secure Google authentication...";
+                let result = {};
+                try { result = await response.json(); } catch (e) { result = {}; }
+
+                if (!response.ok || result.success !== true) {
+                    showAuthenticationResult(false, result.message || "Invalid username or password.");
+                    passwordInput.value = "";
+                    unlockAuthentication();
+                    passwordInput.focus();
+                    return;
+                }
+
+                showAuthenticationResult(true, result.message || "Login successful. Redirecting to dashboard...");
+                setTimeout(() => {
+                    window.location.href = result.redirect || "/dashboard";
+                }, 1500);
+
+            } catch (error) {
+                console.error("Login error:", error);
+                showAuthenticationResult(false, "Authentication service unavailable.");
+                unlockAuthentication();
+            }
+        });
+
+        // ============================================================
+        // GOOGLE OAUTH BUTTON CLICK
+        // ============================================================
+        googleButton.addEventListener("click", async function () {
+            machineStatus.textContent = "Starting secure Google authentication...";
+            lockAuthentication();
+
+            try {
+                const { error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: "google",
+                    options: {
+                        redirectTo: window.location.origin + "/login"
+                    }
+                });
+
+                if (error) {
+                    console.error("Google auth error:", error);
+                    machineStatus.textContent = "Google authentication failed.";
+                    unlockAuthentication();
+                }
+            } catch (error) {
+                console.error("Google auth error:", error);
+                machineStatus.textContent = "Unable to start Google authentication.";
+                unlockAuthentication();
+            }
+        });
+
+        // ============================================================
+// CREATE ACCOUNT → GOOGLE REGISTRATION
+// ============================================================
+
+const createAccountLink =
+    document.getElementById("createAccountLink");
+
+if (createAccountLink) {
+
+    createAccountLink.addEventListener("click", async function (event) {
+
+        event.preventDefault();
+
+        machineStatus.textContent =
+            "Starting secure Google verification...";
+
         lockAuthentication();
 
         try {
-            const { error } = await supabaseClient.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: window.location.origin + "/login"
-                }
-            });
+
+            const { error } =
+                await supabaseClient.auth.signInWithOAuth({
+
+                    provider: "google",
+
+                    options: {
+
+                        redirectTo:
+                            window.location.origin +
+                            "/signin?googleRegistration=true"
+
+                    }
+
+                });
 
             if (error) {
-                console.error("Google auth error:", error);
-                machineStatus.textContent = "Google authentication failed.";
+
+                console.error(
+                    "Google registration error:",
+                    error
+                );
+
+                machineStatus.textContent =
+                    "Unable to start Google verification.";
+
                 unlockAuthentication();
+
             }
-        } catch (error) {
-            console.error("Google auth error:", error);
-            machineStatus.textContent = "Unable to start Google authentication.";
-            unlockAuthentication();
-        }
-    });
 
-    // ============================================================
-    // VERIFY GOOGLE RETURN ONLY WHEN RETURNING FROM OAUTH
-    // ============================================================
-   async function verifyGoogleReturn() {
-
-    try {
-
-        const hash = window.location.hash;
-
-        // Normal visit to login page
-        if (!hash || !hash.includes("access_token")) {
-            return;
         }
 
-
-        machineStatus.textContent =
-            "Processing Google login...";
-
-        lockAuthentication();
-
-
-        // Get Google-authenticated Supabase session
-        const {
-            data,
-            error
-        } = await supabaseClient.auth.getSession();
-
-
-        if (error || !data?.session) {
+        catch (error) {
 
             console.error(
-                "Google session error:",
+                "Google registration error:",
                 error
             );
 
             machineStatus.textContent =
-                "Google authentication failed.";
+                "Unable to start Google verification.";
 
             unlockAuthentication();
 
-            return;
         }
 
+    });
 
-        // Get email from authenticated Google account
-        const googleEmail =
-            data.session.user?.email;
+}  
 
+        // ============================================================
+        // VERIFY GOOGLE RETURN ONLY WHEN RETURNING FROM OAUTH
+        // ============================================================
+        async function verifyGoogleReturn() {
 
-        if (!googleEmail) {
+            try {
 
-            machineStatus.textContent =
-                "Google email could not be obtained.";
+                const hash = window.location.hash;
 
-            unlockAuthentication();
-
-            return;
-        }
-
-
-        machineStatus.textContent =
-            "Checking E-VOTEX registration...";
+                // Normal visit to login page
+                if (!hash || !hash.includes("access_token")) {
+                    return;
+                }
 
 
-        // Send Google email to server
-        const response = await fetch(
-            "/auth/google-verify",
-            {
-                method: "POST",
+                machineStatus.textContent =
+                    "Processing Google login...";
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
+                lockAuthentication();
 
-                credentials: "include",
 
-                body: JSON.stringify({
-                    email: googleEmail
-                })
+                // Get Google-authenticated Supabase session
+                const {
+                    data,
+                    error
+                } = await supabaseClient.auth.getSession();
+
+
+                if (error || !data?.session) {
+
+                    console.error(
+                        "Google session error:",
+                        error
+                    );
+
+                    machineStatus.textContent =
+                        "Google authentication failed.";
+
+                    unlockAuthentication();
+
+                    return;
+                }
+
+
+                // Get email from authenticated Google account
+                const googleEmail =
+                    data.session.user?.email;
+
+
+                if (!googleEmail) {
+
+                    machineStatus.textContent =
+                        "Google email could not be obtained.";
+
+                    unlockAuthentication();
+
+                    return;
+                }
+
+
+                machineStatus.textContent =
+                    "Checking E-VOTEX registration...";
+
+
+                // Send Google email to server
+                const response = await fetch(
+                    "/auth/google-verify",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify({
+                            email: googleEmail
+                        })
+                    }
+                );
+
+
+                const result =
+                    await response.json();
+
+
+                // ==========================================
+                // REGISTERED
+                // ==========================================
+
+                if (
+                    response.ok &&
+                    result.registered === true
+                ) {
+
+                    machineStatus.textContent =
+                        "Google account verified. Redirecting to dashboard...";
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "/dashboard";
+
+                    }, 1000);
+
+                    return;
+                }
+
+
+                // ==========================================
+                // NOT REGISTERED
+                // ==========================================
+
+                if (
+                    response.ok &&
+                    result.registered === false
+                ) {
+
+                    machineStatus.textContent =
+                        "Google email is not registered. Redirecting...";
+
+
+                    // Remove Google session
+                    await supabaseClient.auth.signOut();
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "/signin";
+
+                    }, 1000);
+
+                    return;
+                }
+
+
+                machineStatus.textContent =
+                    "Unable to check registration.";
+
+                unlockAuthentication();
+
             }
-        );
 
+            catch (error) {
 
-        const result =
-            await response.json();
+                console.error(
+                    "Google return error:",
+                    error
+                );
 
+                machineStatus.textContent =
+                    "Unable to complete Google login.";
 
-        // ==========================================
-        // REGISTERED
-        // ==========================================
-
-        if (
-            response.ok &&
-            result.registered === true
-        ) {
-
-            machineStatus.textContent =
-                "Google account verified. Redirecting to dashboard...";
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "/dashboard";
-
-            }, 1000);
-
-            return;
+                unlockAuthentication();
+            }
         }
-
-
-        // ==========================================
-        // NOT REGISTERED
-        // ==========================================
-
-        if (
-            response.ok &&
-            result.registered === false
-        ) {
-
-            machineStatus.textContent =
-                "Google email is not registered. Redirecting...";
-
-
-            // Remove Google session
-            await supabaseClient.auth.signOut();
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "/signin";
-
-            }, 1000);
-
-            return;
-        }
-
-
-        machineStatus.textContent =
-            "Unable to check registration.";
-
-        unlockAuthentication();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Google return error:",
-            error
-        );
-
-        machineStatus.textContent =
-            "Unable to complete Google login.";
-
-        unlockAuthentication();
-    }
-}
-    // Execute only return verification on load
-    verifyGoogleReturn();
-</script>
+        // Execute only return verification on load
+        verifyGoogleReturn();
+    </script>
 </body>
 
 </html>
