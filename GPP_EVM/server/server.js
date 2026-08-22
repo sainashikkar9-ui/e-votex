@@ -96,7 +96,7 @@ app.post("/loginCheck", async (req, res) => {
             error: ProfilesError
         } = await supabase
             .from("Profiles")
-            .select("user_email, user_name")
+            .select("*")
             .eq("user_name", normalizedUsername)
             .maybeSingle();
 
@@ -179,6 +179,8 @@ app.post("/loginCheck", async (req, res) => {
 
             username: Profiles.user_name,
 
+            displayname: Profiles.display_name,
+
             email: Profiles.user_email
 
         };
@@ -260,7 +262,7 @@ app.post("/auth/google-verify", async (req, res) => {
             error
         } = await supabase
             .from("Profiles")
-            .select("user_email, user_name")
+            .select("*")
             .eq("user_email", normalizedEmail)
             .maybeSingle();
 
@@ -304,6 +306,7 @@ app.post("/auth/google-verify", async (req, res) => {
 
         req.session.user = {
             username: profile.user_name,
+            displayname: profile.display_name,
             email: profile.user_email
         };
 
@@ -349,7 +352,8 @@ app.get("/dashboard", (req, res) => {
     if (!req.session || !req.session.isAuthenticated) {
         return res.redirect("/login");
     }
-    res.render("dashboard", { user: req.session.user || null });
+    console.log(req.session.user);
+    res.render("dashboard", { user: req.session.user || null});
 });
 
 
@@ -642,14 +646,6 @@ app.get("/test", async (req, res) => {
         req.session.isVoted = 1;
     }
 });
-
-
-
-/*
-app.get("/dashboard", (req, res) => {
-    res.render("dashboard", { user: req.session?.user || null });
-});
-*/
 
 
 
