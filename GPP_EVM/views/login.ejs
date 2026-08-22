@@ -425,14 +425,10 @@
         top: 50%;
         left: 50%;
 
-        width:
-            min(92%, 440px);
+        width: min(92%, 440px);
 
-        height:
-            calc(100% - 0.3rem);
-
-        max-height:
-            calc(100% - 0.3rem);
+        height: calc(100% - 0.3rem);
+        max-height: calc(100% - 0.3rem);
 
         min-height: 0;
 
@@ -454,18 +450,25 @@
         color: #0f172a;
 
         box-shadow:
-            0 8px 18px
-            rgba(0,0,0,.35);
+            0 8px 18px rgba(0,0,0,.35);
 
         text-align: left;
+
+        /*
+         * VERY IMPORTANT:
+         *
+         * The chit is completely hidden when the page loads.
+         * JavaScript will change this to "flex" ONLY after
+         * the Login button is submitted with both fields filled.
+         */
+
+        display: none;
 
         opacity: 0;
 
         z-index: 5;
 
         overflow: hidden;
-
-        display: flex;
 
         flex-direction: column;
     }
@@ -686,7 +689,7 @@
 
 
     /* =========================================================
-       🩵 BALLOT-STYLE CONTROL PANEL
+       BALLOT-STYLE CONTROL PANEL
     ========================================================= */
 
     .control-panel {
@@ -702,10 +705,6 @@
             clamp(.75rem, 1.5vw, 1.15rem);
 
         border-radius: 1.1rem;
-
-        /*
-         * LIGHT BALLOT SURFACE
-         */
 
         background:
             linear-gradient(
@@ -788,7 +787,7 @@
 
 
     /* =========================================================
-       🩵 BALLOT INPUT
+       BALLOT INPUT
     ========================================================= */
 
     .terminal-input {
@@ -807,10 +806,6 @@
         border-radius: .35rem;
 
         outline: none;
-
-        /*
-         * WHITE BALLOT FIELD
-         */
 
         background: #ffffff;
 
@@ -875,7 +870,7 @@
 
 
     /* =========================================================
-       SIGN IN BUTTON
+       LOGIN BUTTON
     ========================================================= */
 
     .sign-button {
@@ -1555,7 +1550,7 @@
 
 
         <!-- =====================================================
-             LEFT SIDE - DESKTOP
+             LEFT SIDE
         ====================================================== -->
 
         <section class="intro-panel">
@@ -1575,8 +1570,8 @@
 
             <p class="intro-text">
 
-                Enter your registered credentials through the
-                electronic voting terminal.
+                Sign in using your registered username and
+                password, or continue securely with Google.
 
             </p>
 
@@ -1585,8 +1580,8 @@
 
                 🔒 AUTHORIZED VOTER ACCESS ONLY<br>
 
-                The verification slip is printed electronically
-                for authentication confirmation.
+                Google authentication verifies your identity
+                before E-VOTEX checks your registration status.
 
             </div>
 
@@ -1643,7 +1638,7 @@
 
 
                         <div class="display-title">
-                            LOGIN IN TO CONTINUE
+                            LOGIN TO CONTINUE
                         </div>
 
 
@@ -1656,6 +1651,10 @@
 
                     <!-- =================================================
                          PRINTED CHIT
+
+                         IMPORTANT:
+                         This remains display:none until printChit()
+                         is explicitly called after Login is pressed.
                     ================================================== -->
 
                     <article
@@ -1688,12 +1687,12 @@
                         <div class="chit-row">
 
                             <div class="chit-label">
-                                REGISTERED EMAIL
+                                USERNAME
                             </div>
 
 
                             <div
-                                id="chitEmail"
+                                id="chitUsername"
                                 class="chit-value">
 
                                 —
@@ -1706,15 +1705,15 @@
                         <div class="chit-row">
 
                             <div class="chit-label">
-                                PASSWORD
+                                AUTHENTICATION METHOD
                             </div>
 
 
                             <div
-                                id="chitPassword"
+                                id="chitMethod"
                                 class="chit-value">
 
-                                ****
+                                —
 
                             </div>
 
@@ -1732,7 +1731,7 @@
                                 id="chitStatus"
                                 class="chit-value">
 
-                                VERIFYING...
+                                —
 
                             </div>
 
@@ -1770,29 +1769,40 @@
 
                 <form
                     id="loginForm"
-                    autocomplete="on">
+                    autocomplete="off"
+                >
 
 
-                    <!-- EMAIL -->
+                    <!-- USERNAME -->
 
                     <div class="input-group">
 
                         <label
-                            for="email"
+                            for="username"
                             class="terminal-label">
 
-                            EMAIL
+                            USERNAME
 
                         </label>
 
 
                         <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            autocomplete="username"
-                            placeholder="ENTER REGISTERED EMAIL"
+                            id="username"
+                            name="username"
+                            type="text"
+
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="none"
+                            spellcheck="false"
+
+                            readonly
+                            onfocus="this.removeAttribute('readonly')"
+
+                            placeholder="ENTER REGISTERED USERNAME"
+
                             required
+
                             class="terminal-input">
 
                     </div>
@@ -1815,22 +1825,29 @@
                             id="password"
                             name="password"
                             type="password"
-                            autocomplete="current-password"
+
+                            autocomplete="new-password"
+
+                            readonly
+                            onfocus="this.removeAttribute('readonly')"
+
                             placeholder="ENTER PASSWORD"
+
                             required
+
                             class="terminal-input">
 
                     </div>
 
 
-                    <!-- SIGN IN -->
+                    <!-- LOG IN -->
 
                     <button
-                        id="signInButton"
+                        id="loginButton"
                         type="submit"
                         class="sign-button">
 
-                        SIGN IN
+                        LOG IN
 
                     </button>
 
@@ -1866,7 +1883,7 @@
 
                         DON'T HAVE AN ACCOUNT?
 
-                        <a href="/register">
+                        <a href="/signin">
                             CREATE ACCOUNT
                         </a>
 
@@ -1907,474 +1924,339 @@
 
 
 <!-- =============================================================
-     SUPABASE
+     SUPABASE CLIENT
 ============================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
 <script>
+    const SUPABASE_URL = 'https://xnbuddwzpbqbowkcfocf.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Y3D-em6cYVXp8l6wGtPaWQ_4CTiabhR';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-    /* ============================================================
-       SUPABASE CONFIGURATION
-    ============================================================ */
+    const loginForm = document.getElementById("loginForm");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const loginButton = document.getElementById("loginButton");
+    const googleButton = document.getElementById("googleButton");
+    const chit = document.getElementById("chit");
+    const chitUsername = document.getElementById("chitUsername");
+    const chitMethod = document.getElementById("chitMethod");
+    const chitStatus = document.getElementById("chitStatus");
+    const authStamp = document.getElementById("authStamp");
+    const displayIdle = document.getElementById("displayIdle");
+    const machineStatus = document.getElementById("machineStatus");
 
-    const SUPABASE_URL =
-        'https://xnbuddwzpbqbowkcfocf.supabase.co';
+    window.addEventListener("DOMContentLoaded", () => {
+        usernameInput.value = "";
+        passwordInput.value = "";
+    });
 
-
-    const SUPABASE_PUBLISHABLE_KEY =
-        'sb_publishable_Y3D-em6cYVXp8l6wGtPaWQ_4CTiabhR';
-
-
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
-
-
-    /* ============================================================
-       ELEMENTS
-    ============================================================ */
-
-    const loginForm =
-        document.getElementById("loginForm");
-
-
-    const emailInput =
-        document.getElementById("email");
-
-
-    const passwordInput =
-        document.getElementById("password");
-
-
-    const signInButton =
-        document.getElementById("signInButton");
-
-
-    const googleButton =
-        document.getElementById("googleButton");
-
-
-    const chit =
-        document.getElementById("chit");
-
-
-    const chitEmail =
-        document.getElementById("chitEmail");
-
-
-    const chitPassword =
-        document.getElementById("chitPassword");
-
-
-    const chitStatus =
-        document.getElementById("chitStatus");
-
-
-    const authStamp =
-        document.getElementById("authStamp");
-
-
-    const displayIdle =
-        document.getElementById("displayIdle");
-
-
-    const machineStatus =
-        document.getElementById("machineStatus");
-
-
-    /* ============================================================
-       RESET CHIT
-    ============================================================ */
-
-    function resetChit() {
-
+    function hideChit() {
         chit.classList.remove("printing");
-
-
-        authStamp.classList.remove("show");
-
-
-        authStamp.classList.remove(
-            "stamp-success",
-            "stamp-error"
-        );
-
-
-        void chit.offsetWidth;
-
-        void authStamp.offsetWidth;
-
-
+        authStamp.classList.remove("show", "stamp-success", "stamp-error");
         authStamp.textContent = "";
-
-
-        chitEmail.textContent = "—";
-
-        chitPassword.textContent = "****";
-
-        chitStatus.textContent = "VERIFYING...";
-
-
-        chitStatus.style.color = "";
-
-
+        chit.style.display = "none";
         chit.style.opacity = "0";
-
-
-        chit.style.transform =
-            "translateX(-50%) translateY(-120%)";
-
-
-        displayIdle.classList.remove(
-            "hidden-state"
-        );
-
+        chit.style.transform = "translate(-50%, -150%)";
+        displayIdle.classList.remove("hidden-state");
+        chitUsername.textContent = "—";
+        chitMethod.textContent = "—";
+        chitStatus.textContent = "—";
+        chitStatus.style.color = "";
     }
 
-
-    /* ============================================================
-       START NEW CHIT
-    ============================================================ */
-
-    function printChit(email) {
-
-        resetChit();
-
-
-        chitEmail.textContent = email;
-
-        chitPassword.textContent = "****";
-
-
-        chitStatus.textContent =
-            "VERIFYING...";
-
-
-        chitStatus.style.color =
-            "#475569";
-
-
-        displayIdle.classList.add(
-            "hidden-state"
-        );
-
-
+    function printChit(enteredUsername, authenticationMethod) {
+        if (!enteredUsername) return false;
+        chit.classList.remove("printing");
+        authStamp.classList.remove("show", "stamp-success", "stamp-error");
+        authStamp.textContent = "";
+        chitUsername.textContent = enteredUsername;
+        chitMethod.textContent = authenticationMethod;
+        chitStatus.textContent = "VERIFYING...";
+        chitStatus.style.color = "#475569";
+        chit.style.display = "flex";
+        displayIdle.classList.add("hidden-state");
         void chit.offsetWidth;
-
-
         chit.classList.add("printing");
-
+        return true;
     }
 
-
-    /* ============================================================
-       AUTHENTICATION RESULT
-    ============================================================ */
-
-    function showAuthenticationResult(isVerified) {
-
-
-        authStamp.classList.remove(
-            "show",
-            "stamp-success",
-            "stamp-error"
-        );
-
-
+    function showAuthenticationResult(isVerified, message) {
+        authStamp.classList.remove("show", "stamp-success", "stamp-error");
         void authStamp.offsetWidth;
-
-
         if (isVerified) {
-
-
-            authStamp.textContent =
-                "VERIFIED VOTER";
-
-
-            authStamp.classList.add(
-                "stamp-success"
-            );
-
-
-            chitStatus.textContent =
-                "VERIFIED";
-
-
-            chitStatus.style.color =
-                "#047857";
-
-
-            machineStatus.textContent =
-                "Voter verified. Authentication successful.";
-
+            authStamp.textContent = "VERIFIED VOTER";
+            authStamp.classList.add("stamp-success");
+            chitStatus.textContent = "VERIFIED";
+            chitStatus.style.color = "#047857";
+            machineStatus.textContent = message || "Voter verified. Authentication successful.";
+        } else {
+            authStamp.textContent = "NOT VERIFIED";
+            authStamp.classList.add("stamp-error");
+            chitStatus.textContent = "NOT VERIFIED";
+            chitStatus.style.color = "#dc2626";
+            machineStatus.textContent = message || "Authentication failed. Check your credentials.";
         }
-
-
-        else {
-
-
-            authStamp.textContent =
-                "VOTER NOT FOUND";
-
-
-            authStamp.classList.add(
-                "stamp-error"
-            );
-
-
-            chitStatus.textContent =
-                "NOT VERIFIED";
-
-
-            chitStatus.style.color =
-                "#dc2626";
-
-
-            machineStatus.textContent =
-                "Voter not found. Check your credentials.";
-
-        }
-
-
         void authStamp.offsetWidth;
-
-
         authStamp.classList.add("show");
-
     }
 
+    function lockAuthentication() {
+        loginButton.disabled = true;
+        googleButton.disabled = true;
+    }
 
-    /* ============================================================
-       EMAIL + PASSWORD SIGN IN
-    ============================================================ */
+    function unlockAuthentication() {
+        loginButton.disabled = false;
+        googleButton.disabled = false;
+        loginButton.textContent = "LOG IN";
+    }
 
-    loginForm.addEventListener(
-        "submit",
-        async function (event) {
+    // ============================================================
+    // USERNAME + PASSWORD FORM SUBMIT
+    // ============================================================
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const enteredUsername = usernameInput.value.trim();
+        const enteredPassword = passwordInput.value;
 
-            event.preventDefault();
+        if (!enteredUsername) {
+            machineStatus.textContent = "USERNAME IS REQUIRED.";
+            usernameInput.focus();
+            return;
+        }
+        if (!enteredPassword) {
+            machineStatus.textContent = "PASSWORD IS REQUIRED.";
+            passwordInput.focus();
+            return;
+        }
 
+        printChit(enteredUsername, "USERNAME + PASSWORD");
+        lockAuthentication();
+        loginButton.textContent = "VERIFYING...";
+        machineStatus.textContent = "Verifying your registered credentials...";
 
-            const email =
-                emailInput.value.trim();
+        try {
+            const response = await fetch("/loginCheck", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ username: enteredUsername, password: enteredPassword })
+            });
 
+            let result = {};
+            try { result = await response.json(); } catch (e) { result = {}; }
 
-            const password =
-                passwordInput.value;
-
-
-            if (!email || !password) {
-
-                machineStatus.textContent =
-                    "EMAIL AND PASSWORD ARE REQUIRED.";
-
+            if (!response.ok || result.success !== true) {
+                showAuthenticationResult(false, result.message || "Invalid username or password.");
+                passwordInput.value = "";
+                unlockAuthentication();
+                passwordInput.focus();
                 return;
             }
 
+            showAuthenticationResult(true, result.message || "Login successful. Redirecting to dashboard...");
+            setTimeout(() => {
+                window.location.href = result.redirect || "/dashboard";
+            }, 1500);
 
-            /* START NEW AUTHENTICATION */
+        } catch (error) {
+            console.error("Login error:", error);
+            showAuthenticationResult(false, "Authentication service unavailable.");
+            unlockAuthentication();
+        }
+    });
 
-            printChit(email);
+    // ============================================================
+    // GOOGLE OAUTH BUTTON CLICK
+    // ============================================================
+    googleButton.addEventListener("click", async function () {
+        machineStatus.textContent = "Starting secure Google authentication...";
+        lockAuthentication();
+
+        try {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: window.location.origin + "/login"
+                }
+            });
+
+            if (error) {
+                console.error("Google auth error:", error);
+                machineStatus.textContent = "Google authentication failed.";
+                unlockAuthentication();
+            }
+        } catch (error) {
+            console.error("Google auth error:", error);
+            machineStatus.textContent = "Unable to start Google authentication.";
+            unlockAuthentication();
+        }
+    });
+
+    // ============================================================
+    // VERIFY GOOGLE RETURN ONLY WHEN RETURNING FROM OAUTH
+    // ============================================================
+   async function verifyGoogleReturn() {
+
+    try {
+
+        const hash = window.location.hash;
+
+        // Normal visit to login page
+        if (!hash || !hash.includes("access_token")) {
+            return;
+        }
 
 
-            /* LOCK BOTH AUTH METHODS */
+        machineStatus.textContent =
+            "Processing Google login...";
 
-            signInButton.disabled = true;
-
-            googleButton.disabled = true;
+        lockAuthentication();
 
 
-            signInButton.textContent =
-                "VERIFYING...";
+        // Get Google-authenticated Supabase session
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
 
+
+        if (error || !data?.session) {
+
+            console.error(
+                "Google session error:",
+                error
+            );
 
             machineStatus.textContent =
-                "Contacting voter authentication service...";
+                "Google authentication failed.";
 
+            unlockAuthentication();
 
-            try {
-
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth
-                        .signInWithPassword({
-
-                            email: email,
-
-                            password: password
-
-                        });
-
-
-                /* =================================================
-                   AUTHENTICATION FAILED
-                ================================================== */
-
-                if (error || !data.user) {
-
-                    showAuthenticationResult(false);
-
-                    passwordInput.focus();
-
-                    return;
-                }
-
-
-                /* =================================================
-                   AUTHENTICATION SUCCESSFUL
-                ================================================== */
-
-                showAuthenticationResult(true);
-
-
-                /*
-                 * Give the user time to see:
-                 *
-                 * VERIFIED VOTER
-                 *
-                 * before entering the application.
-                 */
-
-                setTimeout(() => {
-
-                    window.location.href =
-                        "/";
-
-                }, 1800);
-
-            }
-
-
-            catch (error) {
-
-                console.error(
-                    "Authentication error:",
-                    error
-                );
-
-
-                showAuthenticationResult(false);
-
-
-                machineStatus.textContent =
-                    "Authentication service unavailable.";
-
-            }
-
-
-            finally {
-
-                signInButton.disabled = false;
-
-                googleButton.disabled = false;
-
-
-                signInButton.textContent =
-                    "SIGN IN";
-
-            }
-
+            return;
         }
-    );
 
 
-    /* ============================================================
-       GOOGLE AUTHENTICATION
-    ============================================================ */
-
-    googleButton.addEventListener(
-        "click",
-        async function () {
+        // Get email from authenticated Google account
+        const googleEmail =
+            data.session.user?.email;
 
 
-            /*
-             * Reset the previous authentication slip.
-             */
-
-            resetChit();
-
+        if (!googleEmail) {
 
             machineStatus.textContent =
-                "Starting Google authentication...";
+                "Google email could not be obtained.";
 
+            unlockAuthentication();
 
-            googleButton.disabled = true;
-
-            signInButton.disabled = true;
-
-
-            try {
-
-
-                const {
-                    error
-                } =
-                    await supabaseClient.auth
-                        .signInWithOAuth({
-
-                            provider: "google",
-
-                            options: {
-
-                                redirectTo:
-                                    window.location.origin + "/"
-
-                            }
-
-                        });
-
-
-                if (error) {
-
-                    console.error(
-                        "Google authentication error:",
-                        error
-                    );
-
-
-                    machineStatus.textContent =
-                        "Google authentication failed.";
-
-
-                    googleButton.disabled = false;
-
-                    signInButton.disabled = false;
-
-                }
-
-            }
-
-
-            catch (error) {
-
-                console.error(
-                    "Google authentication error:",
-                    error
-                );
-
-
-                machineStatus.textContent =
-                    "Unable to start Google authentication.";
-
-
-                googleButton.disabled = false;
-
-                signInButton.disabled = false;
-
-            }
-
+            return;
         }
-    );
 
+
+        machineStatus.textContent =
+            "Checking E-VOTEX registration...";
+
+
+        // Send Google email to server
+        const response = await fetch(
+            "/auth/google-verify",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+
+                credentials: "include",
+
+                body: JSON.stringify({
+                    email: googleEmail
+                })
+            }
+        );
+
+
+        const result =
+            await response.json();
+
+
+        // ==========================================
+        // REGISTERED
+        // ==========================================
+
+        if (
+            response.ok &&
+            result.registered === true
+        ) {
+
+            machineStatus.textContent =
+                "Google account verified. Redirecting to dashboard...";
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "/dashboard";
+
+            }, 1000);
+
+            return;
+        }
+
+
+        // ==========================================
+        // NOT REGISTERED
+        // ==========================================
+
+        if (
+            response.ok &&
+            result.registered === false
+        ) {
+
+            machineStatus.textContent =
+                "Google email is not registered. Redirecting...";
+
+
+            // Remove Google session
+            await supabaseClient.auth.signOut();
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "/signin";
+
+            }, 1000);
+
+            return;
+        }
+
+
+        machineStatus.textContent =
+            "Unable to check registration.";
+
+        unlockAuthentication();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Google return error:",
+            error
+        );
+
+        machineStatus.textContent =
+            "Unable to complete Google login.";
+
+        unlockAuthentication();
+    }
+}
+    // Execute only return verification on load
+    verifyGoogleReturn();
 </script>
-
 </body>
 
 </html>

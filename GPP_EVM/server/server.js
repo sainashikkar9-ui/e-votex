@@ -230,6 +230,169 @@ app.post("/loginCheck", async (req, res) => {
 });
 
 
+// Add this route to handle the frontend check after Google authentication
+// Corrected route for /auth/google/check in server.js
+app.get("/auth/google/check", async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.status(401).json({ registered: false, message: "Not authenticated with Google." });
+        }
+
+        const { data: profile, error } = await supabase
+            .from("Profiles")
+            .select("user_email, user_name")
+            .eq("user_email", req.session.user.email)
+            .maybeSingle();
+
+        if (error || !profile) {
+            return res.status(200).json({ 
+                registered: false, 
+                message: "Email not registered. Please sign up." 
+            });
+        }
+
+        return res.status(200).json({ 
+            registered: true, 
+            redirect: "/dashboard" 
+        });
+    } catch (err) {
+        console.error("Google check error:", err);
+        return res.status(500).json({ registered: false, message: "Server error during registration check." });
+    }
+});
+
+
+
+// 1. Handle the redirect from Google cleanly
+app.get("/google-callback", (req, res) => {
+    // Supabase passes tokens via URL hash on the frontend, 
+    // so we redirect back to /login where the client SDK captures it.
+    res.redirect("/login");
+});
+
+
+// 2. Verify the Google email against your Supabase Profiles table and set the session
+app.post("/auth/google-verify", async (req, res) => {
+
+    try {
+
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                registered: false,
+                message: "Google email not received."
+            });
+        }
+
+
+        // Normalize Google email
+        const normalizedEmail =
+            email.trim().toLowerCase();
+
+
+        // ==========================================
+        // CHECK EMAIL IN PROFILES TABLE
+        // ==========================================
+
+        const {
+            data: profile,
+            error
+        } = await supabase
+            .from("Profiles")
+            .select("user_email, user_name")
+            .eq("user_email", normalizedEmail)
+            .maybeSingle();
+
+
+        // ==========================================
+        // DATABASE ERROR
+        // ==========================================
+
+        if (error) {
+
+            console.error(
+                "Google registration check error:",
+                error
+            );
+
+            return res.status(500).json({
+                registered: false,
+                message:
+                    "Unable to check registration."
+            });
+        }
+
+
+        // ==========================================
+        // EMAIL NOT REGISTERED
+        // ==========================================
+
+        if (!profile) {
+
+            return res.status(200).json({
+                registered: false,
+                message:
+                    "Google email is not registered."
+            });
+        }
+
+
+        // ==========================================
+        // EMAIL REGISTERED
+        // ==========================================
+
+        req.session.user = {
+            username: profile.user_name,
+            email: profile.user_email
+        };
+
+        req.session.isAuthenticated = true;
+
+
+        return res.status(200).json({
+
+            registered: true,
+
+            message:
+                "Google login successful.",
+
+            redirect: "/dashboard"
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Google verification error:",
+            error
+        );
+
+        return res.status(500).json({
+
+            registered: false,
+
+            message:
+                "Google authentication service unavailable."
+
+        });
+
+    }
+
+});
+
+
+// 3. Ensure your /dashboard route passes the user session securely
+app.get("/dashboard", (req, res) => {
+    if (!req.session || !req.session.isAuthenticated) {
+        return res.redirect("/login");
+    }
+    res.render("dashboard", { user: req.session.user || null });
+});
+
+
 app.get("/signin", (req, res) => {
     res.render("signin");
     console.log(req.body);
@@ -519,6 +682,14 @@ app.get("/test", async (req, res) => {
         req.session.isVoted = 1;
     }
 });
+
+
+
+/*
+app.get("/dashboard", (req, res) => {
+    res.render("dashboard", { user: req.session?.user || null });
+});
+*/
 
 
 
