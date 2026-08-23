@@ -59,7 +59,7 @@ app.get("/login", (req, res) => {
             process.env.SUPABASE_URL,
 
         supabasePublishableKey:
-            process.env.SUPABASE_PUBLISHABLE_KEY
+            process.env.SUPABASE_SERVICE_KEY
 
     });
 
@@ -262,7 +262,7 @@ app.get("/signin", (req, res) => {
             process.env.SUPABASE_URL,
 
         supabasePublishableKey:
-            process.env.SUPABASE_PUBLISHABLE_KEY
+            process.env.SUPABASE_SERVICE_KEY
 
     });
 
@@ -682,7 +682,7 @@ app.post("/register", async (req, res) => {
         } =
             await supabase
                 .from("Profiles")
-                .select("user_id")
+                .select("*")
                 .eq(
                     "user_name",
                     normalizedUsername
