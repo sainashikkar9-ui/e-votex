@@ -390,7 +390,7 @@ app.post("/auth/google-registration", async (req, res) => {
             await supabase
                 .from("Profiles")
                 .select(
-                    "user_id, user_email, user_name, display_name"
+                    "*"
                 )
                 .eq(
                     "user_email",
