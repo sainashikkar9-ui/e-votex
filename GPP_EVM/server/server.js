@@ -249,7 +249,7 @@ app.get("/dashboard", (req, res) => {
         return res.redirect("/login");
     }
     console.log(req.session.user);
-    res.render("dashboard", { user: req.session.user || null});
+    res.render("dashboard", { user: req.session.user || null });
 });
 
 
@@ -769,6 +769,15 @@ app.post("/register", async (req, res) => {
         const authUser =
             authUserData.user;
 
+        /* ========================================================
+            GET GOOGLE DISPLAY NAME
+        ======================================================== */
+
+        const googleDisplayName =
+            authUser.user_metadata?.full_name ||
+            authUser.user_metadata?.name ||
+            authUser.user_metadata?.display_name ||
+            normalizedEmail.split("@")[0];
 
         /* ========================================================
            MAKE SURE EMAIL MATCHES
@@ -869,7 +878,7 @@ app.post("/register", async (req, res) => {
                         normalizedUsername,
 
                     display_name:
-                        normalizedUsername
+                        googleDisplayName
 
                 })
                 .select()
@@ -1013,15 +1022,15 @@ app.get("/test", async (req, res) => {
         res.redirect("/confirmed");
     }
     else {
-                res.render("signin", {
-        
-                supabaseUrl: process.env.SUPABASE_URL,
-        
-                supabasePublishableKey: process.env.SUPABASE_SERVICE_KEY
-        
-            });
-        
-//        res.render("index");
+        res.render("signin", {
+
+            supabaseUrl: process.env.SUPABASE_URL,
+
+            supabasePublishableKey: process.env.SUPABASE_SERVICE_KEY
+
+        });
+
+        //        res.render("index");
         req.session.isVoted = 1;
     }
 });
