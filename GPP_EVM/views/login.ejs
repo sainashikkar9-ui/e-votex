@@ -1806,405 +1806,443 @@
      SUPABASE CLIENT
 ============================================================= -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = 'https://xnbuddwzpbqbowkcfocf.supabase.co';
-        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Y3D-em6cYVXp8l6wGtPaWQ_4CTiabhR';
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 
-        const loginForm = document.getElementById("loginForm");
-        const usernameInput = document.getElementById("username");
-        const passwordInput = document.getElementById("password");
-        const loginButton = document.getElementById("loginButton");
-        const googleButton = document.getElementById("googleButton");
-        const chit = document.getElementById("chit");
-        const chitUsername = document.getElementById("chitUsername");
-        const chitMethod = document.getElementById("chitMethod");
-        const chitStatus = document.getElementById("chitStatus");
-        const authStamp = document.getElementById("authStamp");
-        const displayIdle = document.getElementById("displayIdle");
-        const machineStatus = document.getElementById("machineStatus");
+    /* ============================================================
+       SUPABASE CLIENT
+    ============================================================ */
 
-        window.addEventListener("DOMContentLoaded", () => {
-            usernameInput.value = "";
-            passwordInput.value = "";
-        });
+    const SUPABASE_URL = "<%= supabaseUrl %>";
+    const SUPABASE_PUBLISHABLE_KEY = "<%= supabasePublishableKey %>";
 
-        function hideChit() {
-            chit.classList.remove("printing");
-            authStamp.classList.remove("show", "stamp-success", "stamp-error");
-            authStamp.textContent = "";
-            chit.style.display = "none";
-            chit.style.opacity = "0";
-            chit.style.transform = "translate(-50%, -150%)";
-            displayIdle.classList.remove("hidden-state");
-            chitUsername.textContent = "—";
-            chitMethod.textContent = "—";
-            chitStatus.textContent = "—";
-            chitStatus.style.color = "";
-        }
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 
-        function printChit(enteredUsername, authenticationMethod) {
-            if (!enteredUsername) return false;
-            chit.classList.remove("printing");
-            authStamp.classList.remove("show", "stamp-success", "stamp-error");
-            authStamp.textContent = "";
-            chitUsername.textContent = enteredUsername;
-            chitMethod.textContent = authenticationMethod;
-            chitStatus.textContent = "VERIFYING...";
-            chitStatus.style.color = "#475569";
-            chit.style.display = "flex";
-            displayIdle.classList.add("hidden-state");
-            void chit.offsetWidth;
-            chit.classList.add("printing");
-            return true;
-        }
 
-        function showAuthenticationResult(isVerified, message) {
-            authStamp.classList.remove("show", "stamp-success", "stamp-error");
-            void authStamp.offsetWidth;
-            if (isVerified) {
-                authStamp.textContent = "VERIFIED VOTER";
-                authStamp.classList.add("stamp-success");
-                chitStatus.textContent = "VERIFIED";
-                chitStatus.style.color = "#047857";
-                machineStatus.textContent = message || "Voter verified. Authentication successful.";
-            } else {
-                authStamp.textContent = "NOT VERIFIED";
-                authStamp.classList.add("stamp-error");
-                chitStatus.textContent = "NOT VERIFIED";
-                chitStatus.style.color = "#dc2626";
-                machineStatus.textContent = message || "Authentication failed. Check your credentials.";
-            }
-            void authStamp.offsetWidth;
-            authStamp.classList.add("show");
-        }
+    /* ============================================================
+       ELEMENTS
+    ============================================================ */
 
-        function lockAuthentication() {
-            loginButton.disabled = true;
-            googleButton.disabled = true;
-        }
+    const loginForm =
+        document.getElementById("loginForm");
 
-        function unlockAuthentication() {
-            loginButton.disabled = false;
-            googleButton.disabled = false;
-            loginButton.textContent = "LOG IN";
-        }
+    const usernameInput =
+        document.getElementById("username");
 
-        // ============================================================
-        // USERNAME + PASSWORD FORM SUBMIT
-        // ============================================================
-        loginForm.addEventListener("submit", async function (event) {
+    const passwordInput =
+        document.getElementById("password");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const machineStatus =
+        document.getElementById("machineStatus");
+
+
+    /*
+     * IMPORTANT:
+     * Use the actual ID of your Create Account element.
+     *
+     * If your existing login.ejs uses a different ID,
+     * replace "createAccount" with that ID.
+     */
+
+    const createAccount =
+        document.getElementById("createAccountLink");
+
+
+    /*
+     * Continue with Google button.
+     *
+     * Replace "googleLoginButton" with the actual ID
+     * already present in your login.ejs.
+     */
+
+    const googleLoginButton =
+        document.getElementById("googleButton");
+
+
+    /* ============================================================
+       NORMAL LOGIN
+    ============================================================ */
+
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
+
             event.preventDefault();
-            const enteredUsername = usernameInput.value.trim();
-            const enteredPassword = passwordInput.value;
 
-            if (!enteredUsername) {
-                machineStatus.textContent = "USERNAME IS REQUIRED.";
-                usernameInput.focus();
-                return;
-            }
-            if (!enteredPassword) {
-                machineStatus.textContent = "PASSWORD IS REQUIRED.";
-                passwordInput.focus();
-                return;
-            }
+            const username =
+                usernameInput.value.trim();
 
-            printChit(enteredUsername, "USERNAME + PASSWORD");
-            lockAuthentication();
-            loginButton.textContent = "VERIFYING...";
-            machineStatus.textContent = "Verifying your registered credentials...";
+            const password =
+                passwordInput.value;
 
-            try {
-                const response = await fetch("/loginCheck", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ username: enteredUsername, password: enteredPassword })
-                });
 
-                let result = {};
-                try { result = await response.json(); } catch (e) { result = {}; }
-
-                if (!response.ok || result.success !== true) {
-                    showAuthenticationResult(false, result.message || "Invalid username or password.");
-                    passwordInput.value = "";
-                    unlockAuthentication();
-                    passwordInput.focus();
-                    return;
-                }
-
-                showAuthenticationResult(true, result.message || "Login successful. Redirecting to dashboard...");
-                setTimeout(() => {
-                    window.location.href = result.redirect || "/dashboard";
-                }, 1500);
-
-            } catch (error) {
-                console.error("Login error:", error);
-                showAuthenticationResult(false, "Authentication service unavailable.");
-                unlockAuthentication();
-            }
-        });
-
-        // ============================================================
-        // GOOGLE OAUTH BUTTON CLICK
-        // ============================================================
-        googleButton.addEventListener("click", async function () {
-            machineStatus.textContent = "Starting secure Google authentication...";
-            lockAuthentication();
-
-            try {
-                const { error } = await supabaseClient.auth.signInWithOAuth({
-                    provider: "google",
-                    options: {
-                        redirectTo: window.location.origin + "/login"
-                    }
-                });
-
-                if (error) {
-                    console.error("Google auth error:", error);
-                    machineStatus.textContent = "Google authentication failed.";
-                    unlockAuthentication();
-                }
-            } catch (error) {
-                console.error("Google auth error:", error);
-                machineStatus.textContent = "Unable to start Google authentication.";
-                unlockAuthentication();
-            }
-        });
-
-        // ============================================================
-// CREATE ACCOUNT → GOOGLE REGISTRATION
-// ============================================================
-
-const createAccountLink =
-    document.getElementById("createAccountLink");
-
-if (createAccountLink) {
-
-    createAccountLink.addEventListener("click", async function (event) {
-
-        event.preventDefault();
-
-        machineStatus.textContent =
-            "Starting secure Google verification...";
-
-        lockAuthentication();
-
-        try {
-
-            const { error } =
-                await supabaseClient.auth.signInWithOAuth({
-
-                    provider: "google",
-
-                    options: {
-
-                        redirectTo:
-                            window.location.origin +
-                            "/signin?googleRegistration=true"
-
-                    }
-
-                });
-
-            if (error) {
-
-                console.error(
-                    "Google registration error:",
-                    error
-                );
+            if (!username || !password) {
 
                 machineStatus.textContent =
-                    "Unable to start Google verification.";
+                    "USERNAME AND PASSWORD ARE REQUIRED.";
 
-                unlockAuthentication();
-
+                return;
             }
 
-        }
 
-        catch (error) {
+            loginButton.disabled = true;
 
-            console.error(
-                "Google registration error:",
-                error
-            );
+            loginButton.textContent =
+                "VERIFYING...";
 
             machineStatus.textContent =
-                "Unable to start Google verification.";
+                "Verifying voter credentials...";
 
-            unlockAuthentication();
-
-        }
-
-    });
-
-}  
-
-        // ============================================================
-        // VERIFY GOOGLE RETURN ONLY WHEN RETURNING FROM OAUTH
-        // ============================================================
-        async function verifyGoogleReturn() {
 
             try {
 
-                const hash = window.location.hash;
+                const response =
+                    await fetch(
+                        "/loginCheck",
+                        {
+                            method: "POST",
 
-                // Normal visit to login page
-                if (!hash || !hash.includes("access_token")) {
-                    return;
-                }
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
 
+                            credentials: "include",
 
-                machineStatus.textContent =
-                    "Processing Google login...";
+                            body: JSON.stringify({
 
-                lockAuthentication();
+                                username:
+                                    username,
 
+                                password:
+                                    password
 
-                // Get Google-authenticated Supabase session
-                const {
-                    data,
-                    error
-                } = await supabaseClient.auth.getSession();
-
-
-                if (error || !data?.session) {
-
-                    console.error(
-                        "Google session error:",
-                        error
+                            })
+                        }
                     );
-
-                    machineStatus.textContent =
-                        "Google authentication failed.";
-
-                    unlockAuthentication();
-
-                    return;
-                }
-
-
-                // Get email from authenticated Google account
-                const googleEmail =
-                    data.session.user?.email;
-
-
-                if (!googleEmail) {
-
-                    machineStatus.textContent =
-                        "Google email could not be obtained.";
-
-                    unlockAuthentication();
-
-                    return;
-                }
-
-
-                machineStatus.textContent =
-                    "Checking E-VOTEX registration...";
-
-
-                // Send Google email to server
-                const response = await fetch(
-                    "/auth/google-verify",
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json"
-                        },
-
-                        credentials: "include",
-
-                        body: JSON.stringify({
-                            email: googleEmail
-                        })
-                    }
-                );
 
 
                 const result =
                     await response.json();
 
 
-                // ==========================================
-                // REGISTERED
-                // ==========================================
-
                 if (
                     response.ok &&
-                    result.registered === true
+                    result.success === true
                 ) {
 
                     machineStatus.textContent =
-                        "Google account verified. Redirecting to dashboard...";
+                        result.message ||
+                        "Login successful.";
 
 
-                    setTimeout(() => {
+                    window.location.href =
+                        result.redirect ||
+                        "/dashboard";
 
-                        window.location.href =
-                            "/dashboard";
-
-                    }, 1000);
-
-                    return;
-                }
-
-
-                // ==========================================
-                // NOT REGISTERED
-                // ==========================================
-
-                if (
-                    response.ok &&
-                    result.registered === false
-                ) {
-
-                    machineStatus.textContent =
-                        "Google email is not registered. Redirecting...";
-
-
-                    // Remove Google session
-                    await supabaseClient.auth.signOut();
-
-
-                    setTimeout(() => {
-
-                        window.location.href =
-                            "/signin";
-
-                    }, 1000);
 
                     return;
                 }
 
 
                 machineStatus.textContent =
-                    "Unable to check registration.";
-
-                unlockAuthentication();
+                    result.message ||
+                    "Invalid username or password.";
 
             }
 
             catch (error) {
 
                 console.error(
-                    "Google return error:",
+                    "Login error:",
                     error
                 );
 
                 machineStatus.textContent =
-                    "Unable to complete Google login.";
+                    "Authentication service unavailable.";
 
-                unlockAuthentication();
             }
+
+            finally {
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "LOGIN";
+
+            }
+
         }
-        // Execute only return verification on load
-        verifyGoogleReturn();
-    </script>
+    );
+
+
+    /* ============================================================
+       CREATE ACCOUNT
+       GOOGLE VERIFICATION FIRST
+    ============================================================ */
+
+    if (createAccount) {
+
+        createAccount.addEventListener(
+            "click",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                machineStatus.textContent =
+                    "Opening Google verification...";
+
+
+                try {
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient.auth.signInWithOAuth({
+
+                            provider: "google",
+
+                            options: {
+
+                                redirectTo:
+                                    window.location.origin +
+                                    "/signin?googleRegistration=true"
+
+                            }
+
+                        });
+
+
+                    if (error) {
+
+                        console.error(
+                            "Google registration error:",
+                            error
+                        );
+
+                        machineStatus.textContent =
+                            "Unable to start Google verification.";
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Google OAuth error:",
+                        error
+                    );
+
+                    machineStatus.textContent =
+                        "Google verification service unavailable.";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       NORMAL GOOGLE LOGIN
+    ============================================================ */
+
+    if (googleLoginButton) {
+
+        googleLoginButton.addEventListener(
+            "click",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                machineStatus.textContent =
+                    "Opening Google login...";
+
+
+                try {
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient.auth.signInWithOAuth({
+
+                            provider: "google",
+
+                            options: {
+
+                                redirectTo:
+                                    window.location.origin +
+                                    "/signin?googleRegistration=true"
+
+                            }
+
+                        });
+
+
+                    if (error) {
+
+                        console.error(
+                            "Google login error:",
+                            error
+                        );
+
+                        machineStatus.textContent =
+                            "Unable to start Google login.";
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Google OAuth error:",
+                        error
+                    );
+
+                    machineStatus.textContent =
+                        "Google authentication unavailable.";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       PROCESS NORMAL GOOGLE LOGIN RETURN
+    ============================================================ */
+
+    async function processGoogleLogin() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        if (
+            params.get("googleLogin") !== "true"
+        ) {
+
+            return;
+
+        }
+
+
+        machineStatus.textContent =
+            "Verifying Google account...";
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.getSession();
+
+
+            if (
+                error ||
+                !data?.session
+            ) {
+
+                console.error(
+                    "Google session error:",
+                    error
+                );
+
+                machineStatus.textContent =
+                    "Google authentication failed.";
+
+                return;
+
+            }
+
+
+            const accessToken =
+                data.session.access_token;
+
+
+            const response =
+                await fetch(
+                    "/auth/google-login",
+                    {
+                        method: "POST",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " +
+                                accessToken
+
+                        },
+
+                        credentials: "include"
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                response.ok &&
+                result.success === true
+            ) {
+
+                window.location.href =
+                    result.redirect ||
+                    "/dashboard";
+
+                return;
+
+            }
+
+
+            machineStatus.textContent =
+                result.message ||
+                "Google account is not registered.";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Google login verification error:",
+                error
+            );
+
+            machineStatus.textContent =
+                "Unable to verify Google account.";
+
+        }
+
+    }
+
+
+    /* ============================================================
+       START GOOGLE LOGIN CHECK
+    ============================================================ */
+
+    processGoogleLogin();
+
+</script>
 </body>
 
 </html>

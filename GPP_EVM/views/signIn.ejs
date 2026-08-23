@@ -1394,581 +1394,388 @@
     </main>
 
 
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        /* ============================================================
-           ELEMENTS
-        ============================================================ */
+<script>
 
-        const loginForm =
-            document.getElementById("loginForm");
+    /* ============================================================
+       SUPABASE CLIENT
+    ============================================================ */
 
+    const SUPABASE_URL =
+        "<%= supabaseUrl %>";
 
-        const usernameInput =
-            document.getElementById("username");
-
-
-        const passwordInput =
-            document.getElementById("password");
+    const SUPABASE_PUBLISHABLE_KEY =
+        "<%= supabasePublishableKey %>";
 
 
-        const confirmPasswordInput =
-            document.getElementById("confirmPassword");
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
 
 
-        const loginButton =
-            document.getElementById("loginButton");
+    /* ============================================================
+       ELEMENTS
+    ============================================================ */
+
+    const loginForm =
+        document.getElementById("loginForm");
 
 
-        const chit =
-            document.getElementById("chit");
+    const usernameInput =
+        document.getElementById("username");
 
 
-        const chitEmail =
-            document.getElementById("chitEmail");
+    const passwordInput =
+        document.getElementById("password");
 
 
-        const chitUsername =
-            document.getElementById("chitUsername");
+    const confirmPasswordInput =
+        document.getElementById("confirmPassword");
 
 
-        const chitPassword =
-            document.getElementById("chitPassword");
+    const loginButton =
+        document.getElementById("loginButton");
 
 
-        const chitConfirmPassword =
-            document.getElementById("chitConfirmPassword");
+    const chit =
+        document.getElementById("chit");
 
 
-        const chitStatus =
-            document.getElementById("chitStatus");
+    const chitEmail =
+        document.getElementById("chitEmail");
 
 
-        const authStamp =
-            document.getElementById("authStamp");
+    const chitUsername =
+        document.getElementById("chitUsername");
 
 
-        const displayIdle =
-            document.getElementById("displayIdle");
+    const chitPassword =
+        document.getElementById("chitPassword");
 
 
-        const machineStatus =
-            document.getElementById("machineStatus");
+    const chitConfirmPassword =
+        document.getElementById("chitConfirmPassword");
 
-        async function loadRegistrationStatus() {
 
-            try {
+    const chitStatus =
+        document.getElementById("chitStatus");
 
-                const response =
-                    await fetch(
-                        "/api/registration-status",
-                        {
-                            credentials: "include"
-                        }
-                    );
 
-                const result =
-                    await response.json();
+    const authStamp =
+        document.getElementById("authStamp");
 
-                const status =
-                    document.getElementById(
-                        "verifiedEmailStatus"
-                    );
 
-                if (
-                    result.verified === true
-                ) {
+    const displayIdle =
+        document.getElementById("displayIdle");
 
-                    status.textContent =
-                        "✓ GOOGLE EMAIL VERIFIED: " +
-                        result.email;
 
-                    status.style.color =
-                        "#047857";
+    const machineStatus =
+        document.getElementById("machineStatus");
 
-                }
 
-                else {
+    const verifiedEmailStatus =
+        document.getElementById("verifiedEmailStatus");
 
-                    status.textContent =
-                        "Google verification required.";
 
-                    status.style.color =
-                        "#dc2626";
+    /* ============================================================
+       REGISTRATION STATUS
+    ============================================================ */
 
-                }
+    async function loadRegistrationStatus() {
 
-            }
+        try {
 
-            catch (error) {
-
-                console.error(
-                    "Registration status error:",
-                    error
+            const response =
+                await fetch(
+                    "/api/registration-status",
+                    {
+                        credentials: "include"
+                    }
                 );
 
-            }
 
-        }
-        /* ============================================================
-           RESET CHIT
-        ============================================================ */
-
-        function resetChit() {
-
-            chit.classList.remove("printing");
-
-
-            authStamp.classList.remove(
-                "show",
-                "stamp-success",
-                "stamp-error"
-            );
-
-
-            void chit.offsetWidth;
-            void authStamp.offsetWidth;
-
-
-            authStamp.textContent = "";
-
-
-            chitEmail.textContent = "—";
-
-            chitUsername.textContent = "—";
-
-            chitPassword.textContent = "****";
-
-            chitConfirmPassword.textContent = "****";
-
-            chitStatus.textContent = "VERIFYING...";
-
-
-            chitStatus.style.color = "";
-
-
-            chit.style.opacity = "0";
-
-
-            chit.style.transform =
-                "translate(-50%, -150%)";
-
-
-            displayIdle.classList.remove(
-                "hidden-state"
-            );
-        }
-
-
-        /* ============================================================
-           START CHIT
-        ============================================================ */
-
-        function printChit(
-            email,
-            username
-        ) {
-
-            resetChit();
-
-
-            chitEmail.textContent =
-                email;
-
-
-            chitUsername.textContent =
-                username;
-
-
-            chitPassword.textContent =
-                "****";
-
-
-            chitConfirmPassword.textContent =
-                "****";
-
-
-            chitStatus.textContent =
-                "VERIFYING...";
-
-
-            chitStatus.style.color =
-                "#475569";
-
-
-            displayIdle.classList.add(
-                "hidden-state"
-            );
-
-
-            void chit.offsetWidth;
-
-
-            chit.classList.add("printing");
-        }
-
-
-        /* ============================================================
-           SHOW STAMP
-        ============================================================ */
-
-        function showStamp(
-            text,
-            type
-        ) {
-
-            /*
-             * Completely remove the previous
-             * animation before starting a new one.
-             */
-
-            authStamp.classList.remove(
-                "show",
-                "stamp-success",
-                "stamp-error"
-            );
-
-
-            authStamp.textContent =
-                text;
-
-
-            if (type === "success") {
-
-                authStamp.classList.add(
-                    "stamp-success"
-                );
-
-            } else {
-
-                authStamp.classList.add(
-                    "stamp-error"
-                );
-            }
-
-
-            /*
-             * Force browser reflow.
-             * This guarantees the animation
-             * starts even when the same result
-             * is displayed multiple times.
-             */
-
-            void authStamp.offsetWidth;
-
-
-            requestAnimationFrame(() => {
-
-                authStamp.classList.add(
-                    "show"
-                );
-
-            });
-        }
-
-
-        /* ============================================================
-           DETECT WHICH FIELD ALREADY EXISTS
-        ============================================================ */
-
-        function detectExistingField(
-            result
-        ) {
-
-            /*
-             * First preference:
-             * Explicit field returned by server.
-             */
-
-            const serverField =
-                String(
-                    result?.field ||
-                    result?.existingField ||
-                    result?.duplicateField ||
-                    ""
-                ).trim().toLowerCase();
+            const result =
+                await response.json();
 
 
             if (
-                serverField === "email" ||
-                serverField === "emailaddress"
+                result.verified === true
             ) {
 
-                return "email";
-            }
+                verifiedEmailStatus.textContent =
+                    "✓ GOOGLE EMAIL VERIFIED: " +
+                    result.email;
 
 
-            if (
-                serverField === "username" ||
-                serverField === "user"
-            ) {
-
-                return "username";
-            }
-
-
-            /*
-             * Second preference:
-             * Boolean flags returned by server.
-             */
-
-            if (
-                result?.emailExists === true ||
-                result?.existingEmail === true ||
-                result?.emailAlreadyExists === true
-            ) {
-
-                return "email";
-            }
-
-
-            if (
-                result?.usernameExists === true ||
-                result?.existingUsername === true ||
-                result?.usernameAlreadyExists === true
-            ) {
-
-                return "username";
-            }
-
-
-            /*
-             * Third preference:
-             * Detect from server message.
-             *
-             * This makes the frontend work even if the
-             * backend only sends:
-             *
-             * "Email already exists"
-             *
-             * or
-             *
-             * "Username already exists"
-             */
-
-            const message =
-                String(
-                    result?.message ||
-                    result?.error ||
-                    result?.details ||
-                    ""
-                ).toLowerCase();
-
-
-            if (
-                message.includes("email") &&
-                (
-                    message.includes("exist") ||
-                    message.includes("already") ||
-                    message.includes("registered") ||
-                    message.includes("duplicate")
-                )
-            ) {
-
-                return "email";
-            }
-
-
-            if (
-                (
-                    message.includes("username") ||
-                    message.includes("user name") ||
-                    message.includes("user_name")
-                ) &&
-                (
-                    message.includes("exist") ||
-                    message.includes("already") ||
-                    message.includes("registered") ||
-                    message.includes("duplicate")
-                )
-            ) {
-
-                return "username";
-            }
-
-
-            return null;
-        }
-
-
-        /* ============================================================
-           REGISTRATION RESULT
-        ============================================================ */
-
-        function showRegistrationResult(
-            resultType,
-            message,
-            result = {}
-        ) {
-
-            /* ========================================================
-               SUCCESS
-            ======================================================== */
-
-            if (
-                resultType === "success"
-            ) {
-
-                chitStatus.textContent =
-                    "REGISTERED";
-
-
-                chitStatus.style.color =
+                verifiedEmailStatus.style.color =
                     "#047857";
 
 
-                machineStatus.textContent =
-                    message ||
-                    "Voter registered successfully.";
+                return true;
 
-
-                showStamp(
-                    "Voter Registered Successfully",
-                    "success"
-                );
-
-
-                return;
             }
 
 
-            /* ========================================================
-               EXISTING EMAIL / USERNAME
-            ======================================================== */
-
-            const existingField =
-                detectExistingField(result);
+            verifiedEmailStatus.textContent =
+                "Google verification required.";
 
 
-            /* ========================================================
-               EMAIL ALREADY EXISTS
-            ======================================================== */
-
-            if (
-                existingField === "email"
-            ) {
-
-                chitStatus.textContent =
-                    "EMAIL ALREADY EXISTS";
+            verifiedEmailStatus.style.color =
+                "#dc2626";
 
 
-                chitStatus.style.color =
-                    "#dc2626";
+            return false;
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Registration status error:",
+                error
+            );
 
 
-                machineStatus.textContent =
-                    message ||
-                    "This email is already registered.";
+            verifiedEmailStatus.textContent =
+                "Unable to verify Google account.";
 
 
-                showStamp(
-                    "Email Already Exists",
-                    "error"
-                );
+            verifiedEmailStatus.style.color =
+                "#dc2626";
 
 
-                setTimeout(() => {
+            return false;
 
-                    usernameInput.focus();
+        }
 
-                }, 700);
-
-
-                return;
-            }
+    }
 
 
-            /* ========================================================
-               USERNAME ALREADY EXISTS
-            ======================================================== */
+    /* ============================================================
+       RESET CHIT
+    ============================================================ */
 
-            if (
-                existingField === "username"
-            ) {
+    function resetChit() {
 
-                chitStatus.textContent =
-                    "USERNAME ALREADY EXISTS";
-
-
-                chitStatus.style.color =
-                    "#dc2626";
+        chit.classList.remove(
+            "printing"
+        );
 
 
-                machineStatus.textContent =
-                    message ||
-                    "This username is already registered.";
+        authStamp.classList.remove(
+            "show",
+            "stamp-success",
+            "stamp-error"
+        );
 
 
-                showStamp(
-                    "Username Already Exists",
-                    "error"
-                );
+        void chit.offsetWidth;
+
+        void authStamp.offsetWidth;
 
 
-                setTimeout(() => {
-
-                    usernameInput.focus();
-
-                }, 700);
+        authStamp.textContent =
+            "";
 
 
-                return;
-            }
+        chitEmail.textContent =
+            "—";
 
 
-            /* ========================================================
-               BOTH EMAIL AND USERNAME EXIST
-            ======================================================== */
-
-            const messageText =
-                String(
-                    message ||
-                    result?.message ||
-                    ""
-                ).toLowerCase();
+        chitUsername.textContent =
+            "—";
 
 
-            if (
-                messageText.includes("email") &&
-                messageText.includes("username")
-            ) {
-
-                chitStatus.textContent =
-                    "EMAIL & USERNAME EXIST";
+        chitPassword.textContent =
+            "****";
 
 
-                chitStatus.style.color =
-                    "#dc2626";
+        chitConfirmPassword.textContent =
+            "****";
 
 
-                machineStatus.textContent =
-                    message ||
-                    "Email and username are already registered.";
+        chitStatus.textContent =
+            "VERIFYING...";
 
 
-                showStamp(
-                    "Email & Username Exist",
-                    "error"
-                );
+        chitStatus.style.color =
+            "";
 
 
-                setTimeout(() => {
-
-                    usernameInput.focus();
-
-                }, 700);
+        chit.style.opacity =
+            "0";
 
 
-                return;
-            }
+        chit.style.transform =
+            "translate(-50%, -150%)";
 
 
-            /* ========================================================
-               GENERIC EXISTING VOTER
-            ======================================================== */
+        displayIdle.classList.remove(
+            "hidden-state"
+        );
+
+    }
+
+
+    /* ============================================================
+       PRINT CHIT
+    ============================================================ */
+
+    function printChit(
+        email,
+        username
+    ) {
+
+        resetChit();
+
+
+        chitEmail.textContent =
+            email;
+
+
+        chitUsername.textContent =
+            username;
+
+
+        chitPassword.textContent =
+            "****";
+
+
+        chitConfirmPassword.textContent =
+            "****";
+
+
+        chitStatus.textContent =
+            "VERIFYING...";
+
+
+        chitStatus.style.color =
+            "#475569";
+
+
+        displayIdle.classList.add(
+            "hidden-state"
+        );
+
+
+        void chit.offsetWidth;
+
+
+        chit.classList.add(
+            "printing"
+        );
+
+    }
+
+
+    /* ============================================================
+       SHOW STAMP
+    ============================================================ */
+
+    function showStamp(
+        text,
+        type
+    ) {
+
+        authStamp.classList.remove(
+            "show",
+            "stamp-success",
+            "stamp-error"
+        );
+
+
+        authStamp.textContent =
+            text;
+
+
+        if (
+            type === "success"
+        ) {
+
+            authStamp.classList.add(
+                "stamp-success"
+            );
+
+        }
+
+        else {
+
+            authStamp.classList.add(
+                "stamp-error"
+            );
+
+        }
+
+
+        void authStamp.offsetWidth;
+
+
+        requestAnimationFrame(() => {
+
+            authStamp.classList.add(
+                "show"
+            );
+
+        });
+
+    }
+
+
+    /* ============================================================
+       REGISTRATION RESULT
+    ============================================================ */
+
+    function showRegistrationResult(
+        resultType,
+        message,
+        result = {}
+    ) {
+
+        /* ========================================================
+           SUCCESS
+        ======================================================== */
+
+        if (
+            resultType === "success"
+        ) {
 
             chitStatus.textContent =
-                "ALREADY EXISTS";
+                "REGISTERED";
+
+
+            chitStatus.style.color =
+                "#047857";
+
+
+            machineStatus.textContent =
+                message ||
+                "Voter registered successfully.";
+
+
+            showStamp(
+                "Voter Registered Successfully",
+                "success"
+            );
+
+
+            return;
+
+        }
+
+
+        /* ========================================================
+           USERNAME EXISTS
+        ======================================================== */
+
+        if (
+            result.field === "username"
+        ) {
+
+            chitStatus.textContent =
+                "USERNAME ALREADY EXISTS";
 
 
             chitStatus.style.color =
@@ -1977,418 +1784,237 @@
 
             machineStatus.textContent =
                 message ||
-                "Voter already exists.";
+                "This username is already registered.";
 
 
             showStamp(
-                "Voter Already Exists",
+                "Username Already Exists",
                 "error"
             );
+
+
+            usernameInput.focus();
+
+
+            return;
+
         }
 
 
-        /* ============================================================
-           REGISTRATION
-        ============================================================ */
+        /* ========================================================
+           GENERIC ERROR
+        ======================================================== */
 
-        loginForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
+        chitStatus.textContent =
+            "REGISTRATION FAILED";
 
 
-
-                const username =
-                    usernameInput.value.trim();
-
-
-                const password =
-                    passwordInput.value;
+        chitStatus.style.color =
+            "#dc2626";
 
 
-                const confirmPassword =
-                    confirmPasswordInput.value;
+        machineStatus.textContent =
+            message ||
+            "Registration failed.";
 
 
-                /* ====================================================
-                   BASIC VALIDATION
-                ==================================================== */
+        showStamp(
+            "Registration Failed",
+            "error"
+        );
 
-                if (
-                    !username ||
-                    !password ||
-                    !confirmPassword
-                ) {
-
-                    machineStatus.textContent =
-                        "ALL FIELDS ARE REQUIRED.";
-
-                    return;
-                }
+    }
 
 
+    /* ============================================================
+       REGISTER ACCOUNT
+    ============================================================ */
 
-                /* ====================================================
-                   CONFIRM PASSWORD CHECK
-                ==================================================== */
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-                if (
-                    password !==
-                    confirmPassword
-                ) {
-
-                    machineStatus.textContent =
-                        "PASSWORDS DO NOT MATCH.";
-
-                    confirmPasswordInput.focus();
-
-                    return;
-                }
+            event.preventDefault();
 
 
-                /* ====================================================
-                   START REGISTRATION
-                ==================================================== */
-
-                printChit(
-                    email,
-                    username
-                );
+            const username =
+                usernameInput.value.trim();
 
 
-                loginButton.disabled = true;
+            const password =
+                passwordInput.value;
 
 
-                loginButton.textContent =
-                    "VERIFYING...";
+            const confirmPassword =
+                confirmPasswordInput.value;
 
+
+            /* ====================================================
+               BASIC VALIDATION
+            ==================================================== */
+
+            if (
+                !username ||
+                !password ||
+                !confirmPassword
+            ) {
 
                 machineStatus.textContent =
-                    "Checking voter registration service...";
+                    "ALL FIELDS ARE REQUIRED.";
 
-
-                try {
-
-                    const response =
-                        await fetch(
-                            "/register",
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body: JSON.stringify({
-
-                                    username:
-                                        username,
-
-                                    password:
-                                        password
-
-                                })
-                            }
-                        );
-
-
-                    /*
-                     * Safely parse JSON.
-                     * Prevents the frontend from crashing
-                     * if the server returns non-JSON.
-                     */
-
-                    let result = {};
-
-                    try {
-
-                        result =
-                            await response.json();
-
-                    }
-
-                    catch {
-
-                        result = {};
-
-                    }
-
-
-                    /* =================================================
-                       EXISTING EMAIL / USERNAME
-                    ================================================= */
-
-                    if (
-                        response.status === 409 ||
-                        result.status === "exists" ||
-                        result.status === "error" &&
-                        (
-                            result.field ||
-                            result.existingField ||
-                            result.emailExists === true ||
-                            result.usernameExists === true
-                        )
-                    ) {
-
-                        showRegistrationResult(
-                            "exists",
-                            result.message,
-                            result
-                        );
-
-
-                        /*
-                         * IMPORTANT:
-                         * Do NOT redirect here.
-                         * The user must be able to see
-                         * the red error stamp.
-                         */
-
-                        return;
-                    }
-
-
-                    /* =================================================
-                       SUCCESS
-                    ================================================= */
-
-                    if (
-                        response.ok &&
-                        result.status === "success"
-                    ) {
-
-                        showRegistrationResult(
-                            "success",
-                            result.message,
-                            result
-                        );
-
-
-                        /*
-                         * Give the success stamp time
-                         * to appear before redirecting.
-                         */
-
-                        setTimeout(() => {
-
-                            window.location.href =
-                                "/";
-
-                        }, 1800);
-
-
-                        return;
-                    }
-
-
-                    /* =================================================
-                       OTHER SERVER ERROR
-                    ================================================= */
-
-                    chitStatus.textContent =
-                        "REGISTRATION FAILED";
-
-
-                    chitStatus.style.color =
-                        "#dc2626";
-
-
-                    machineStatus.textContent =
-                        result.message ||
-                        "Registration failed.";
-
-
-                    showStamp(
-                        "Registration Failed",
-                        "error"
-                    );
-
-                }
-
-
-                catch (error) {
-
-                    console.error(
-                        "Registration error:",
-                        error
-                    );
-
-
-                    chitStatus.textContent =
-                        "SERVICE ERROR";
-
-
-                    chitStatus.style.color =
-                        "#dc2626";
-
-
-                    machineStatus.textContent =
-                        "Registration service unavailable.";
-
-
-                    showStamp(
-                        "Service Unavailable",
-                        "error"
-                    );
-
-                }
-
-
-                finally {
-
-                    /*
-                     * Re-enable the button after the server
-                     * has responded. The stamp remains visible.
-                     */
-
-                    loginButton.disabled = false;
-
-
-                    loginButton.textContent =
-                        "LOGIN";
-
-                }
-
-            }
-        );
-
-
-        /* ============================================================
-           LIVE PASSWORD MATCH CHECK
-        ============================================================ */
-
-        confirmPasswordInput.addEventListener(
-            "input",
-            function () {
-
-                if (
-                    confirmPasswordInput.value &&
-                    passwordInput.value !==
-                    confirmPasswordInput.value
-                ) {
-
-                    confirmPasswordInput.style.borderColor =
-                        "#dc2626";
-
-                }
-
-                else {
-
-                    confirmPasswordInput.style.borderColor =
-                        "";
-
-                }
-
-            }
-        );
-
-
-        /* ============================================================
-           PASSWORD LIVE CHECK
-        ============================================================ */
-
-        passwordInput.addEventListener(
-            "input",
-            function () {
-
-                if (
-                    confirmPasswordInput.value &&
-                    passwordInput.value !==
-                    confirmPasswordInput.value
-                ) {
-
-                    confirmPasswordInput.style.borderColor =
-                        "#dc2626";
-
-                }
-
-                else {
-
-                    confirmPasswordInput.style.borderColor =
-                        "";
-
-                }
-
-            }
-        );
-
-        // ============================================================
-        // GOOGLE REGISTRATION RETURN
-        // ============================================================
-
-        async function verifyGoogleRegistrationReturn() {
-
-            const params =
-                new URLSearchParams(window.location.search);
-
-            const googleRegistration =
-                params.get("googleRegistration");
-
-            // Not returning from Google registration
-            if (googleRegistration !== "true") {
                 return;
+
             }
 
-            machineStatus.textContent =
-                "Processing Google verification...";
 
-            loginButton.disabled = true;
+            /* ====================================================
+               PASSWORD MATCH
+            ==================================================== */
+
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                machineStatus.textContent =
+                    "PASSWORDS DO NOT MATCH.";
+
+
+                confirmPasswordInput.focus();
+
+
+                return;
+
+            }
+
+
+            /* ====================================================
+               VERIFY THAT SERVER HAS GOOGLE REGISTRATION
+            ==================================================== */
+
+            const registrationStatus =
+                await loadRegistrationStatus();
+
+
+            if (
+                !registrationStatus
+            ) {
+
+                machineStatus.textContent =
+                    "GOOGLE EMAIL VERIFICATION IS REQUIRED.";
+
+
+                return;
+
+            }
+
+
+            /* ====================================================
+               GET VERIFIED EMAIL FOR DISPLAY ONLY
+            ==================================================== */
+
+            let verifiedEmail =
+                "Verified Google Account";
+
 
             try {
 
-                // Get Supabase session created by Google OAuth
-                const {
-                    data,
-                    error
-                } = await supabaseClient.auth.getSession();
-
-                if (
-                    error ||
-                    !data?.session
-                ) {
-
-                    console.error(
-                        "Google session error:",
-                        error
+                const statusResponse =
+                    await fetch(
+                        "/api/registration-status",
+                        {
+                            credentials: "include"
+                        }
                     );
 
-                    machineStatus.textContent =
-                        "Google verification failed.";
 
-                    loginButton.disabled = false;
+                const statusResult =
+                    await statusResponse.json();
 
-                    return;
+
+                if (
+                    statusResult.verified === true
+                ) {
+
+                    verifiedEmail =
+                        statusResult.email;
+
                 }
 
-                // Get access token
-                const accessToken =
-                    data.session.access_token;
+            }
 
-                // Send token to our Express server
+            catch {
+
+                /*
+                 * The server still remains the authority.
+                 * This value is only used for the chit.
+                 */
+
+            }
+
+
+            /* ====================================================
+               START CHIT
+            ==================================================== */
+
+            printChit(
+                verifiedEmail,
+                username
+            );
+
+
+            loginButton.disabled =
+                true;
+
+
+            loginButton.textContent =
+                "REGISTERING...";
+
+
+            machineStatus.textContent =
+                "Creating your voter account...";
+
+
+            try {
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * DO NOT SEND EMAIL HERE.
+                 *
+                 * The server obtains the verified email
+                 * from req.session.registration.
+                 */
+
                 const response =
                     await fetch(
-                        "/auth/google-registration",
+                        "/register",
                         {
                             method: "POST",
 
                             headers: {
-
                                 "Content-Type":
-                                    "application/json",
-
-                                "Authorization":
-                                    "Bearer " + accessToken
-
+                                    "application/json"
                             },
 
-                            credentials: "include"
+                            credentials: "include",
+
+                            body: JSON.stringify({
+
+                                username:
+                                    username,
+
+                                password:
+                                    password
+
+                            })
 
                         }
                     );
 
+
                 let result = {};
+
 
                 try {
 
@@ -2403,70 +2029,425 @@
 
                 }
 
+
+                /* =================================================
+                   USERNAME EXISTS
+                ================================================= */
+
                 if (
-                    !response.ok ||
-                    result.success !== true
+                    response.status === 409
                 ) {
 
-                    console.error(
-                        "Google registration verification failed:",
+                    showRegistrationResult(
+                        "exists",
+                        result.message,
                         result
                     );
 
-                    machineStatus.textContent =
-                        result.message ||
-                        "Google verification failed.";
-
-                    loginButton.disabled = false;
 
                     return;
+
                 }
 
-                // ==========================================
-                // GOOGLE EMAIL VERIFIED
-                // ==========================================
 
-                console.log(
-                    "Google registration email verified."
-                );
+                /* =================================================
+                   SUCCESS
+                ================================================= */
+
+                if (
+                    response.ok &&
+                    result.status === "success"
+                ) {
+
+                    showRegistrationResult(
+                        "success",
+                        result.message,
+                        result
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                result.redirect ||
+                                "/dashboard";
+
+                        },
+                        1800
+                    );
+
+
+                    return;
+
+                }
+
+
+                /* =================================================
+                   OTHER SERVER ERROR
+                ================================================= */
+
+                chitStatus.textContent =
+                    "REGISTRATION FAILED";
+
+
+                chitStatus.style.color =
+                    "#dc2626";
+
 
                 machineStatus.textContent =
-                    "Google email verified. Complete your voter registration.";
+                    result.message ||
+                    "Registration failed.";
 
-                // Remove OAuth query parameter from URL
-                window.history.replaceState(
-                    {},
-                    document.title,
-                    "/signin"
+
+                showStamp(
+                    "Registration Failed",
+                    "error"
                 );
-
-                // Optional: clear Supabase browser session
-                await supabaseClient.auth.signOut();
-
-                loginButton.disabled = false;
 
             }
 
             catch (error) {
 
                 console.error(
-                    "Google registration return error:",
+                    "Registration error:",
                     error
                 );
 
-                machineStatus.textContent =
-                    "Unable to complete Google verification.";
 
-                loginButton.disabled = false;
+                chitStatus.textContent =
+                    "SERVICE ERROR";
+
+
+                chitStatus.style.color =
+                    "#dc2626";
+
+
+                machineStatus.textContent =
+                    "Registration service unavailable.";
+
+
+                showStamp(
+                    "Service Unavailable",
+                    "error"
+                );
+
+            }
+
+
+            finally {
+
+                loginButton.disabled =
+                    false;
+
+
+                loginButton.textContent =
+                    "REGISTER";
 
             }
 
         }
+    );
 
 
-        // Execute when signin page loads
-        verifyGoogleRegistrationReturn();
-    </script>
+    /* ============================================================
+       PASSWORD MATCH
+    ============================================================ */
+
+    function checkPasswordMatch() {
+
+        if (
+            confirmPasswordInput.value &&
+            passwordInput.value !==
+            confirmPasswordInput.value
+        ) {
+
+            confirmPasswordInput.style.borderColor =
+                "#dc2626";
+
+        }
+
+        else {
+
+            confirmPasswordInput.style.borderColor =
+                "";
+
+        }
+
+    }
+
+
+    passwordInput.addEventListener(
+        "input",
+        checkPasswordMatch
+    );
+
+
+    confirmPasswordInput.addEventListener(
+        "input",
+        checkPasswordMatch
+    );
+
+
+    /* ============================================================
+       GOOGLE REGISTRATION RETURN
+    ============================================================ */
+
+    async function verifyGoogleRegistrationReturn() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        if (
+            params.get("googleRegistration") !==
+            "true"
+        ) {
+
+            /*
+             * User opened /signin directly.
+             *
+             * Check whether there is already
+             * a pending registration session.
+             */
+
+            const registered =
+                await loadRegistrationStatus();
+
+
+            if (!registered) {
+
+                loginButton.disabled =
+                    true;
+
+            }
+
+
+            return;
+
+        }
+
+
+        machineStatus.textContent =
+            "Processing Google verification...";
+
+
+        loginButton.disabled =
+            true;
+
+
+        try {
+
+            /* ====================================================
+               GET SUPABASE GOOGLE SESSION
+            ==================================================== */
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.getSession();
+
+
+            if (
+                error ||
+                !data?.session
+            ) {
+
+                console.error(
+                    "Google session error:",
+                    error
+                );
+
+
+                machineStatus.textContent =
+                    "Google verification failed.";
+
+
+                return;
+
+            }
+
+
+            /* ====================================================
+               SEND ACCESS TOKEN TO SERVER
+            ==================================================== */
+
+            const accessToken =
+                data.session.access_token;
+
+
+            const response =
+                await fetch(
+                    "/auth/google-registration",
+                    {
+                        method: "POST",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " +
+                                accessToken
+
+                        },
+
+                        credentials:
+                            "include"
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            /* ====================================================
+               GOOGLE EMAIL ALREADY REGISTERED
+            ==================================================== */
+
+            if (
+                response.ok &&
+                result.registered === true
+            ) {
+
+                machineStatus.textContent =
+                    "Account already registered. Redirecting...";
+
+
+                window.location.href =
+                    "/dashboard";
+
+
+                return;
+
+            }
+
+
+            /* ====================================================
+               GOOGLE EMAIL NOT REGISTERED
+            ==================================================== */
+
+            if (
+                response.ok &&
+                result.registered === false &&
+                result.registrationPending === true
+            ) {
+
+                machineStatus.textContent =
+                    "Google email verified. Complete your voter registration.";
+
+
+                verifiedEmailStatus.textContent =
+                    "✓ GOOGLE EMAIL VERIFIED: " +
+                    result.email;
+
+
+                verifiedEmailStatus.style.color =
+                    "#047857";
+
+
+                /*
+                 * Remove query parameter.
+                 */
+
+                window.history.replaceState(
+                    {},
+                    document.title,
+                    "/signin"
+                );
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * Do NOT call supabaseClient.auth.signOut()
+                 * here.
+                 *
+                 * The Google-created Supabase Auth user
+                 * is needed by the server to set the
+                 * password during registration.
+                 */
+
+                loginButton.disabled =
+                    false;
+
+
+                return;
+
+            }
+
+
+            /* ====================================================
+               VERIFICATION FAILED
+            ==================================================== */
+
+            console.error(
+                "Google registration verification failed:",
+                result
+            );
+
+
+            machineStatus.textContent =
+                result.message ||
+                "Google verification failed.";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Google registration return error:",
+                error
+            );
+
+
+            machineStatus.textContent =
+                "Unable to complete Google verification.";
+
+        }
+
+
+        /*
+         * Always check final server-side status.
+         */
+
+        await loadRegistrationStatus();
+
+
+        /*
+         * Don't enable registration unless
+         * the server confirms the pending registration.
+         */
+
+        const finalStatus =
+            await fetch(
+                "/api/registration-status",
+                {
+                    credentials: "include"
+                }
+            );
+
+
+        const finalResult =
+            await finalStatus.json();
+
+
+        loginButton.disabled =
+            finalResult.verified !== true;
+
+    }
+
+
+    /* ============================================================
+       START
+    ============================================================ */
+
+    verifyGoogleRegistrationReturn();
+
+</script>
 
 </body>
 

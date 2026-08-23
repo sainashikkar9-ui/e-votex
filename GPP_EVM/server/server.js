@@ -52,7 +52,17 @@ app.get("/", (req, res) => {
 
 
 app.get("/login", (req, res) => {
-    res.render("login");
+
+    res.render("login", {
+
+        supabaseUrl:
+            process.env.SUPABASE_URL,
+
+        supabasePublishableKey:
+            process.env.SUPABASE_PUBLISHABLE_KEY
+
+    });
+
 });
 
 
@@ -200,7 +210,7 @@ app.post("/loginCheck", async (req, res) => {
             message:
                 "Login successful. Redirecting to dashboard...",
 
-            redirect: "/Dashboard"
+            redirect: "/dashboard"
 
         });
 
@@ -233,120 +243,6 @@ app.post("/loginCheck", async (req, res) => {
 
 
 
-// 2. Verify the Google email against your Supabase Profiles table and set the session
-app.post("/auth/google-verify", async (req, res) => {
-
-    try {
-
-        const { email } = req.body;
-
-        if (!email) {
-            return res.status(400).json({
-                registered: false,
-                message: "Google email not received."
-            });
-        }
-
-
-        // Normalize Google email
-        const normalizedEmail =
-            email.trim().toLowerCase();
-
-
-        // ==========================================
-        // CHECK EMAIL IN PROFILES TABLE
-        // ==========================================
-
-        const {
-            data: profile,
-            error
-        } = await supabase
-            .from("Profiles")
-            .select("*")
-            .eq("user_email", normalizedEmail)
-            .maybeSingle();
-
-
-        // ==========================================
-        // DATABASE ERROR
-        // ==========================================
-
-        if (error) {
-
-            console.error(
-                "Google registration check error:",
-                error
-            );
-
-            return res.status(500).json({
-                registered: false,
-                message:
-                    "Unable to check registration."
-            });
-        }
-
-
-        // ==========================================
-        // EMAIL NOT REGISTERED
-        // ==========================================
-
-        if (!profile) {
-
-            return res.status(200).json({
-                registered: false,
-                message:
-                    "Google email is not registered."
-            });
-        }
-
-
-        // ==========================================
-        // EMAIL REGISTERED
-        // ==========================================
-
-        req.session.user = {
-            username: profile.user_name,
-            displayname: profile.display_name,
-            email: profile.user_email
-        };
-
-        req.session.isAuthenticated = true;
-
-
-        return res.status(200).json({
-
-            registered: true,
-
-            message:
-                "Google login successful.",
-
-            redirect: "/dashboard"
-
-        });
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Google verification error:",
-            error
-        );
-
-        return res.status(500).json({
-
-            registered: false,
-
-            message:
-                "Google authentication service unavailable."
-
-        });
-
-    }
-
-});
-
-
 // 3. Ensure your /dashboard route passes the user session securely
 app.get("/dashboard", (req, res) => {
     if (!req.session || !req.session.isAuthenticated) {
@@ -362,8 +258,11 @@ app.get("/signin", (req, res) => {
 
     res.render("signin", {
 
-        registrationEmail:
-            req.session.registrationEmail || null
+        supabaseUrl:
+            process.env.SUPABASE_URL,
+
+        supabasePublishableKey:
+            process.env.SUPABASE_PUBLISHABLE_KEY
 
     });
 
@@ -371,83 +270,262 @@ app.get("/signin", (req, res) => {
 
 
 
+/* ============================================================
+   GOOGLE REGISTRATION VERIFICATION
+============================================================ */
+
 app.post("/auth/google-registration", async (req, res) => {
 
     try {
 
-        const authHeader = req.headers.authorization;
+        /* ========================================================
+           GET ACCESS TOKEN
+        ======================================================== */
+
+        const authorization =
+            req.headers.authorization;
+
 
         if (
-            !authHeader ||
-            !authHeader.startsWith("Bearer ")
+            !authorization ||
+            !authorization.startsWith("Bearer ")
         ) {
 
             return res.status(401).json({
+
                 success: false,
-                message: "Google authentication required."
+
+                registered: false,
+
+                message:
+                    "Google authentication token missing."
+
             });
 
         }
 
-        // Extract Supabase access token
+
         const accessToken =
-            authHeader.substring("Bearer ".length);
-
-        // Verify token with Supabase
-        const {
-            data,
-            error
-        } = await supabase.auth.getUser(accessToken);
-
-        if (error || !data?.user) {
-
-            console.error(
-                "Google registration authentication error:",
-                error
+            authorization.substring(
+                "Bearer ".length
             );
 
+
+        /* ========================================================
+           VERIFY TOKEN WITH SUPABASE
+        ======================================================== */
+
+        const {
+            data: userData,
+            error: userError
+        } =
+            await supabase.auth.getUser(
+                accessToken
+            );
+
+
+        if (
+            userError ||
+            !userData?.user
+        ) {
+
+            console.error(
+                "Google user verification error:",
+                userError
+            );
+
+
             return res.status(401).json({
+
                 success: false,
-                message: "Invalid Google authentication."
+
+                registered: false,
+
+                message:
+                    "Google account verification failed."
+
             });
 
         }
 
-        // Get verified Google email
+
+        const googleUser =
+            userData.user;
+
+
         const googleEmail =
-            data.user.email?.trim().toLowerCase();
+            googleUser.email;
+
 
         if (!googleEmail) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "Google email could not be obtained."
+
+                registered: false,
+
+                message:
+                    "Google account does not contain an email."
+
             });
 
         }
 
-        console.log(
-            "Verified Google registration email:",
+
+        const normalizedEmail =
             googleEmail
+                .trim()
+                .toLowerCase();
+
+
+        /* ========================================================
+           CHECK PROFILES
+        ======================================================== */
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await supabase
+                .from("Profiles")
+                .select(
+                    "user_id, user_email, user_name, display_name"
+                )
+                .eq(
+                    "user_email",
+                    normalizedEmail
+                )
+                .maybeSingle();
+
+
+        if (profileError) {
+
+            console.error(
+                "Google profile lookup error:",
+                profileError
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                registered: false,
+
+                message:
+                    "Unable to verify registration."
+
+            });
+
+        }
+
+
+        /* ========================================================
+           EMAIL ALREADY REGISTERED
+        ======================================================== */
+
+        if (profile) {
+
+            req.session.user = {
+
+                id:
+                    googleUser.id,
+
+                username:
+                    profile.user_name,
+
+                displayname:
+                    profile.display_name,
+
+                email:
+                    profile.user_email
+
+            };
+
+
+            req.session.isAuthenticated =
+                true;
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                registered: true,
+
+                message:
+                    "Google login successful.",
+
+                redirect:
+                    "/dashboard"
+
+            });
+
+        }
+
+
+        /* ========================================================
+           EMAIL NOT REGISTERED
+           
+           STORE VERIFIED GOOGLE ACCOUNT TEMPORARILY
+        ======================================================== */
+
+        req.session.registration = {
+
+            googleUserId:
+                googleUser.id,
+
+            email:
+                normalizedEmail
+
+        };
+
+
+        /*
+         * Make sure the session is saved before
+         * sending the response.
+         */
+
+        await new Promise(
+            (resolve, reject) => {
+
+                req.session.save(
+                    error => {
+
+                        if (error) {
+
+                            reject(error);
+
+                        }
+
+                        else {
+
+                            resolve();
+
+                        }
+
+                    }
+                );
+
+            }
         );
 
-        // ==========================================
-        // STORE VERIFIED EMAIL SERVER-SIDE
-        // ==========================================
-
-        req.session.registrationEmail =
-            googleEmail;
-
-        // Make sure this is NOT an authenticated login
-        req.session.isAuthenticated = false;
 
         return res.status(200).json({
 
             success: true,
 
-            email: googleEmail,
+            registered: false,
 
-            redirect: "/signin"
+            registrationPending:
+                true,
+
+            email:
+                normalizedEmail,
+
+            message:
+                "Google email verified. Complete registration."
 
         });
 
@@ -456,16 +534,19 @@ app.post("/auth/google-registration", async (req, res) => {
     catch (error) {
 
         console.error(
-            "Google registration error:",
+            "POST /auth/google-registration error:",
             error
         );
+
 
         return res.status(500).json({
 
             success: false,
 
+            registered: false,
+
             message:
-                "Unable to verify Google account."
+                "Google registration service unavailable."
 
         });
 
@@ -477,12 +558,16 @@ app.post("/auth/google-registration", async (req, res) => {
 
 app.get("/api/registration-status", (req, res) => {
 
-    if (!req.session.registrationEmail) {
+    const registration = req.session.registration;
+
+    if (
+        !registration ||
+        !registration.googleUserId ||
+        !registration.email
+    ) {
 
         return res.json({
-
             verified: false
-
         });
 
     }
@@ -491,14 +576,17 @@ app.get("/api/registration-status", (req, res) => {
 
         verified: true,
 
-        email:
-            req.session.registrationEmail
+        email: registration.email
 
     });
 
 });
 
 
+
+/* ============================================================
+   COMPLETE VOTER REGISTRATION
+============================================================ */
 
 app.post("/register", async (req, res) => {
 
@@ -509,14 +597,20 @@ app.post("/register", async (req, res) => {
             password
         } = req.body;
 
-        // ==========================================
-        // 1. GET VERIFIED EMAIL FROM SESSION
-        // ==========================================
 
-        const registrationEmail =
-            req.session.registrationEmail;
+        /* ========================================================
+           CHECK GOOGLE REGISTRATION SESSION
+        ======================================================== */
 
-        if (!registrationEmail) {
+        const registration =
+            req.session.registration;
+
+
+        if (
+            !registration ||
+            !registration.googleUserId ||
+            !registration.email
+        ) {
 
             return res.status(401).json({
 
@@ -529,12 +623,24 @@ app.post("/register", async (req, res) => {
 
         }
 
-        // ==========================================
-        // 2. BASIC VALIDATION
-        // ==========================================
+
+        const normalizedEmail =
+            registration.email
+                .trim()
+                .toLowerCase();
+
+
+        const normalizedUsername =
+            String(username || "")
+                .trim();
+
+
+        /* ========================================================
+           BASIC VALIDATION
+        ======================================================== */
 
         if (
-            !username ||
+            !normalizedUsername ||
             !password
         ) {
 
@@ -549,78 +655,40 @@ app.post("/register", async (req, res) => {
 
         }
 
-        // ==========================================
-        // 3. NORMALIZE DATA
-        // ==========================================
 
-        const normalizedEmail =
-            registrationEmail.trim().toLowerCase();
+        if (
+            normalizedUsername.length < 3
+        ) {
 
-        const normalizedUsername =
-            username.trim();
-
-        // ==========================================
-        // 4. CHECK EMAIL
-        // ==========================================
-
-        const {
-            data: existingEmail,
-            error: emailCheckError
-        } = await supabase
-            .from("Profiles")
-            .select("user_id")
-            .eq("user_email", normalizedEmail)
-            .maybeSingle();
-
-        if (emailCheckError) {
-
-            console.error(
-                "Email check error:",
-                emailCheckError
-            );
-
-            return res.status(500).json({
+            return res.status(400).json({
 
                 status: "error",
 
                 message:
-                    "Unable to verify email."
+                    "Username must contain at least 3 characters."
 
             });
 
         }
 
-        // ==========================================
-        // 5. EMAIL ALREADY EXISTS
-        // ==========================================
 
-        if (existingEmail) {
-
-            return res.status(409).json({
-
-                status: "exists",
-
-                field: "email",
-
-                message:
-                    "Email already exists."
-
-            });
-
-        }
-
-        // ==========================================
-        // 6. CHECK USERNAME
-        // ==========================================
+        /* ========================================================
+           CHECK USERNAME
+        ======================================================== */
 
         const {
             data: existingUser,
             error: usernameCheckError
-        } = await supabase
-            .from("Profiles")
-            .select("user_id")
-            .eq("user_name", normalizedUsername)
-            .maybeSingle();
+        } =
+            await supabase
+                .from("Profiles")
+                .select("user_id")
+                .eq(
+                    "user_name",
+                    normalizedUsername
+                )
+                .maybeSingle();
+
 
         if (usernameCheckError) {
 
@@ -628,6 +696,7 @@ app.post("/register", async (req, res) => {
                 "Username check error:",
                 usernameCheckError
             );
+
 
             return res.status(500).json({
 
@@ -640,9 +709,10 @@ app.post("/register", async (req, res) => {
 
         }
 
-        // ==========================================
-        // 7. USERNAME ALREADY EXISTS
-        // ==========================================
+
+        /* ========================================================
+           USERNAME ALREADY EXISTS
+        ======================================================== */
 
         if (existingUser) {
 
@@ -659,74 +729,257 @@ app.post("/register", async (req, res) => {
 
         }
 
-        // ==========================================
-        // 8. CREATE SUPABASE AUTH USER
-        // ==========================================
+
+        /* ========================================================
+           VERIFY AUTH USER STILL EXISTS
+        ======================================================== */
 
         const {
-            data: authData,
-            error: authError
-        } = await supabase.auth.signUp({
+            data: authUserData,
+            error: authUserError
+        } =
+            await supabase.auth.admin.getUserById(
+                registration.googleUserId
+            );
 
-            email: normalizedEmail,
 
-            password: password,
+        if (
+            authUserError ||
+            !authUserData?.user
+        ) {
 
-            options: {
+            console.error(
+                "Google Auth user lookup error:",
+                authUserError
+            );
 
-                data: {
 
-                    username:
-                        normalizedUsername
+            return res.status(401).json({
+
+                status: "error",
+
+                message:
+                    "Google verification session has expired. Please verify again."
+
+            });
+
+        }
+
+
+        const authUser =
+            authUserData.user;
+
+
+        /* ========================================================
+           MAKE SURE EMAIL MATCHES
+        ======================================================== */
+
+        if (
+            authUser.email?.trim().toLowerCase() !==
+            normalizedEmail
+        ) {
+
+            console.error(
+                "Google email mismatch."
+            );
+
+
+            return res.status(403).json({
+
+                status: "error",
+
+                message:
+                    "Verified Google account mismatch."
+
+            });
+
+        }
+
+
+        /* ========================================================
+           SET PASSWORD ON EXISTING GOOGLE AUTH USER
+        ======================================================== */
+
+        const {
+            data: updatedAuthData,
+            error: passwordError
+        } =
+            await supabase.auth.admin.updateUserById(
+
+                registration.googleUserId,
+
+                {
+                    password:
+                        password,
+
+                    user_metadata: {
+
+                        username:
+                            normalizedUsername,
+
+                        display_name:
+                            normalizedUsername
+
+                    }
 
                 }
 
-            }
+            );
 
-        });
 
-        // ==========================================
-        // 9. SUPABASE AUTH ERROR
-        // ==========================================
-
-        if (authError) {
+        if (passwordError) {
 
             console.error(
-                "Supabase Auth error:",
-                authError
+                "Password update error:",
+                passwordError
             );
+
 
             return res.status(400).json({
 
                 status: "error",
 
                 message:
-                    authError.message
+                    "Unable to create account password."
 
             });
 
         }
 
-        // ==========================================
-        // 10. SUCCESS
-        // ==========================================
 
-        console.log(
-            "AUTH USER CREATED:",
-            authData.user?.id
+        /* ========================================================
+           CREATE PROFILE
+        ======================================================== */
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await supabase
+                .from("Profiles")
+                .insert({
+
+                    user_id:
+                        registration.googleUserId,
+
+                    user_email:
+                        normalizedEmail,
+
+                    user_name:
+                        normalizedUsername,
+
+                    display_name:
+                        normalizedUsername
+
+                })
+                .select()
+                .single();
+
+
+        /* ========================================================
+           PROFILE INSERT FAILED
+        ======================================================== */
+
+        if (profileError) {
+
+            console.error(
+                "Profile creation error:",
+                profileError
+            );
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Password was already set on Auth.
+             * We don't want to silently continue.
+             */
+
+            return res.status(500).json({
+
+                status: "error",
+
+                message:
+                    "Account authentication was created, but profile creation failed. Please contact support."
+
+            });
+
+        }
+
+
+        /* ========================================================
+           CREATE EXPRESS SESSION
+        ======================================================== */
+
+        req.session.user = {
+
+            id:
+                registration.googleUserId,
+
+            username:
+                profile.user_name,
+
+            displayname:
+                profile.display_name,
+
+            email:
+                profile.user_email
+
+        };
+
+
+        req.session.isAuthenticated =
+            true;
+
+
+        /*
+         * Registration is complete.
+         *
+         * Delete the temporary Google registration
+         * information so it cannot be reused.
+         */
+
+        delete req.session.registration;
+
+
+        await new Promise(
+            (resolve, reject) => {
+
+                req.session.save(
+                    error => {
+
+                        if (error) {
+
+                            reject(error);
+
+                        }
+
+                        else {
+
+                            resolve();
+
+                        }
+
+                    }
+                );
+
+            }
         );
 
-        // Registration is complete.
-        // Remove temporary Google registration email.
 
-        delete req.session.registrationEmail;
+        /* ========================================================
+           SUCCESS
+        ======================================================== */
 
         return res.status(200).json({
 
             status: "success",
 
             message:
-                "Voter registered successfully."
+                "Voter registered successfully.",
+
+            redirect:
+                "/dashboard"
 
         });
 
@@ -735,9 +988,10 @@ app.post("/register", async (req, res) => {
     catch (error) {
 
         console.error(
-            "REGISTER ERROR:",
+            "POST /register error:",
             error
         );
+
 
         return res.status(500).json({
 
