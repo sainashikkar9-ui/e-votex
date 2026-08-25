@@ -19,7 +19,6 @@
         rel="stylesheet">
 
     <style>
-
         html,
         body {
             margin: 0;
@@ -34,6 +33,10 @@
         .mono {
             font-family: 'Roboto Mono', monospace;
         }
+
+        /* =========================================================
+           SCROLLBARS
+        ========================================================= */
 
         .sidebar-scroll::-webkit-scrollbar {
             width: 5px;
@@ -52,6 +55,10 @@
             background: #cbd5e1;
             border-radius: 999px;
         }
+
+        /* =========================================================
+           PROFILE MENU
+        ========================================================= */
 
         .profile-menu {
             transform-origin: top right;
@@ -72,17 +79,9 @@
             pointer-events: auto;
         }
 
-        .action-card {
-            transition:
-                transform 180ms ease,
-                box-shadow 180ms ease,
-                border-color 180ms ease;
-        }
-
-        .action-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
-        }
+        /* =========================================================
+           MOBILE SIDEBAR
+        ========================================================= */
 
         .mobile-sidebar {
             transition: transform 220ms ease;
@@ -92,12 +91,69 @@
             transform: translateX(-100%);
         }
 
-        @media (max-width: 767px) {
-            .desktop-sidebar {
-                display: none;
-            }
+        /* =========================================================
+           CARDS
+        ========================================================= */
+
+        .dashboard-card {
+            transition:
+                transform 180ms ease,
+                box-shadow 180ms ease,
+                border-color 180ms ease;
         }
 
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(15, 23, 42, .07);
+        }
+
+        .action-card {
+            transition:
+                transform 180ms ease,
+                box-shadow 180ms ease,
+                border-color 180ms ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, .09);
+        }
+
+        /* =========================================================
+           SIDEBAR ACTIVE INDICATOR
+        ========================================================= */
+
+        .sidebar-link {
+            transition:
+                background-color 150ms ease,
+                color 150ms ease,
+                transform 150ms ease;
+        }
+
+        .sidebar-link:hover {
+            transform: translateX(2px);
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(16, 185, 129, .055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, .055) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 767px) {
+            .dashboard-scroll {
+                overflow-x: hidden;
+            }
+        }
     </style>
 
 </head>
@@ -105,25 +161,27 @@
 
 <body class="min-h-screen bg-slate-50 text-slate-900">
 
-    <!-- ========================================================= -->
-    <!-- TOP NAVBAR -->
-    <!-- ========================================================= -->
+    <!-- =========================================================
+         TOP NAVBAR
+    ========================================================= -->
 
     <nav
-        class="fixed left-0 right-0 top-0 z-50 h-16 border-b border-slate-200 bg-white">
+        class="fixed left-0 right-0 top-0 z-50 h-16 border-b border-slate-200 bg-white/95 backdrop-blur">
 
         <div class="flex h-full items-center justify-between px-4 sm:px-6">
 
-            <!-- LEFT SIDE -->
+            <!-- =================================================
+                 LEFT SIDE
+            ================================================= -->
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 sm:gap-4">
 
-                <!-- Mobile Menu -->
+                <!-- MOBILE MENU -->
 
                 <button
                     id="mobileMenuButton"
                     type="button"
-                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 md:hidden"
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-100 md:hidden"
                     aria-label="Open navigation menu">
 
                     <svg
@@ -147,7 +205,7 @@
 
                 <a
                     href="/dashboard"
-                    class="flex items-center gap-3">
+                    class="flex items-center gap-2.5 sm:gap-3">
 
                     <div
                         class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
@@ -167,6 +225,7 @@
                         </svg>
 
                     </div>
+
 
                     <div class="hidden sm:block">
 
@@ -194,11 +253,11 @@
                 <div class="hidden h-6 w-px bg-slate-200 md:block"></div>
 
 
-                <!-- USERNAME -->
+                <!-- WORKSPACE -->
 
                 <div class="hidden items-center gap-2 md:flex">
 
-                    <span class="text-sm text-slate-500">
+                    <span class="text-sm text-slate-400">
                         Workspace
                     </span>
 
@@ -211,9 +270,11 @@
             </div>
 
 
-            <!-- RIGHT SIDE -->
+            <!-- =================================================
+                 RIGHT SIDE
+            ================================================= -->
 
-            <div class="flex items-center gap-2 sm:gap-4">
+            <div class="flex items-center gap-1 sm:gap-3">
 
                 <!-- FEEDBACK -->
 
@@ -226,12 +287,12 @@
                 </a>
 
 
-                <!-- HELP ICON -->
+                <!-- HELP -->
 
                 <a
                     href="/help"
                     aria-label="Help"
-                    class="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700 sm:flex">
+                    class="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 sm:flex">
 
                     <svg
                         class="h-5 w-5"
@@ -240,7 +301,10 @@
                         stroke-width="1.8"
                         viewBox="0 0 24 24">
 
-                        <circle cx="12" cy="12" r="9" />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9" />
 
                         <path
                             stroke-linecap="round"
@@ -305,11 +369,15 @@
                             class="border-b border-slate-100 px-4 py-3">
 
                             <p class="text-sm font-bold text-slate-900">
+
                                 <%= (user && user.username) ? user.username : "User" %>
+
                             </p>
 
                             <p class="mt-0.5 truncate text-xs text-slate-500">
+
                                 <%= (user && user.email) ? user.email : "E-VOTEX Account" %>
+
                             </p>
 
                         </div>
@@ -356,7 +424,10 @@
                                     stroke-width="1.8"
                                     viewBox="0 0 24 24">
 
-                                    <circle cx="12" cy="12" r="9" />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="9" />
 
                                     <path
                                         stroke-linecap="round"
@@ -413,16 +484,16 @@
     </nav>
 
 
-    <!-- ========================================================= -->
-    <!-- DESKTOP SIDEBAR -->
-    <!-- ========================================================= -->
+    <!-- =========================================================
+         DESKTOP SIDEBAR
+    ========================================================= -->
 
     <aside
-        class="desktop-sidebar fixed bottom-0 left-0 top-16 z-40 flex w-60 flex-col border-r border-slate-200 bg-white">
-
-        <!-- MAIN NAVIGATION -->
+        class="desktop-sidebar fixed bottom-0 left-0 top-16 z-40 hidden w-60 flex-col border-r border-slate-200 bg-white md:flex">
 
         <div class="sidebar-scroll flex-1 overflow-y-auto px-3 py-5">
+
+            <!-- WORKSPACE -->
 
             <p
                 class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
@@ -434,9 +505,11 @@
 
             <nav class="space-y-1">
 
+                <!-- DASHBOARD -->
+
                 <a
                     href="/dashboard"
-                    class="flex items-center gap-3 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm font-bold text-emerald-700">
+                    class="sidebar-link flex items-center gap-3 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm font-bold text-emerald-700">
 
                     <svg
                         class="h-5 w-5"
@@ -457,9 +530,11 @@
                 </a>
 
 
+                <!-- MY POLLS -->
+
                 <a
                     href="/my-polls"
-                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                    class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
                     <svg
                         class="h-5 w-5"
@@ -470,7 +545,6 @@
 
                         <path
                             stroke-linecap="round"
-                            stroke-linejoin="round"
                             d="M5 4h14v16H5z" />
 
                         <path
@@ -484,9 +558,11 @@
                 </a>
 
 
+                <!-- JOINED POLLS -->
+
                 <a
                     href="/joined-polls"
-                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                    class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
                     <svg
                         class="h-5 w-5"
@@ -497,12 +573,10 @@
 
                         <path
                             stroke-linecap="round"
-                            stroke-linejoin="round"
                             d="M16 11a4 4 0 1 0-8 0" />
 
                         <path
                             stroke-linecap="round"
-                            stroke-linejoin="round"
                             d="M4 20a6 6 0 0 1 16 0" />
 
                         <path
@@ -516,9 +590,11 @@
                 </a>
 
 
+                <!-- QUIZZES -->
+
                 <a
                     href="/quizzes"
-                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                    class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
                     <svg
                         class="h-5 w-5"
@@ -529,7 +605,6 @@
 
                         <path
                             stroke-linecap="round"
-                            stroke-linejoin="round"
                             d="M5 4h14v16H5z" />
 
                         <path
@@ -545,12 +620,10 @@
             </nav>
 
 
-            <!-- DIVIDER -->
-
             <div class="my-6 border-t border-slate-100"></div>
 
 
-            <!-- SUPPORT -->
+            <!-- RESOURCES -->
 
             <p
                 class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
@@ -564,7 +637,7 @@
 
                 <a
                     href="/help"
-                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                    class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
                     <svg
                         class="h-5 w-5"
@@ -573,7 +646,10 @@
                         stroke-width="1.8"
                         viewBox="0 0 24 24">
 
-                        <circle cx="12" cy="12" r="9" />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9" />
 
                         <path
                             stroke-linecap="round"
@@ -592,7 +668,7 @@
 
                 <a
                     href="/feedback"
-                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                    class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
                     <svg
                         class="h-5 w-5"
@@ -603,7 +679,6 @@
 
                         <path
                             stroke-linecap="round"
-                            stroke-linejoin="round"
                             d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.3 9.3 0 0 1-4.2-1L3 20l1.5-4.2A8.4 8.4 0 1 1 21 11.5Z" />
 
                     </svg>
@@ -615,7 +690,7 @@
 
                 <a
                     href="/about-us"
-                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                    class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
                     <svg
                         class="h-5 w-5"
@@ -624,7 +699,10 @@
                         stroke-width="1.8"
                         viewBox="0 0 24 24">
 
-                        <circle cx="12" cy="12" r="9" />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9" />
 
                         <path
                             stroke-linecap="round"
@@ -666,7 +744,6 @@
 
                 </a>
 
-
                 <a
                     href="/terms-and-conditions"
                     class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
@@ -674,7 +751,6 @@
                     Terms & Conditions
 
                 </a>
-
 
                 <a
                     href="/security"
@@ -718,15 +794,19 @@
     </aside>
 
 
-    <!-- ========================================================= -->
-    <!-- MOBILE SIDEBAR -->
-    <!-- ========================================================= -->
+    <!-- =========================================================
+         MOBILE OVERLAY
+    ========================================================= -->
 
     <div
         id="mobileOverlay"
         class="fixed inset-0 z-40 hidden bg-slate-900/20 backdrop-blur-sm md:hidden">
     </div>
 
+
+    <!-- =========================================================
+         MOBILE SIDEBAR
+    ========================================================= -->
 
     <aside
         id="mobileSidebar"
@@ -736,8 +816,11 @@
 
             <div class="mb-5 flex items-center justify-between">
 
-                <span class="mono text-xs font-bold uppercase tracking-widest text-slate-400">
+                <span
+                    class="mono text-xs font-bold uppercase tracking-widest text-slate-400">
+
                     Navigation
+
                 </span>
 
                 <button
@@ -754,58 +837,92 @@
 
             <nav class="space-y-1">
 
-                <a href="/dashboard"
+                <a
+                    href="/dashboard"
                     class="block rounded-lg bg-emerald-50 px-3 py-3 text-sm font-bold text-emerald-700">
+
                     Dashboard
+
                 </a>
 
-                <a href="/my-polls"
+                <a
+                    href="/my-polls"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+
                     My Polls
+
                 </a>
 
-                <a href="/joined-polls"
+                <a
+                    href="/joined-polls"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+
                     Joined Polls
+
                 </a>
 
-                <a href="/quizzes"
+                <a
+                    href="/quizzes"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+
                     My Quizzes
+
                 </a>
+
 
                 <div class="my-4 border-t border-slate-100"></div>
 
-                <a href="/help"
+
+                <a
+                    href="/help"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+
                     Help Center
+
                 </a>
 
-                <a href="/feedback"
+                <a
+                    href="/feedback"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+
                     Feedback
+
                 </a>
 
-                <a href="/about-us"
+                <a
+                    href="/about-us"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+
                     About E-VOTEX
+
                 </a>
+
 
                 <div class="my-4 border-t border-slate-100"></div>
 
-                <a href="/privacy-policy"
+
+                <a
+                    href="/privacy-policy"
                     class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+
                     Privacy Policy
+
                 </a>
 
-                <a href="/terms-and-conditions"
+                <a
+                    href="/terms-and-conditions"
                     class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+
                     Terms & Conditions
+
                 </a>
 
-                <a href="/security"
+                <a
+                    href="/security"
                     class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+
                     Security
+
                 </a>
 
             </nav>
@@ -815,72 +932,147 @@
     </aside>
 
 
-    <!-- ========================================================= -->
-    <!-- MAIN CONTENT -->
-    <!-- ========================================================= -->
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================= -->
 
     <main
         class="dashboard-scroll ml-0 min-h-screen overflow-y-auto pt-16 md:ml-60">
 
-        <div class="mx-auto max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
 
 
-            <!-- BREADCRUMB -->
+            <!-- =================================================
+                 BREADCRUMB
+            ================================================= -->
 
-            <div class="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
+            <div
+                class="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
 
-                <span>Workspace</span>
+                <span>
+                    Workspace
+                </span>
 
-                <span>/</span>
+                <span>
+                    /
+                </span>
 
-                <span class="text-slate-600">
+                <span class="font-semibold text-slate-600">
                     Dashboard
                 </span>
 
             </div>
 
 
-            <!-- WELCOME -->
+            <!-- =================================================
+                 HERO
+            ================================================= -->
 
-            <section class="mb-8">
+            <section
+                class="hero-grid relative mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
 
-                <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-
-                    <div>
-
-                        <p
-                            class="mono mb-2 text-xs font-bold uppercase tracking-[.18em] text-emerald-600">
-
-                            E-VOTEX DASHBOARD
-
-                        </p>
-
-                        <h1
-                            class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-
-                            Welcome back,
-                            <%= (user && user.displayname) ? user.displayname : "User" %>.
-
-                        </h1>
-
-                        <p class="mt-2 max-w-2xl text-base leading-relaxed text-slate-500">
-
-                            Create polls, participate in decisions, and build interactive
-                            quizzes from one simple workspace.
-
-                        </p>
-
-                    </div>
-
+                <div class="relative p-6 sm:p-8 lg:p-10">
 
                     <div
-                        class="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
+                        class="flex flex-col justify-between gap-7 lg:flex-row lg:items-center">
 
-                        <span
-                            class="h-2 w-2 animate-pulse rounded-full bg-emerald-500">
-                        </span>
+                        <div class="max-w-3xl">
 
-                        Platform operational
+                            <div
+                                class="mb-3 flex flex-wrap items-center gap-2">
+
+                                <span
+                                    class="mono inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.16em] text-emerald-700">
+
+                                    E-VOTEX DASHBOARD
+
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-white px-2.5 py-1 text-[10px] font-bold text-emerald-700">
+
+                                    <span
+                                        class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500">
+                                    </span>
+
+                                    Operational
+
+                                </span>
+
+                            </div>
+
+
+                            <h1
+                                class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+
+                                Welcome back,
+                                <span class="text-emerald-600">
+                                    <%= (user && user.displayname) ? user.displayname : "User" %>
+                                </span>.
+
+                            </h1>
+
+
+                            <p
+                                class="mt-3 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+
+                                Create polls, participate in decisions, and build
+                                interactive quizzes from one simple workspace.
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- QUICK CREATE -->
+
+                        <div class="flex shrink-0 flex-col gap-2 sm:flex-row lg:flex-col">
+
+                            <a
+                                href="/create-poll"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700">
+
+                                <svg
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        d="M12 5v14M5 12h14" />
+
+                                </svg>
+
+                                Create Poll
+
+                            </a>
+
+
+                            <a
+                                href="/join-poll"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50">
+
+                                Join a Poll
+
+                                <svg
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24">
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m9 18 6-6-6-6" />
+
+                                </svg>
+
+                            </a>
+
+                        </div>
 
                     </div>
 
@@ -889,87 +1081,219 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- STATISTICS -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 STATISTICS
+            ================================================= -->
 
             <section
                 class="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
 
+
+                <!-- CREATED POLLS -->
+
                 <div
-                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
-                    <p class="text-xs font-semibold text-slate-500">
-                        Created Polls
-                    </p>
+                    <div class="flex items-start justify-between">
 
-                    <p class="mt-2 text-2xl font-bold text-slate-900">
-                        0
-                    </p>
+                        <div>
 
-                    <p class="mt-1 text-xs text-slate-400">
+                            <p class="text-xs font-semibold text-slate-500">
+                                Created Polls
+                            </p>
+
+                            <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                                0
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M5 4h14v16H5z" />
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M8 8h8M8 12h8M8 16h5" />
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <p class="mt-2 text-xs text-slate-400">
                         Total created
                     </p>
 
                 </div>
 
 
+                <!-- JOINED POLLS -->
+
                 <div
-                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
-                    <p class="text-xs font-semibold text-slate-500">
-                        Joined Polls
-                    </p>
+                    <div class="flex items-start justify-between">
 
-                    <p class="mt-2 text-2xl font-bold text-slate-900">
-                        0
-                    </p>
+                        <div>
 
-                    <p class="mt-1 text-xs text-slate-400">
+                            <p class="text-xs font-semibold text-slate-500">
+                                Joined Polls
+                            </p>
+
+                            <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                                0
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M16 11a4 4 0 1 0-8 0" />
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M4 20a6 6 0 0 1 16 0" />
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <p class="mt-2 text-xs text-slate-400">
                         Participated
                     </p>
 
                 </div>
 
 
+                <!-- QUIZZES -->
+
                 <div
-                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
-                    <p class="text-xs font-semibold text-slate-500">
-                        Quizzes
-                    </p>
+                    <div class="flex items-start justify-between">
 
-                    <p class="mt-2 text-2xl font-bold text-slate-900">
-                        0
-                    </p>
+                        <div>
 
-                    <p class="mt-1 text-xs text-slate-400">
+                            <p class="text-xs font-semibold text-slate-500">
+                                Quizzes
+                            </p>
+
+                            <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                                0
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M5 4h14v16H5z" />
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="M8 9h8M8 13h5" />
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <p class="mt-2 text-xs text-slate-400">
                         Created quizzes
                     </p>
 
                 </div>
 
 
+                <!-- ACCOUNT STATUS -->
+
                 <div
-                    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
-                    <p class="text-xs font-semibold text-slate-500">
-                        Account Status
-                    </p>
+                    <div class="flex items-start justify-between">
 
-                    <div class="mt-3 flex items-center gap-2">
+                        <div>
 
-                        <span
-                            class="h-2.5 w-2.5 rounded-full bg-emerald-500">
-                        </span>
+                            <p class="text-xs font-semibold text-slate-500">
+                                Account Status
+                            </p>
 
-                        <span class="text-sm font-bold text-emerald-700">
-                            Active
-                        </span>
+                            <div class="mt-3 flex items-center gap-2">
+
+                                <span
+                                    class="h-2.5 w-2.5 rounded-full bg-emerald-500">
+                                </span>
+
+                                <span
+                                    class="text-sm font-bold text-emerald-700">
+
+                                    Active
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    d="m5 12 4 4L19 6" />
+
+                            </svg>
+
+                        </div>
 
                     </div>
 
-                    <p class="mt-1 text-xs text-slate-400">
+                    <p class="mt-2 text-xs text-slate-400">
                         Account in good standing
                     </p>
 
@@ -978,41 +1302,58 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- PRIMARY ACTIONS -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 PRIMARY ACTIONS
+            ================================================= -->
 
             <section class="mb-10">
 
-                <div class="mb-4">
+                <div
+                    class="mb-5 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
 
-                    <h2 class="text-xl font-bold text-slate-900">
-                        What would you like to do?
-                    </h2>
+                    <div>
 
-                    <p class="mt-1 text-sm text-slate-500">
-                        Choose an action to get started.
-                    </p>
+                        <p
+                            class="mono text-[10px] font-bold uppercase tracking-[.18em] text-emerald-600">
+
+                            Get started
+
+                        </p>
+
+                        <h2
+                            class="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+
+                            What would you like to do?
+
+                        </h2>
+
+                        <p class="mt-1 text-sm text-slate-500">
+
+                            Choose an action to get started with E-VOTEX.
+
+                        </p>
+
+                    </div>
 
                 </div>
 
 
-                <div class="space-y-3">
+                <div class="grid gap-4 lg:grid-cols-3">
 
 
                     <!-- CREATE POLL -->
 
                     <a
                         href="/create-poll"
-                        class="action-card group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                        class="action-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
-                        <div class="flex items-center gap-5">
+                        <div class="flex items-start justify-between">
 
                             <div
-                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                                class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
                                 <svg
-                                    class="h-7 w-7"
+                                    class="h-6 w-6"
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="1.8"
@@ -1034,54 +1375,51 @@
                             </div>
 
 
-                            <div class="min-w-0 flex-1">
+                            <span
+                                class="rounded-full bg-emerald-50 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-emerald-700">
 
-                                <div class="flex items-center gap-2">
+                                Creator
 
-                                    <h3
-                                        class="text-lg font-bold text-slate-900 group-hover:text-emerald-700">
+                            </span>
 
-                                        Create New Poll
-
-                                    </h3>
-
-                                    <span
-                                        class="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
-
-                                        Creator
-
-                                    </span>
-
-                                </div>
-
-                                <p class="mt-1 text-sm leading-relaxed text-slate-500">
-
-                                    Create a question, add your options, configure
-                                    participation rules, and share your poll.
-
-                                </p>
-
-                            </div>
+                        </div>
 
 
-                            <div
-                                class="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition group-hover:bg-emerald-50 group-hover:text-emerald-600 sm:flex">
+                        <h3
+                            class="mt-5 text-lg font-bold text-slate-900 group-hover:text-emerald-700">
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    viewBox="0 0 24 24">
+                            Create New Poll
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m9 18 6-6-6-6" />
+                        </h3>
 
-                                </svg>
 
-                            </div>
+                        <p
+                            class="mt-2 text-sm leading-6 text-slate-500">
+
+                            Create a question, add options, configure participation
+                            rules, and share your poll.
+
+                        </p>
+
+
+                        <div
+                            class="mt-5 flex items-center gap-2 text-sm font-bold text-emerald-600">
+
+                            Create poll
+
+                            <svg
+                                class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m9 18 6-6-6-6" />
+
+                            </svg>
 
                         </div>
 
@@ -1092,15 +1430,15 @@
 
                     <a
                         href="/join-poll"
-                        class="action-card group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                        class="action-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
-                        <div class="flex items-center gap-5">
+                        <div class="flex items-start justify-between">
 
                             <div
-                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
                                 <svg
-                                    class="h-7 w-7"
+                                    class="h-6 w-6"
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="1.8"
@@ -1108,12 +1446,10 @@
 
                                     <path
                                         stroke-linecap="round"
-                                        stroke-linejoin="round"
                                         d="M15 11a4 4 0 1 0-8 0" />
 
                                     <path
                                         stroke-linecap="round"
-                                        stroke-linejoin="round"
                                         d="M3 20a6 6 0 0 1 12 0" />
 
                                     <path
@@ -1125,54 +1461,51 @@
                             </div>
 
 
-                            <div class="min-w-0 flex-1">
+                            <span
+                                class="rounded-full bg-blue-50 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-blue-700">
 
-                                <div class="flex items-center gap-2">
+                                Participant
 
-                                    <h3
-                                        class="text-lg font-bold text-slate-900 group-hover:text-blue-700">
+                            </span>
 
-                                        Join a Poll
-
-                                    </h3>
-
-                                    <span
-                                        class="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-blue-700">
-
-                                        Participant
-
-                                    </span>
-
-                                </div>
-
-                                <p class="mt-1 text-sm leading-relaxed text-slate-500">
-
-                                    Enter a poll code or invitation link and participate
-                                    in an active decision.
-
-                                </p>
-
-                            </div>
+                        </div>
 
 
-                            <div
-                                class="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition group-hover:bg-blue-50 group-hover:text-blue-600 sm:flex">
+                        <h3
+                            class="mt-5 text-lg font-bold text-slate-900 group-hover:text-blue-700">
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    viewBox="0 0 24 24">
+                            Join a Poll
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m9 18 6-6-6-6" />
+                        </h3>
 
-                                </svg>
 
-                            </div>
+                        <p
+                            class="mt-2 text-sm leading-6 text-slate-500">
+
+                            Enter a poll code or invitation link and participate
+                            in an active decision.
+
+                        </p>
+
+
+                        <div
+                            class="mt-5 flex items-center gap-2 text-sm font-bold text-blue-600">
+
+                            Join poll
+
+                            <svg
+                                class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m9 18 6-6-6-6" />
+
+                            </svg>
 
                         </div>
 
@@ -1183,15 +1516,15 @@
 
                     <a
                         href="/create-quiz"
-                        class="action-card group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                        class="action-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
-                        <div class="flex items-center gap-5">
+                        <div class="flex items-start justify-between">
 
                             <div
-                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                                class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
 
                                 <svg
-                                    class="h-7 w-7"
+                                    class="h-6 w-6"
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="1.8"
@@ -1199,7 +1532,6 @@
 
                                     <path
                                         stroke-linecap="round"
-                                        stroke-linejoin="round"
                                         d="M5 4h14v16H5z" />
 
                                     <path
@@ -1211,54 +1543,51 @@
                             </div>
 
 
-                            <div class="min-w-0 flex-1">
+                            <span
+                                class="rounded-full bg-violet-50 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-violet-700">
 
-                                <div class="flex items-center gap-2">
+                                Interactive
 
-                                    <h3
-                                        class="text-lg font-bold text-slate-900 group-hover:text-violet-700">
+                            </span>
 
-                                        Create a Quiz
-
-                                    </h3>
-
-                                    <span
-                                        class="rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-violet-700">
-
-                                        Interactive
-
-                                    </span>
-
-                                </div>
-
-                                <p class="mt-1 text-sm leading-relaxed text-slate-500">
-
-                                    Build interactive quizzes with questions,
-                                    answers, scoring, and participant results.
-
-                                </p>
-
-                            </div>
+                        </div>
 
 
-                            <div
-                                class="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition group-hover:bg-violet-50 group-hover:text-violet-600 sm:flex">
+                        <h3
+                            class="mt-5 text-lg font-bold text-slate-900 group-hover:text-violet-700">
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    viewBox="0 0 24 24">
+                            Create a Quiz
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m9 18 6-6-6-6" />
+                        </h3>
 
-                                </svg>
 
-                            </div>
+                        <p
+                            class="mt-2 text-sm leading-6 text-slate-500">
+
+                            Build interactive quizzes with questions, answers,
+                            scoring, and participant results.
+
+                        </p>
+
+
+                        <div
+                            class="mt-5 flex items-center gap-2 text-sm font-bold text-violet-600">
+
+                            Create quiz
+
+                            <svg
+                                class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m9 18 6-6-6-6" />
+
+                            </svg>
 
                         </div>
 
@@ -1269,29 +1598,43 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- RECENT ACTIVITY -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 RECENT ACTIVITY
+            ================================================= -->
 
             <section class="mb-10">
 
-                <div class="mb-4 flex items-end justify-between">
+                <div
+                    class="mb-5 flex items-end justify-between">
 
                     <div>
 
-                        <h2 class="text-xl font-bold text-slate-900">
+                        <p
+                            class="mono text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+
+                            Workspace history
+
+                        </p>
+
+                        <h2
+                            class="mt-1 text-xl font-bold tracking-tight text-slate-900">
+
                             Recent activity
+
                         </h2>
 
                         <p class="mt-1 text-sm text-slate-500">
+
                             Your latest polls, quizzes and participation.
+
                         </p>
 
                     </div>
 
+
                     <a
                         href="/activity"
-                        class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+                        class="text-sm font-bold text-emerald-600 hover:text-emerald-700">
 
                         View all
 
@@ -1305,13 +1648,14 @@
 
                     <!-- EMPTY STATE -->
 
-                    <div class="px-6 py-12 text-center">
+                    <div
+                        class="px-6 py-14 text-center sm:py-16">
 
                         <div
-                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+                            class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100">
 
                             <svg
-                                class="h-6 w-6 text-slate-400"
+                                class="h-7 w-7 text-slate-400"
                                 fill="none"
                                 stroke="currentColor"
                                 stroke-width="1.8"
@@ -1319,7 +1663,6 @@
 
                                 <path
                                     stroke-linecap="round"
-                                    stroke-linejoin="round"
                                     d="M8 7h8M8 11h5M5 4h14v16H5z" />
 
                             </svg>
@@ -1327,16 +1670,30 @@
                         </div>
 
 
-                        <h3 class="mt-4 text-sm font-bold text-slate-800">
+                        <h3
+                            class="mt-4 text-sm font-bold text-slate-800">
+
                             No recent activity
+
                         </h3>
 
-                        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+
+                        <p
+                            class="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500">
 
                             Once you create or participate in polls and quizzes,
                             your recent activity will appear here.
 
                         </p>
+
+
+                        <a
+                            href="/create-poll"
+                            class="mt-5 inline-flex items-center rounded-lg bg-slate-900 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-slate-800">
+
+                            Create your first poll
+
+                        </a>
 
                     </div>
 
@@ -1345,9 +1702,9 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- INFORMATION CARDS -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 INFORMATION CARDS
+            ================================================= -->
 
             <section
                 class="grid gap-4 md:grid-cols-2">
@@ -1357,12 +1714,12 @@
 
                 <a
                     href="/privacy-policy"
-                    class="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-200 hover:shadow-sm">
+                    class="dashboard-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div class="flex gap-4">
 
                         <div
-                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
                             <svg
                                 class="h-5 w-5"
@@ -1373,7 +1730,6 @@
 
                                 <path
                                     stroke-linecap="round"
-                                    stroke-linejoin="round"
                                     d="M12 3 5 6v5c0 4.5 2.9 8.5 7 10 4.1-1.5 7-5.5 7-10V6l-7-3Z" />
 
                                 <path
@@ -1385,7 +1741,7 @@
                         </div>
 
 
-                        <div>
+                        <div class="min-w-0">
 
                             <h3
                                 class="font-bold text-slate-900 group-hover:text-emerald-700">
@@ -1394,12 +1750,22 @@
 
                             </h3>
 
-                            <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                            <p
+                                class="mt-1 text-sm leading-6 text-slate-500">
 
                                 Learn how E-VOTEX handles account information,
                                 poll data and participant privacy.
 
                             </p>
+
+
+                            <span
+                                class="mt-3 inline-flex text-xs font-bold text-emerald-600">
+
+                                Read privacy policy →
+
+                            </span>
 
                         </div>
 
@@ -1412,12 +1778,12 @@
 
                 <a
                     href="/help"
-                    class="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+                    class="dashboard-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div class="flex gap-4">
 
                         <div
-                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
                             <svg
                                 class="h-5 w-5"
@@ -1426,7 +1792,10 @@
                                 stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <circle cx="12" cy="12" r="9" />
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="9" />
 
                                 <path
                                     stroke-linecap="round"
@@ -1441,7 +1810,7 @@
                         </div>
 
 
-                        <div>
+                        <div class="min-w-0">
 
                             <h3
                                 class="font-bold text-slate-900 group-hover:text-blue-700">
@@ -1450,12 +1819,22 @@
 
                             </h3>
 
-                            <p class="mt-1 text-sm leading-relaxed text-slate-500">
+
+                            <p
+                                class="mt-1 text-sm leading-6 text-slate-500">
 
                                 Browse the E-VOTEX help center or contact us
                                 if you need assistance.
 
                             </p>
+
+
+                            <span
+                                class="mt-3 inline-flex text-xs font-bold text-blue-600">
+
+                                Visit help center →
+
+                            </span>
 
                         </div>
 
@@ -1466,75 +1845,54 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- FOOTER -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 FOOTER
+            ================================================= -->
 
-            <footer
-                class="mt-12 border-t border-slate-200 py-6">
+            <footer class="mt-12 border-t border-slate-200 py-6">
 
-                <div
-                    class="flex flex-col gap-3 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col items-center justify-center gap-3 text-center text-xs text-slate-400">
 
-                    <p>
-                        © 2026 E-VOTEX. All rights reserved.
-                    </p>
+        <p>
+            © 2026 E-VOTEX. All rights reserved.
+        </p>
 
-                    <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap justify-center gap-4">
 
-                        <a
-                            href="/privacy-policy"
-                            class="hover:text-slate-600">
+            <a
+                href="/privacy-policy"
+                class="hover:text-slate-600">
+                Privacy
+            </a>
 
-                            Privacy
+            <a
+                href="/terms-and-conditions"
+                class="hover:text-slate-600">
+                Terms
+            </a>
 
-                        </a>
+            <a
+                href="/security"
+                class="hover:text-slate-600">
+                Security
+            </a>
 
-                        <a
-                            href="/terms-and-conditions"
-                            class="hover:text-slate-600">
-
-                            Terms
-
-                        </a>
-
-                        <a
-                            href="/security"
-                            class="hover:text-slate-600">
-
-                            Security
-
-                        </a>
-
-                        <a
-                            href="/about-us"
-                            class="hover:text-slate-600">
-
-                            About
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <p class="mt-3 text-center text-xs font-semibold text-slate-400">
-
-                    Made with passion by Sai N.
-
-                </p>
-
-            </footer>
+            <a
+                href="/about-us"
+                class="hover:text-slate-600">
+                About
+            </a>
 
         </div>
 
-    </main>
+    </div>
 
+</footer>
+</main>
 
-    <!-- ========================================================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ========================================================= -->
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
 
     <script>
 
@@ -1557,6 +1915,7 @@
 
             const isVisible =
                 profileMenu.classList.contains('visible-menu');
+
 
             if (isVisible) {
 
@@ -1682,10 +2041,37 @@
 
             });
 
+
+        /*
+        ============================================================
+        ESC KEY SUPPORT
+        ============================================================
+        */
+
+        document.addEventListener('keydown', (event) => {
+
+            if (event.key === 'Escape') {
+
+                closeSidebar();
+
+                profileMenu.classList.remove('visible-menu');
+
+                profileMenu.classList.add('hidden-menu');
+
+                profileButton.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+
+            }
+
+        });
+
     </script>
 
 
     <!-- Tailwind CDN fallback -->
+
     <script src="https://cdn.tailwindcss.com"></script>
 
 </body>
