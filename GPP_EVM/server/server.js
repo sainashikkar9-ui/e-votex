@@ -21,8 +21,15 @@ const db = new pg.Client({
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
+    process.env.SUPABASE_SERVICE_KEY,
+    {
+        auth: {
+            persistSession: false, // <-- THIS FIXES THE 2ND ACCOUNT ERROR
+            autoRefreshToken: false
+        }
+    }
 );
+
 db.connect();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(_dirname + "/../public"));
@@ -59,7 +66,7 @@ app.get("/login", (req, res) => {
             process.env.SUPABASE_URL,
 
         supabasePublishableKey:
-            process.env.SUPABASE_SERVICE_KEY
+            process.env.SUPABASE_PUBLISHABLE_KEY
 
     });
 
@@ -262,7 +269,7 @@ app.get("/signin", (req, res) => {
             process.env.SUPABASE_URL,
 
         supabasePublishableKey:
-            process.env.SUPABASE_SERVICE_KEY
+            process.env.SUPABASE_PUBLISHABLE_KEY
 
     });
 
@@ -860,26 +867,17 @@ app.post("/register", async (req, res) => {
            CREATE PROFILE
         ======================================================== */
 
-        const {
+const {
             data: profile,
             error: profileError
         } =
             await supabase
                 .from("Profiles")
                 .insert({
-
-                    user_id:
-                        registration.googleUserId,
-
-                    user_email:
-                        normalizedEmail,
-
-                    user_name:
-                        normalizedUsername,
-
-                    display_name:
-                        googleDisplayName
-
+                    user_id: registration.googleUserId, // (Or 'id' depending on what your column is named)
+                    user_email: normalizedEmail,
+                    user_name: normalizedUsername,
+                    display_name: googleDisplayName
                 })
                 .select()
                 .single();
@@ -1026,7 +1024,7 @@ app.get("/test", async (req, res) => {
 
             supabaseUrl: process.env.SUPABASE_URL,
 
-            supabasePublishableKey: process.env.SUPABASE_SERVICE_KEY
+            supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
 
         });
 
