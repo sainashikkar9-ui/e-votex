@@ -54,7 +54,7 @@ app.set("views", path.join(_dirname, "../views"));
 
 app.get("/", (req, res) => {
     res.redirect("/login");
-//    res.redirect("/dashboard/create-poll");
+    //    res.redirect("/dashboard/create-poll");
 });
 
 
@@ -849,7 +849,7 @@ app.post("/register", async (req, res) => {
            CREATE PROFILE
         ======================================================== */
 
-const {
+        const {
             data: profile,
             error: profileError
         } =
@@ -923,13 +923,7 @@ const {
 
         /*
          * Registration is complete.
-         *
-         * Delete the temporary Google registration
-         * information so it cannot be reused.
-         */
-
-        delete req.session.registration;
-
+        */
 
         await new Promise(
             (resolve, reject) => {
@@ -1014,32 +1008,155 @@ app.get("/dashboard/create-poll", (req, res) => {
 
 
 app.post("/dashboard/create-poll/create-url", (req, res) => {
-    const title = req.body.title;
-    const captions = req.body.captions;
-    const option1 = req.body.option1;
-    const option2 = req.body.option2;
-    const option3 = req.body.option3;
-    const option4 = req.body.option4;
-    
-    console.log(title);
-    console.log(captions);
-    console.log(option1);
-    console.log(option2);
-    console.log(option3);
-    console.log(option4);
 
-    res.render("create-url", {user: {title, captions, option1, option2, option3, option4}});
+    const title = req.session.title = req.body.title;
+    const description = req.session.description = req.body.captions;
+    const option1 = req.session.option1 = req.body.option1;
+    const option2 = req.session.option2 = req.body.option2;
+    const option3 = req.session.option3 = req.body.option3;
+    const option4 = req.session.option4 = req.body.option4;
+
+    console.log(req.session.title);
+    console.log(req.session.captions);
+    console.log(req.session.option1);
+    console.log(req.session.option2);
+    console.log(req.session.option3);
+    console.log(req.session.option4);
+
+    res.render("create-url", { user: { title, description, option1, option2, option3, option4 } });
+
 });
 
 
 
-app.post("/dashboard/create-poll/create-url/created-url", (req, res) => {
-    const start_time = req.body.startDateTime;
-    const end_time = req.body.endDateTime;
-    const happy_message = 'Enjoy being an e-votex ELection Commissioner!';
-    const status = 'Not Active';
-    const election_code = '123fv42c23n';
-    res.render("created-url", {user: {start_time, end_time, status, election_code, happy_message}});
+app.post("/dashboard/create-poll/create-url/created-url", async (req, res) => {
+    try {
+        const title = req.session.title;
+        const description = req.session.description;
+        const option1 = req.session.option1 || null;
+        const option2 = req.session.option2 || null;
+        const option3 = req.session.option3 || null;
+        const option4 = req.session.option4 || null;
+        const options = [option1, option2, option3, option4].filter(Boolean);
+        const starts_at = new Date(req.body.startDateTime.trim().replace(" ", "T") + "+05:30");
+        const ends_at = new Date(req.body.endDateTime.trim().replace(" ", "T") + "+05:30");
+        const randomIndex = Math.floor(Math.random() * 51);
+        let status = '';
+        let election_code = '';
+        let election_id = '';
+        const now = new Date();
+        const { data: happyMessage, error: happyMessageError } = await supabase
+            .from("Happymessages")
+            .select("poll_message");
+
+        if (happyMessageError) {
+            console.error("happyMessage fetching Error :", happyMessageError);
+            return res.status(500).send("Unable to fetch from Happymessages.");
+        }
+
+        const happy_message = happyMessage[randomIndex].poll_message;
+
+        /*Status Logic*/
+        if (now >= ends_at) {
+            status = "⚫ Ended";
+        }
+        else if (now >= starts_at) {
+            status = "🟢 Active";
+        }
+        else {
+            status = "🔴 Not Started";
+        }
+
+
+
+        if (req.body.submit === 'submit') {
+            const { data: elections, error: electionsError } = await supabase
+                .from("Elections")
+                .insert({ creator_id: req.session.user.id, title, description, starts_at: starts_at.toISOString(), ends_at: ends_at.toISOString(), status })
+                .select("election_id")
+                .single();
+
+            if (electionsError) {
+                console.error("Election_data Insertion error:", electionsError);
+                return res.status(500).send("Unable to insert in Elections.");
+            }
+            election_id = elections.election_id;
+
+            const optionRows = options.map((value, index) => ({
+                election_id: election_id,
+                option_no: index + 1,
+                option_name: value
+            }));
+
+            const { data: vote_options, error: vote_optionsError } = await supabase
+                .from("Vote_options")
+                .insert(optionRows);
+
+            if (vote_optionsError) {
+                console.error("Election_data Insertion error:", vote_optionsError);
+                return res.status(500).send("Unable to insert in Vote_options.");
+            }
+
+            const { data: electionCode, error: electionCodeError } = await supabase
+                .from("Elections")
+                .select("passcode")
+                .eq("election_id", election_id)
+                .single();
+
+            if (electionCodeError) {
+                console.error("Election code error:", electionCodeError);
+                return res.status(500).send("Unable to fetch election code.");
+            }
+
+            election_code = req.session.electionCode = electionCode.passcode;
+
+            req.session.createdPoll = {
+                title,
+                description,
+                starts_at,
+                ends_at,
+                status,
+                happy_message,
+                electionCode: election_code
+            };
+
+            return res.redirect("/dashboard/create-poll/create-url/created-url");
+        }
+        else {
+            console.log(req.session.isAuthenticated);
+            res.redirect("/dashboard");
+        }
+    }
+    catch (error) {
+
+        console.error(
+            "POST /dashboard/create-poll/create-url/created-url error:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            status: "error",
+
+            message:
+                "Failed to create poll URL."
+
+        });
+
+    }
+});
+
+
+
+app.get("/dashboard/create-poll/create-url/created-url", (req,res) => {
+    const poll = req.session.createdPoll;
+
+    if (!poll) {
+        return res.redirect("/dashboard");
+    }
+
+    res.render("created-url", {user: poll});
 });
 
 
