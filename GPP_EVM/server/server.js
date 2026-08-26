@@ -54,6 +54,7 @@ app.set("views", path.join(_dirname, "../views"));
 
 app.get("/", (req, res) => {
     res.redirect("/login");
+//    res.redirect("/dashboard/create-poll");
 });
 
 
@@ -250,17 +251,6 @@ app.post("/loginCheck", async (req, res) => {
 
 
 
-// 3. Ensure your /dashboard route passes the user session securely
-app.get("/dashboard", (req, res) => {
-    if (!req.session || !req.session.isAuthenticated) {
-        return res.redirect("/login");
-    }
-    console.log(req.session.user);
-    res.render("dashboard", { user: req.session.user || null });
-});
-
-
-
 app.get("/signin", (req, res) => {
 
     res.render("signin", {
@@ -276,10 +266,6 @@ app.get("/signin", (req, res) => {
 });
 
 
-
-/* ============================================================
-   GOOGLE REGISTRATION VERIFICATION
-============================================================ */
 
 app.post("/auth/google-registration", async (req, res) => {
 
@@ -590,10 +576,6 @@ app.get("/api/registration-status", (req, res) => {
 });
 
 
-
-/* ============================================================
-   COMPLETE VOTER REGISTRATION
-============================================================ */
 
 app.post("/register", async (req, res) => {
 
@@ -1011,6 +993,53 @@ const {
 
     }
 
+});
+
+
+
+app.get("/dashboard", (req, res) => {
+    if (!req.session || !req.session.isAuthenticated) {
+        return res.redirect("/login");
+    }
+    console.log(req.session.user);
+    res.render("dashboard", { user: req.session.user || null });
+});
+
+
+
+app.get("/dashboard/create-poll", (req, res) => {
+    res.render("create-poll");
+});
+
+
+
+app.post("/dashboard/create-poll/create-url", (req, res) => {
+    const title = req.body.title;
+    const captions = req.body.captions;
+    const option1 = req.body.option1;
+    const option2 = req.body.option2;
+    const option3 = req.body.option3;
+    const option4 = req.body.option4;
+    
+    console.log(title);
+    console.log(captions);
+    console.log(option1);
+    console.log(option2);
+    console.log(option3);
+    console.log(option4);
+
+    res.render("create-url", {user: {title, captions, option1, option2, option3, option4}});
+});
+
+
+
+app.post("/dashboard/create-poll/create-url/created-url", (req, res) => {
+    const start_time = req.body.startDateTime;
+    const end_time = req.body.endDateTime;
+    const happy_message = 'Enjoy being an e-votex ELection Commissioner!';
+    const status = 'Not Active';
+    const election_code = '123fv42c23n';
+    res.render("created-url", {user: {start_time, end_time, status, election_code, happy_message}});
 });
 
 

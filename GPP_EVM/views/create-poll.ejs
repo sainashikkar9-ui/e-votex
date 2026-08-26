@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Create Booth - GPP EVM</title>
+
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background: #f4efe5;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /*
+    ==========================================================
+    MAIN LAYOUT
+    ==========================================================
+    */
+
+    .page-layout {
+      width: 100%;
+      max-width: 1280px;
+    }
+
+    .terminal-shell {
+      width: 100%;
+      max-width: 920px;
+    }
+
+    /*
+    ==========================================================
+    INPUT
+    ==========================================================
+    */
+
+    .option-input,
+    .booth-input {
+      min-width: 0;
+    }
+
+    /*
+    ==========================================================
+    SMALL PHONES / FLIP PHONES
+    ==========================================================
+    */
+
+    @media (max-width: 360px) {
+
+      .terminal-outer {
+        border-width: 4px !important;
+        border-radius: 1.5rem !important;
+        padding: 0.5rem !important;
+      }
+
+      .terminal-screen {
+        border-radius: 1rem !important;
+      }
+
+      .option-row {
+        grid-template-columns: 2rem minmax(0, 1fr) !important;
+      }
+
+      .option-number {
+        font-size: 0.65rem !important;
+      }
+
+      .option-input,
+      .booth-input {
+        font-size: 0.8rem !important;
+      }
+
+      .next-button {
+        min-height: 3rem !important;
+        font-size: 0.8rem !important;
+      }
+
+      .intro-title {
+        font-size: 1.8rem !important;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    MOBILE
+    ==========================================================
+    */
+
+    @media (max-width: 767px) {
+
+      .page-layout {
+        flex-direction: column !important;
+      }
+
+      /*
+      Move the descriptive section BELOW the machine
+      */
+
+      .intro-panel {
+        order: 2 !important;
+        text-align: center;
+      }
+
+      .machine-panel {
+        order: 1 !important;
+      }
+
+      .intro-description {
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .intro-notice {
+        border-left: 0 !important;
+        border-top: 4px solid #059669;
+        text-align: left;
+      }
+
+      .terminal-shell {
+        max-width: 100%;
+      }
+
+      main {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+      }
+
+      .terminal-outer {
+        padding: 0.65rem !important;
+        border-width: 5px !important;
+      }
+
+      .option-row {
+        grid-template-columns: 2.5rem minmax(0, 1fr) !important;
+      }
+
+      .next-button {
+        width: 100%;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    TABLET
+    ==========================================================
+    */
+
+    @media (min-width: 768px) and (max-width: 1100px) {
+
+      .page-layout {
+        gap: 2rem !important;
+      }
+
+      .terminal-shell {
+        max-width: 720px;
+      }
+
+      .intro-panel {
+        max-width: 280px;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    DESKTOP
+    ==========================================================
+    */
+
+    @media (min-width: 1101px) {
+
+      .page-layout {
+        display: grid !important;
+        grid-template-columns: minmax(240px, 0.65fr) minmax(600px, 1.35fr);
+        align-items: center;
+        gap: 4rem;
+      }
+
+      .intro-panel {
+        text-align: left;
+      }
+
+      .intro-description {
+        margin-left: 0 !important;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    LARGE DESKTOP / TV
+    ==========================================================
+    */
+
+    @media (min-width: 1600px) {
+
+      .page-layout {
+        max-width: 1500px;
+        grid-template-columns: minmax(300px, 0.7fr) minmax(750px, 1.3fr);
+        gap: 6rem;
+      }
+
+      .terminal-shell {
+        max-width: 1050px;
+      }
+
+      .intro-title {
+        font-size: 3.5rem !important;
+      }
+
+      .booth-input,
+      .option-input {
+        font-size: 1.1rem;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    PREVENT HORIZONTAL OVERFLOW
+    ==========================================================
+    */
+
+    @media (max-width: 420px) {
+
+      body {
+        overflow-x: hidden;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body class="min-h-screen bg-[#f4efe5] font-[Hind_Madurai] text-slate-900">
+
+
+  <!-- ========================================================
+       MAIN
+       ======================================================== -->
+
+  <main
+    class="flex w-full flex-1 items-center justify-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+  >
+
+    <div class="page-layout flex items-center">
+
+
+      <!-- ====================================================
+           INTRODUCTION PANEL
+           ==================================================== -->
+
+      <header
+        class="intro-panel order-2 w-full max-w-md lg:order-1"
+      >
+
+        <p
+          class="font-mono text-xs font-bold tracking-[0.2em] text-orange-700"
+        >
+          BOOTH SETUP
+        </p>
+
+
+        <h1
+          class="intro-title mt-3 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
+        >
+          Create your ballot.
+        </h1>
+
+
+        <p
+          class="intro-description mt-5 max-w-sm text-sm leading-relaxed text-slate-600 sm:text-base"
+        >
+          Configure your voting booth with a title, caption,
+          and up to four voting options.
+        </p>
+
+
+        <!-- Notice -->
+
+        <div
+          class="intro-notice mt-7 max-w-sm border-l-4 border-emerald-600 bg-emerald-50 px-4 py-3 text-sm font-bold leading-snug text-emerald-950 shadow-sm"
+        >
+
+          Your ballot will be generated as a unique voting booth
+          that can be shared with voters.
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div
+          class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800"
+        >
+
+          <span
+            class="h-2 w-2 rounded-full bg-emerald-600 shadow-[0_0_7px_rgba(16,185,129,.55)]"
+          ></span>
+
+          Booth configuration ready
+
+        </div>
+
+      </header>
+
+
+      <!-- ====================================================
+           MACHINE
+           ==================================================== -->
+
+      <section
+        class="machine-panel terminal-shell terminal-outer order-1 rounded-[2rem] border-[7px] border-[#63787a] bg-[#a8cfd0] p-3 shadow-[0_24px_55px_rgba(48,65,68,.28)] sm:rounded-[2.5rem] sm:p-5 lg:order-2"
+        aria-label="Create ballot electronic voting terminal"
+      >
+
+
+        <!-- ==================================================
+             INNER SCREEN
+             ================================================== -->
+
+        <div
+          class="overflow-hidden rounded-[1.5rem] border-2 border-[#84b6b8] bg-[#e6ffff] shadow-[inset_0_1px_5px_rgba(0,0,0,.08)] sm:rounded-[1.75rem]"
+        >
+
+
+          <!-- ================================================
+               TERMINAL HEADER
+               ================================================ -->
+
+          <div
+            class="flex items-center justify-between gap-3 border-b border-[#9bcacc] bg-[#d1f1f1] px-4 py-3 sm:px-6 sm:py-4"
+          >
+
+            <div class="min-w-0">
+
+              <p
+                class="truncate font-mono text-[0.65rem] font-bold tracking-wider text-slate-700 sm:text-xs"
+              >
+                EVM CONFIGURATION TERMINAL
+              </p>
+
+              <p
+                class="mt-0.5 text-[0.65rem] font-semibold text-slate-500 sm:text-xs"
+              >
+                CREATE NEW BALLOT
+              </p>
+
+            </div>
+
+
+            <!-- Ready indicator -->
+
+            <div
+              class="flex shrink-0 items-center gap-2 rounded-full bg-emerald-100 px-3 py-1.5 text-[0.65rem] font-bold text-emerald-800 sm:text-xs"
+            >
+
+              <span
+                class="h-2 w-2 rounded-full bg-emerald-600 shadow-[0_0_6px_rgba(16,185,129,.6)]"
+              ></span>
+
+              READY
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               FORM
+               ================================================= -->
+
+          <form
+            action="/dashboard/create-poll/create-url"
+            method="POST"
+            class="p-3 sm:p-5"
+          >
+
+
+            <!-- ===============================================
+                 BOOTH INFORMATION PANEL
+                 =============================================== -->
+
+            <div
+              class="rounded-2xl border-2 border-[#84b6b8] bg-[#d9f5f5] p-3 shadow-[inset_0_1px_3px_rgba(0,0,0,.06)] sm:p-4"
+            >
+
+              <!-- Panel heading -->
+
+              <div
+                class="mb-3 flex items-center gap-3"
+              >
+
+                <div
+                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#84b6b8] bg-white font-mono text-xs font-bold text-slate-600 shadow-sm"
+                >
+                  ID
+                </div>
+
+                <div>
+
+                  <p
+                    class="text-sm font-bold text-slate-800"
+                  >
+                    Booth information
+                  </p>
+
+                  <p
+                    class="text-[0.7rem] text-slate-500"
+                  >
+                    Give your ballot a name and description.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- Title -->
+
+              <div>
+
+                <label
+                  for="title"
+                  class="mb-1.5 block font-mono text-[0.65rem] font-bold uppercase tracking-wider text-slate-600"
+                >
+                  Ballot title
+                </label>
+
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  maxlength="150"
+                  autocomplete="off"
+                  placeholder="Enter Title"
+                  class="booth-input w-full rounded-xl border-2 border-[#9bcacc] bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-700 focus:ring-4 focus:ring-blue-100 sm:text-base"
+                >
+
+              </div>
+
+
+              <!-- Caption -->
+
+              <div class="mt-3">
+
+                <label
+                  for="captions"
+                  class="mb-1.5 block font-mono text-[0.65rem] font-bold uppercase tracking-wider text-slate-600"
+                >
+                  Ballot caption
+                </label>
+
+                <input
+                  id="captions"
+                  name="captions"
+                  type="text"
+                  maxlength="250"
+                  autocomplete="off"
+                  placeholder="Enter captions"
+                  class="booth-input w-full rounded-xl border-2 border-[#9bcacc] bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-700 focus:ring-4 focus:ring-blue-100 sm:text-base"
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DIVIDER
+                 ================================================= -->
+
+            <div class="my-5 flex items-center gap-3">
+
+              <span
+                class="h-px flex-1 bg-[#9bcacc]"
+              ></span>
+
+              <span
+                class="font-mono text-[0.6rem] font-bold tracking-widest text-slate-500"
+              >
+                BALLOT OPTIONS
+              </span>
+
+              <span
+                class="h-px flex-1 bg-[#9bcacc]"
+              ></span>
+
+            </div>
+
+
+            <!-- ===============================================
+                 OPTION 01
+                 =============================================== -->
+
+            <div
+              class="option-row grid min-h-[4.75rem] grid-cols-[3.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-[#9bcacc] bg-white shadow-sm"
+            >
+
+              <div
+                class="option-number flex items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-600 sm:text-sm"
+              >
+                01
+              </div>
+
+
+              <div
+                class="flex min-w-0 items-center px-3 sm:px-5"
+              >
+
+                <label
+                  for="option1"
+                  class="sr-only"
+                >
+                  Voting option 1
+                </label>
+
+                <input
+                  id="option1"
+                  name="option1"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                  placeholder="No option"
+                  class="option-input w-full border-0 bg-transparent px-2 py-3 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0 sm:text-base"
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- ===============================================
+                 OPTION 02
+                 =============================================== -->
+
+            <div
+              class="option-row mt-2 grid min-h-[4.75rem] grid-cols-[3.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-[#9bcacc] bg-white shadow-sm"
+            >
+
+              <div
+                class="option-number flex items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-600 sm:text-sm"
+              >
+                02
+              </div>
+
+
+              <div
+                class="flex min-w-0 items-center px-3 sm:px-5"
+              >
+
+                <label
+                  for="option2"
+                  class="sr-only"
+                >
+                  Voting option 2
+                </label>
+
+                <input
+                  id="option2"
+                  name="option2"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                  placeholder="No option"
+                  class="option-input w-full border-0 bg-transparent px-2 py-3 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0 sm:text-base"
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- ===============================================
+                 OPTION 03
+                 =============================================== -->
+
+            <div
+              class="option-row mt-2 grid min-h-[4.75rem] grid-cols-[3.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-[#9bcacc] bg-white shadow-sm"
+            >
+
+              <div
+                class="option-number flex items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-600 sm:text-sm"
+              >
+                03
+              </div>
+
+
+              <div
+                class="flex min-w-0 items-center px-3 sm:px-5"
+              >
+
+                <label
+                  for="option3"
+                  class="sr-only"
+                >
+                  Voting option 3
+                </label>
+
+                <input
+                  id="option3"
+                  name="option3"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                  placeholder="No option"
+                  class="option-input w-full border-0 bg-transparent px-2 py-3 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0 sm:text-base"
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- ===============================================
+                 OPTION 04
+                 =============================================== -->
+
+            <div
+              class="option-row mt-2 grid min-h-[4.75rem] grid-cols-[3.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-[#9bcacc] bg-white shadow-sm"
+            >
+
+              <div
+                class="option-number flex items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-600 sm:text-sm"
+              >
+                04
+              </div>
+
+
+              <div
+                class="flex min-w-0 items-center px-3 sm:px-5"
+              >
+
+                <label
+                  for="option4"
+                  class="sr-only"
+                >
+                  Voting option 4
+                </label>
+
+                <input
+                  id="option4"
+                  name="option4"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                  placeholder="No option"
+                  class="option-input w-full border-0 bg-transparent px-2 py-3 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0 sm:text-base"
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CONTROL PANEL
+                 ================================================= -->
+
+            <div
+              class="mt-5 flex flex-col gap-4 border-t border-[#9bcacc] pt-5 sm:flex-row sm:items-center sm:justify-between"
+            >
+
+              <!-- Status -->
+
+              <div class="flex items-center gap-3">
+
+                <div
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#63787a] bg-[#d1f1f1] shadow-[inset_0_1px_2px_rgba(0,0,0,.12)]"
+                >
+
+                  <span
+                    class="h-3 w-3 rounded-full border border-emerald-800 bg-emerald-500 shadow-[0_0_7px_rgba(34,197,94,.65)]"
+                  ></span>
+
+                </div>
+
+
+                <div>
+
+                  <p
+                    class="text-xs font-bold text-slate-700"
+                  >
+                    Configuration ready
+                  </p>
+
+                  <p
+                    class="text-[0.7rem] text-slate-500"
+                  >
+                    Review your ballot before continuing.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- =============================================
+                   NEXT BUTTON
+                   ============================================= -->
+
+              <button
+                type="submit"
+                class="next-button group relative min-h-[3.25rem] min-w-[9rem] rounded-xl border-[3px] border-blue-950 bg-blue-700 px-7 font-mono text-sm font-bold tracking-wider text-white shadow-[inset_0_2px_3px_rgba(255,255,255,.45),0_4px_0_#172554,0_6px_8px_rgba(0,0,0,.22)] transition-all duration-100 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-[#e6ffff] active:translate-y-[3px] active:shadow-[inset_0_2px_3px_rgba(255,255,255,.35),0_1px_0_#172554,0_2px_4px_rgba(0,0,0,.2)]"
+              >
+
+                <span
+                  class="flex items-center justify-center gap-3"
+                >
+
+                  NEXT
+
+                  <span
+                    class="text-lg leading-none transition-transform duration-150 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+
+                </span>
+
+              </button>
+
+            </div>
+
+
+          </form>
+
+
+          <!-- ==================================================
+               TERMINAL FOOTER
+               ================================================== -->
+
+          <div
+            class="border-t border-[#9bcacc] bg-[#d1f1f1] px-4 py-3 text-center"
+          >
+
+            <p
+              class="font-mono text-[0.6rem] font-bold tracking-wider text-slate-600 sm:text-xs"
+            >
+              BALLOT CONFIGURATION UNIT
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</body>
+</html>

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Create URL - GPP EVM</title>
+
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background: #f4efe5;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /*
+    ==========================================================
+    PAGE
+    ==========================================================
+    */
+
+    .page-layout {
+      width: 100%;
+      max-width: 1280px;
+    }
+
+    .report-shell {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /*
+    ==========================================================
+    PAPER REPORT
+    ==========================================================
+    */
+
+    .paper-report {
+      background:
+        linear-gradient(
+          rgba(255,255,255,.96),
+          rgba(255,255,255,.96)
+        );
+
+      box-shadow:
+        0 25px 55px rgba(48,65,68,.22),
+        0 3px 8px rgba(48,65,68,.10);
+    }
+
+    /*
+    ==========================================================
+    DATE INPUT
+    ==========================================================
+    */
+
+    .datetime-input {
+      min-width: 0;
+    }
+
+    /*
+    ==========================================================
+    MOBILE
+    ==========================================================
+    */
+
+    @media (max-width: 767px) {
+
+      .page-layout {
+        flex-direction: column !important;
+      }
+
+      .intro-panel {
+        order: 2 !important;
+        text-align: center;
+      }
+
+      .report-panel {
+        order: 1 !important;
+      }
+
+      .intro-description {
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .intro-notice {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      main {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+      }
+
+      .report-shell {
+        max-width: 100%;
+      }
+
+      .paper-report {
+        border-radius: 1.5rem !important;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    SMALL PHONES / FLIP PHONES
+    ==========================================================
+    */
+
+    @media (max-width: 360px) {
+
+      .paper-report {
+        border-width: 3px !important;
+        border-radius: 1.2rem !important;
+      }
+
+      .report-content {
+        padding: 0.75rem !important;
+      }
+
+      .report-title {
+        font-size: 1.3rem !important;
+      }
+
+      .option-number {
+        width: 2rem !important;
+        font-size: 0.6rem !important;
+      }
+
+      .option-text {
+        font-size: 0.75rem !important;
+      }
+
+      .datetime-input {
+        font-size: 0.72rem !important;
+      }
+
+      .action-button {
+        min-height: 3rem !important;
+        font-size: 0.7rem !important;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    TABLET
+    ==========================================================
+    */
+
+    @media (min-width: 768px) and (max-width: 1100px) {
+
+      .page-layout {
+        gap: 2rem !important;
+      }
+
+      .report-shell {
+        max-width: 760px;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    DESKTOP
+    ==========================================================
+    */
+
+    @media (min-width: 1101px) {
+
+      .page-layout {
+        display: grid !important;
+        grid-template-columns:
+          minmax(240px, 0.65fr)
+          minmax(600px, 1.35fr);
+
+        align-items: center;
+
+        gap: 4rem;
+      }
+
+      .intro-panel {
+        text-align: left;
+      }
+
+      .intro-description {
+        margin-left: 0 !important;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    LARGE DESKTOP / TV
+    ==========================================================
+    */
+
+    @media (min-width: 1600px) {
+
+      .page-layout {
+        max-width: 1500px;
+
+        grid-template-columns:
+          minmax(300px, 0.7fr)
+          minmax(750px, 1.3fr);
+
+        gap: 6rem;
+      }
+
+      .report-shell {
+        max-width: 1050px;
+      }
+
+      .report-title {
+        font-size: 2.5rem !important;
+      }
+
+      .option-text {
+        font-size: 1.1rem;
+      }
+    }
+
+
+    /*
+    ==========================================================
+    PREVENT OVERFLOW
+    ==========================================================
+    */
+
+    @media (max-width: 420px) {
+
+      body {
+        overflow-x: hidden;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body
+  class="min-h-screen bg-[#f4efe5] font-[Hind_Madurai] text-slate-900"
+>
+
+
+  <!-- ========================================================
+       MAIN
+       ======================================================== -->
+
+  <main
+    class="flex w-full flex-1 items-center justify-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+  >
+
+    <div class="page-layout flex items-center">
+
+
+      <!-- ====================================================
+           LEFT INFORMATION
+           ==================================================== -->
+
+      <header
+        class="intro-panel order-2 w-full max-w-md lg:order-1"
+      >
+
+        <p
+          class="font-mono text-xs font-bold tracking-[0.2em] text-orange-700"
+        >
+          BALLOT GENERATOR
+        </p>
+
+
+        <h1
+          class="mt-3 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
+        >
+          Review your booth.
+        </h1>
+
+
+        <p
+          class="intro-description mt-5 max-w-sm text-sm leading-relaxed text-slate-600 sm:text-base"
+        >
+          Your ballot configuration is ready. Review the report,
+          choose when voting should open and close, then generate
+          your unique voting URL.
+        </p>
+
+
+        <!-- Notice -->
+
+        <div
+          class="intro-notice mt-7 max-w-sm border-l-4 border-emerald-600 bg-emerald-50 px-4 py-3 text-sm font-bold leading-snug text-emerald-950 shadow-sm"
+        >
+
+          Check every option and verify your voting schedule
+          before generating the booth URL.
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div
+          class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800"
+        >
+
+          <span
+            class="h-2 w-2 rounded-full bg-emerald-600 shadow-[0_0_7px_rgba(16,185,129,.55)]"
+          ></span>
+
+          Ballot ready
+
+        </div>
+
+      </header>
+
+
+      <!-- ====================================================
+           PAPER REPORT
+           ==================================================== -->
+
+      <section
+        class="report-panel report-shell order-1 lg:order-2"
+        aria-label="Ballot creation report"
+      >
+
+
+        <!-- ==================================================
+             PAPER
+             ================================================== -->
+
+        <div
+          class="paper-report overflow-hidden rounded-[2rem] border-2 border-[#63787a]"
+        >
+
+
+          <!-- ================================================
+               REPORT HEADER
+               ================================================ -->
+
+          <div
+            class="border-b-2 border-[#63787a] bg-[#d1f1f1] px-5 py-5 sm:px-8"
+          >
+
+            <div
+              class="flex items-start justify-between gap-4"
+            >
+
+              <div>
+
+                <p
+                  class="font-mono text-[0.65rem] font-bold tracking-[0.18em] text-slate-600 sm:text-xs"
+                >
+                  ELECTRONIC VOTING SYSTEM
+                </p>
+
+                <h2
+                  class="report-title mt-2 text-2xl font-bold leading-tight sm:text-3xl"
+                >
+                  Ballot Creation Report
+                </h2>
+
+              </div>
+
+
+              <!-- Document badge -->
+
+              <div
+                class="shrink-0 rounded-lg border border-[#84b6b8] bg-white px-3 py-2 text-center shadow-sm"
+              >
+
+                <p
+                  class="font-mono text-[0.55rem] font-bold tracking-wider text-slate-500"
+                >
+                  STATUS
+                </p>
+
+                <p
+                  class="mt-0.5 text-xs font-bold text-emerald-700"
+                >
+                  READY
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               REPORT CONTENT
+               ================================================= -->
+
+          <div
+            class="report-content p-4 sm:p-6 md:p-8"
+          >
+
+
+            <!-- ===============================================
+                 BALLOT INFORMATION
+                 =============================================== -->
+
+            <div
+              class="rounded-xl border border-[#c7dada] bg-[#f5fcfc] p-4 sm:p-5"
+            >
+
+              <p
+                class="mb-4 font-mono text-[0.65rem] font-bold uppercase tracking-wider text-slate-500"
+              >
+                Ballot Information
+              </p>
+
+
+              <!-- TITLE -->
+
+              <div>
+
+                <p
+                  class="font-mono text-[0.6rem] font-bold uppercase tracking-wider text-slate-500"
+                >
+                  Title
+                </p>
+
+                <h3
+                  class="mt-1 break-words text-xl font-bold leading-tight text-slate-900 sm:text-2xl"
+                >
+                  <%= user.title || "Untitled Ballot" %>
+                </h3>
+
+              </div>
+
+
+              <!-- CAPTION -->
+
+              <div
+                class="mt-4 border-t border-[#d5e5e5] pt-4"
+              >
+
+                <p
+                  class="font-mono text-[0.6rem] font-bold uppercase tracking-wider text-slate-500"
+                >
+                  Caption
+                </p>
+
+                <p
+                  class="mt-1 break-words text-sm leading-relaxed text-slate-600 sm:text-base"
+                >
+                  <%= user.captions || "No caption provided." %>
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DIVIDER
+                 ================================================= -->
+
+            <div
+              class="my-6 flex items-center gap-3"
+            >
+
+              <span
+                class="h-px flex-1 bg-[#c7dada]"
+              ></span>
+
+              <span
+                class="font-mono text-[0.6rem] font-bold tracking-widest text-slate-500"
+              >
+                VOTING OPTIONS
+              </span>
+
+              <span
+                class="h-px flex-1 bg-[#c7dada]"
+              ></span>
+
+            </div>
+
+
+            <!-- ===============================================
+                 OPTIONS
+                 =============================================== -->
+
+            <div
+              class="overflow-hidden rounded-xl border border-[#9bcacc]"
+            >
+
+
+              <!-- OPTION 01 -->
+
+              <div
+                class="grid min-h-[4.25rem] grid-cols-[3rem_minmax(0,1fr)] bg-white"
+              >
+
+                <div
+                  class="option-number flex w-12 items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-500"
+                >
+                  01
+                </div>
+
+                <div
+                  class="option-text flex min-w-0 items-center px-4 text-sm font-semibold text-slate-800 sm:text-base"
+                >
+                  <%= user.option1 || "No option" %>
+                </div>
+
+              </div>
+
+
+              <!-- OPTION 02 -->
+
+              <div
+                class="grid min-h-[4.25rem] grid-cols-[3rem_minmax(0,1fr)] border-t border-[#9bcacc] bg-white"
+              >
+
+                <div
+                  class="option-number flex w-12 items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-500"
+                >
+                  02
+                </div>
+
+                <div
+                  class="option-text flex min-w-0 items-center px-4 text-sm font-semibold text-slate-800 sm:text-base"
+                >
+                  <%= user.option2 || "No option" %>
+                </div>
+
+              </div>
+
+
+              <!-- OPTION 03 -->
+
+              <div
+                class="grid min-h-[4.25rem] grid-cols-[3rem_minmax(0,1fr)] border-t border-[#9bcacc] bg-white"
+              >
+
+                <div
+                  class="option-number flex w-12 items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-500"
+                >
+                  03
+                </div>
+
+                <div
+                  class="option-text flex min-w-0 items-center px-4 text-sm font-semibold text-slate-800 sm:text-base"
+                >
+                  <%= user.option3 || "No option" %>
+                </div>
+
+              </div>
+
+
+              <!-- OPTION 04 -->
+
+              <div
+                class="grid min-h-[4.25rem] grid-cols-[3rem_minmax(0,1fr)] border-t border-[#9bcacc] bg-white"
+              >
+
+                <div
+                  class="option-number flex w-12 items-center justify-center border-r border-[#9bcacc] bg-[#f3fbfb] font-mono text-xs font-bold text-slate-500"
+                >
+                  04
+                </div>
+
+                <div
+                  class="option-text flex min-w-0 items-center px-4 text-sm font-semibold text-slate-800 sm:text-base"
+                >
+                  <%= user.option4 || "No option" %>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SCHEDULE FORM
+                 ================================================= -->
+
+            <form
+              action="/dashboard/create-poll/create-url/created-url"
+              method="POST"
+              id="createdUrlForm"
+              class="mt-7"
+            >
+
+
+              <!-- =============================================
+                   SCHEDULE BOX
+                   ============================================= -->
+
+              <div
+                class="rounded-2xl border-2 border-[#84b6b8] bg-[#d9f5f5] p-4 shadow-[inset_0_1px_3px_rgba(0,0,0,.06)] sm:p-5"
+              >
+
+
+                <!-- Heading -->
+
+                <div
+                  class="mb-5 flex items-center gap-3"
+                >
+
+                  <div
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#84b6b8] bg-white font-mono text-xs font-bold text-slate-600 shadow-sm"
+                  >
+                    ⏱
+                  </div>
+
+                  <div>
+
+                    <p
+                      class="text-sm font-bold text-slate-800"
+                    >
+                      Voting schedule
+                    </p>
+
+                    <p
+                      class="text-[0.7rem] leading-relaxed text-slate-500"
+                    >
+                      Define when this booth becomes active.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ===========================================
+                     START DATE/TIME
+                     =========================================== -->
+
+                <div>
+
+                  <label
+                    for="startDateTime"
+                    class="mb-1.5 block font-mono text-[0.65rem] font-bold uppercase tracking-wider text-slate-600"
+                  >
+                    Starting date &amp; time
+                  </label>
+
+                  <input
+                    id="startDateTime"
+                    name="startDateTime"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="For eg. YYYY-MM-DD HH:MM:SS"
+                    maxlength="19"
+                    class="datetime-input w-full rounded-xl border-2 border-[#9bcacc] bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-700 focus:ring-4 focus:ring-blue-100 sm:text-base"
+                  >
+
+                  <p
+                    id="startError"
+                    class="mt-1.5 hidden text-xs font-semibold text-red-700"
+                    role="alert"
+                  ></p>
+
+                </div>
+
+
+                <!-- ===========================================
+                     END DATE/TIME
+                     =========================================== -->
+
+                <div class="mt-4">
+
+                  <label
+                    for="endDateTime"
+                    class="mb-1.5 block font-mono text-[0.65rem] font-bold uppercase tracking-wider text-slate-600"
+                  >
+                    Ending date &amp; time
+                  </label>
+
+                  <input
+                    id="endDateTime"
+                    name="endDateTime"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="For eg. YYYY-MM-DD HH:MM:SS"
+                    maxlength="19"
+                    class="datetime-input w-full rounded-xl border-2 border-[#9bcacc] bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-700 focus:ring-4 focus:ring-blue-100 sm:text-base"
+                  >
+
+                  <p
+                    id="endError"
+                    class="mt-1.5 hidden text-xs font-semibold text-red-700"
+                    role="alert"
+                  ></p>
+
+                </div>
+
+
+                <!-- General error -->
+
+                <div
+                  id="scheduleError"
+                  class="mt-4 hidden rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-red-800"
+                  role="alert"
+                ></div>
+
+              </div>
+
+
+              <!-- =================================================
+                   ACTION BUTTONS
+                   ================================================= -->
+
+              <div
+                class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between"
+              >
+
+
+                <!-- BACK -->
+
+                <button
+                  type="submit"
+                  name="back"
+                  value="back"
+                  class="action-button min-h-[3.25rem] rounded-xl border-[3px] border-[#63787a] bg-[#d1f1f1] px-7 font-mono text-sm font-bold tracking-wider text-slate-700 shadow-[inset_0_2px_3px_rgba(255,255,255,.7),0_3px_0_#526568,0_5px_7px_rgba(0,0,0,.16)] transition-all duration-100 hover:bg-[#c1e5e5] focus:outline-none focus:ring-4 focus:ring-amber-400 focus:ring-offset-2 active:translate-y-[3px] active:shadow-[inset_0_2px_3px_rgba(255,255,255,.5),0_1px_0_#526568,0_2px_4px_rgba(0,0,0,.15)]"
+                >
+
+                  ← BACK
+
+                </button>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                  type="submit"
+                  name="submit"
+                  value="submit"
+                  class="action-button group min-h-[3.25rem] rounded-xl border-[3px] border-blue-950 bg-blue-700 px-8 font-mono text-sm font-bold tracking-wider text-white shadow-[inset_0_2px_3px_rgba(255,255,255,.45),0_4px_0_#172554,0_6px_8px_rgba(0,0,0,.22)] transition-all duration-100 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-amber-400 focus:ring-offset-2 active:translate-y-[3px] active:shadow-[inset_0_2px_3px_rgba(255,255,255,.35),0_1px_0_#172554,0_2px_4px_rgba(0,0,0,.2)]"
+                >
+
+                  <span
+                    class="flex items-center justify-center gap-3"
+                  >
+
+                    CREATE URL
+
+                    <span
+                      class="text-lg leading-none transition-transform duration-150 group-hover:translate-x-0.5"
+                    >
+                      →
+                    </span>
+
+                  </span>
+
+                </button>
+
+              </div>
+
+
+              <!-- =================================================
+                   HIDDEN BALLOT DATA
+                   ================================================= -->
+
+              <input
+                type="hidden"
+                name="title"
+                value="<%= user.title || '' %>"
+              >
+
+              <input
+                type="hidden"
+                name="captions"
+                value="<%= user.captions || '' %>"
+              >
+
+              <input
+                type="hidden"
+                name="option1"
+                value="<%= user.option1 || '' %>"
+              >
+
+              <input
+                type="hidden"
+                name="option2"
+                value="<%= user.option2 || '' %>"
+              >
+
+              <input
+                type="hidden"
+                name="option3"
+                value="<%= user.option3 || '' %>"
+              >
+
+              <input
+                type="hidden"
+                name="option4"
+                value="<%= user.option4 || '' %>"
+              >
+
+            </form>
+
+          </div>
+
+
+          <!-- ==================================================
+               PAPER FOOTER
+               ================================================== -->
+
+          <div
+            class="border-t-2 border-[#63787a] bg-[#d1f1f1] px-4 py-3 text-center"
+          >
+
+            <p
+              class="font-mono text-[0.6rem] font-bold tracking-wider text-slate-600 sm:text-xs"
+            >
+              BALLOT CONFIGURATION UNIT
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================
+       JAVASCRIPT
+       ======================================================== -->
+
+  <script>
+
+    const form = document.getElementById("createdUrlForm");
+
+    const startInput =
+      document.getElementById("startDateTime");
+
+    const endInput =
+      document.getElementById("endDateTime");
+
+    const startError =
+      document.getElementById("startError");
+
+    const endError =
+      document.getElementById("endError");
+
+    const scheduleError =
+      document.getElementById("scheduleError");
+
+
+    /*
+    ==========================================================
+    EXPECTED FORMAT
+
+    YYYY-MM-DD HH:MM:SS
+
+    Example:
+
+    2026-08-26 15:30:00
+    ==========================================================
+    */
+
+    const dateTimeRegex =
+      /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
+
+
+    /*
+    ==========================================================
+    PARSE DATETIME
+
+    IMPORTANT:
+    This constructs the date using the user's LOCAL
+    browser/system timezone.
+    ==========================================================
+    */
+
+    function parseDateTime(value) {
+
+      const match = value.match(dateTimeRegex);
+
+      if (!match) {
+        return null;
+      }
+
+      const year = Number(match[1]);
+      const month = Number(match[2]);
+      const day = Number(match[3]);
+
+      const hours = Number(match[4]);
+      const minutes = Number(match[5]);
+      const seconds = Number(match[6]);
+
+
+      /*
+      Validate ranges
+      */
+
+      if (month < 1 || month > 12) {
+        return null;
+      }
+
+      if (hours < 0 || hours > 23) {
+        return null;
+      }
+
+      if (minutes < 0 || minutes > 59) {
+        return null;
+      }
+
+      if (seconds < 0 || seconds > 59) {
+        return null;
+      }
+
+
+      /*
+      JavaScript months are 0-based.
+      */
+
+      const date = new Date(
+        year,
+        month - 1,
+        day,
+        hours,
+        minutes,
+        seconds
+      );
+
+
+      /*
+      This catches impossible dates such as:
+
+      2026-02-31
+      2026-13-10
+      */
+
+      if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month - 1 ||
+        date.getDate() !== day ||
+        date.getHours() !== hours ||
+        date.getMinutes() !== minutes ||
+        date.getSeconds() !== seconds
+      ) {
+        return null;
+      }
+
+
+      return date;
+
+    }
+
+
+    /*
+    ==========================================================
+    ERROR HELPERS
+    ==========================================================
+    */
+
+    function showError(element, message) {
+
+      element.textContent = message;
+
+      element.classList.remove("hidden");
+
+    }
+
+
+    function hideError(element) {
+
+      element.textContent = "";
+
+      element.classList.add("hidden");
+
+    }
+
+
+    /*
+    ==========================================================
+    CLEAR ERROR WHEN USER STARTS TYPING
+    ==========================================================
+    */
+
+    startInput.addEventListener("input", () => {
+
+      hideError(startError);
+      hideError(scheduleError);
+
+    });
+
+
+    endInput.addEventListener("input", () => {
+
+      hideError(endError);
+      hideError(scheduleError);
+
+    });
+
+
+    /*
+    ==========================================================
+    FORM VALIDATION
+    ==========================================================
+    */
+
+    form.addEventListener("submit", function (event) {
+
+      /*
+      Identify which button was pressed.
+      */
+
+      const submitter = event.submitter;
+
+
+      /*
+      BACK button should NOT require
+      date/time validation.
+      */
+
+      if (
+        submitter &&
+        submitter.name === "back"
+      ) {
+        return;
+      }
+
+
+      /*
+      Clear previous errors.
+      */
+
+      hideError(startError);
+      hideError(endError);
+      hideError(scheduleError);
+
+
+      const startValue =
+        startInput.value.trim();
+
+      const endValue =
+        endInput.value.trim();
+
+
+      /*
+      ========================================================
+      START REQUIRED
+      ========================================================
+      */
+
+      if (!startValue) {
+
+        event.preventDefault();
+
+        showError(
+          startError,
+          "Please enter a starting date and time."
+        );
+
+        startInput.focus();
+
+        return;
+      }
+
+
+      /*
+      ========================================================
+      END REQUIRED
+      ========================================================
+      */
+
+      if (!endValue) {
+
+        event.preventDefault();
+
+        showError(
+          endError,
+          "Please enter an ending date and time."
+        );
+
+        endInput.focus();
+
+        return;
+      }
+
+
+      /*
+      ========================================================
+      FORMAT VALIDATION
+      ========================================================
+      */
+
+      const startDate =
+        parseDateTime(startValue);
+
+      const endDate =
+        parseDateTime(endValue);
+
+
+      if (!startDate) {
+
+        event.preventDefault();
+
+        showError(
+          startError,
+          "Invalid format. Use YYYY-MM-DD HH:MM:SS."
+        );
+
+        startInput.focus();
+
+        return;
+      }
+
+
+      if (!endDate) {
+
+        event.preventDefault();
+
+        showError(
+          endError,
+          "Invalid format. Use YYYY-MM-DD HH:MM:SS."
+        );
+
+        endInput.focus();
+
+        return;
+      }
+
+
+      /*
+      ========================================================
+      CURRENT SYSTEM TIME
+      ========================================================
+      */
+
+      const now = new Date();
+
+
+      /*
+      START MUST NOT BE BEFORE NOW
+      */
+
+      if (startDate.getTime() < now.getTime()) {
+
+        event.preventDefault();
+
+        showError(
+          startError,
+          "Starting date and time cannot be earlier than the current system time."
+        );
+
+        startInput.focus();
+
+        return;
+      }
+
+
+      /*
+      ========================================================
+      END MUST BE AFTER START
+      ========================================================
+      */
+
+      if (endDate.getTime() <= startDate.getTime()) {
+
+        event.preventDefault();
+
+        showError(
+          endError,
+          "Ending date and time must be later than the starting date and time."
+        );
+
+        endInput.focus();
+
+        return;
+      }
+
+
+      /*
+      ========================================================
+      EVERYTHING VALID
+      ========================================================
+      */
+
+      hideError(startError);
+      hideError(endError);
+      hideError(scheduleError);
+
+    });
+
+  </script>
+
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</body>
+
+</html>

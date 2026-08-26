@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>E-VOTEX - Dashboard</title>
 
@@ -165,8 +164,7 @@
          TOP NAVBAR
     ========================================================= -->
 
-    <nav
-        class="fixed left-0 right-0 top-0 z-50 h-16 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <nav class="fixed left-0 right-0 top-0 z-50 h-16 border-b border-slate-200 bg-white/95 backdrop-blur">
 
         <div class="flex h-full items-center justify-between px-4 sm:px-6">
 
@@ -178,23 +176,13 @@
 
                 <!-- MOBILE MENU -->
 
-                <button
-                    id="mobileMenuButton"
-                    type="button"
+                <button id="mobileMenuButton" type="button"
                     class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-100 md:hidden"
                     aria-label="Open navigation menu">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M4 6h16M4 12h16M4 18h16" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
 
                     </svg>
 
@@ -203,23 +191,14 @@
 
                 <!-- E-VOTEX LOGO -->
 
-                <a
-                    href="/dashboard"
-                    class="flex items-center gap-2.5 sm:gap-3">
+                <a href="/dashboard" class="flex items-center gap-2.5 sm:gap-3">
 
                     <div
                         class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
 
-                        <svg
-                            class="h-5 w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            viewBox="0 0 24 24">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                            <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 3v18M5 7h14M5 17h14M7 7v10M17 7v10" />
 
                         </svg>
@@ -229,15 +208,13 @@
 
                     <div class="hidden sm:block">
 
-                        <div
-                            class="text-base font-bold tracking-tight text-slate-900">
+                        <div class="text-base font-bold tracking-tight text-slate-900">
 
                             E-VOTEX
 
                         </div>
 
-                        <div
-                            class="mono text-[9px] font-semibold tracking-[.18em] text-emerald-600">
+                        <div class="mono text-[9px] font-semibold tracking-[.18em] text-emerald-600">
 
                             DIGITAL DEMOCRACY
 
@@ -278,8 +255,7 @@
 
                 <!-- FEEDBACK -->
 
-                <a
-                    href="/feedback"
+                <a href="/feedback"
                     class="hidden rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:inline-flex">
 
                     Feedback
@@ -289,30 +265,16 @@
 
                 <!-- HELP -->
 
-                <a
-                    href="/help"
-                    aria-label="Help"
+                <a href="/help" aria-label="Help"
                     class="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 sm:flex">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9" />
+                        <circle cx="12" cy="12" r="9" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+                        <path stroke-linecap="round" d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M12 16.5h.01" />
+                        <path stroke-linecap="round" d="M12 16.5h.01" />
 
                     </svg>
 
@@ -323,36 +285,24 @@
 
                 <div class="relative">
 
-                    <button
-                        id="profileButton"
-                        type="button"
+                    <button id="profileButton" type="button"
                         class="flex items-center gap-2 rounded-lg p-1.5 transition hover:bg-slate-100"
                         aria-expanded="false">
 
-                        <img
-                            src="<%= (user && user.profile_image) ? user.profile_image : '/images/default-avatar.png' %>"
-                            alt="Profile"
-                            class="h-8 w-8 rounded-full border border-slate-200 object-cover"
-                            onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent((user && user.username) ? user.username : 'User') %>&background=10b981&color=ffffff';">
+                        <img src="<%= (locals.user && locals.user.profile_image) ? locals.user.profile_image : '/images/default-avatar.png' %>"
+                            alt="Profile" class="h-8 w-8 rounded-full border border-slate-200 object-cover"
+                            onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent((locals.user && locals.user.username) ? locals.user.username : 'User') %>&background=10b981&color=ffffff';">
 
-                        <span
-                            class="hidden max-w-32 truncate text-sm font-semibold text-slate-700 lg:block">
+                        <span class="hidden max-w-32 truncate text-sm font-semibold text-slate-700 lg:block">
 
                             <%= (user && user.username) ? user.username : "User" %>
 
                         </span>
 
-                        <svg
-                            class="hidden h-4 w-4 text-slate-500 lg:block"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            viewBox="0 0 24 24">
+                        <svg class="hidden h-4 w-4 text-slate-500 lg:block" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="m6 9 6 6 6-6" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
 
                         </svg>
 
@@ -361,12 +311,10 @@
 
                     <!-- PROFILE DROPDOWN -->
 
-                    <div
-                        id="profileMenu"
+                    <div id="profileMenu"
                         class="profile-menu hidden-menu absolute right-0 top-12 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
 
-                        <div
-                            class="border-b border-slate-100 px-4 py-3">
+                        <div class="border-b border-slate-100 px-4 py-3">
 
                             <p class="text-sm font-bold text-slate-900">
 
@@ -385,25 +333,16 @@
 
                         <div class="p-1.5">
 
-                            <a
-                                href="/account-settings"
+                            <a href="/account-settings"
                                 class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
 
-                                <svg
-                                    class="h-4 w-4 text-slate-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
+                                <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8"
                                     viewBox="0 0 24 24">
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                    <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                    <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 1.7-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.09a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.7-1.7.06-.06A1.7 1.7 0 0 0 8.46 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.9A1.7 1.7 0 0 0 8.46 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.7-1.7.06.06A1.7 1.7 0 0 0 11.7 6.08V6h2.4v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.7 1.7-.06.06A1.7 1.7 0 0 0 18.46 10c.2.62.78 1.03 1.43 1.03H20v2.4h-.11A1.7 1.7 0 0 0 19.4 15Z" />
 
                                 </svg>
@@ -413,24 +352,15 @@
                             </a>
 
 
-                            <a
-                                href="/help"
+                            <a href="/help"
                                 class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
 
-                                <svg
-                                    class="h-4 w-4 text-slate-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
+                                <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8"
                                     viewBox="0 0 24 24">
 
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9" />
+                                    <circle cx="12" cy="12" r="9" />
 
-                                    <path
-                                        stroke-linecap="round"
+                                    <path stroke-linecap="round"
                                         d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
 
                                 </svg>
@@ -444,25 +374,15 @@
 
                         <div class="border-t border-slate-100 p-1.5">
 
-                            <a
-                                href="/logout"
+                            <a href="/logout"
                                 class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50">
 
-                                <svg
-                                    class="h-4 w-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M10 17l5-5-5-5M15 12H3" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 17l5-5-5-5M15 12H3" />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                    <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 19V5a2 2 0 0 0-2-2h-6" />
 
                                 </svg>
@@ -495,8 +415,7 @@
 
             <!-- WORKSPACE -->
 
-            <p
-                class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+            <p class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
 
                 Workspace
 
@@ -507,16 +426,10 @@
 
                 <!-- DASHBOARD -->
 
-                <a
-                    href="/dashboard"
+                <a href="/dashboard"
                     class="sidebar-link flex items-center gap-3 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm font-bold text-emerald-700">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
                         <rect x="3" y="3" width="7" height="7" rx="1" />
                         <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -532,24 +445,14 @@
 
                 <!-- MY POLLS -->
 
-                <a
-                    href="/my-polls"
+                <a href="/my-polls"
                     class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <path
-                            stroke-linecap="round"
-                            d="M5 4h14v16H5z" />
+                        <path stroke-linecap="round" d="M5 4h14v16H5z" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M8 8h8M8 12h8M8 16h5" />
+                        <path stroke-linecap="round" d="M8 8h8M8 12h8M8 16h5" />
 
                     </svg>
 
@@ -560,28 +463,16 @@
 
                 <!-- JOINED POLLS -->
 
-                <a
-                    href="/joined-polls"
+                <a href="/joined-polls"
                     class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <path
-                            stroke-linecap="round"
-                            d="M16 11a4 4 0 1 0-8 0" />
+                        <path stroke-linecap="round" d="M16 11a4 4 0 1 0-8 0" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M4 20a6 6 0 0 1 16 0" />
+                        <path stroke-linecap="round" d="M4 20a6 6 0 0 1 16 0" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M18 8h3M19.5 6.5v3" />
+                        <path stroke-linecap="round" d="M18 8h3M19.5 6.5v3" />
 
                     </svg>
 
@@ -592,24 +483,14 @@
 
                 <!-- QUIZZES -->
 
-                <a
-                    href="/quizzes"
+                <a href="/quizzes"
                     class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <path
-                            stroke-linecap="round"
-                            d="M5 4h14v16H5z" />
+                        <path stroke-linecap="round" d="M5 4h14v16H5z" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M8 9h8M8 13h5" />
+                        <path stroke-linecap="round" d="M8 9h8M8 13h5" />
 
                     </svg>
 
@@ -625,8 +506,7 @@
 
             <!-- RESOURCES -->
 
-            <p
-                class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+            <p class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
 
                 Resources
 
@@ -635,29 +515,16 @@
 
             <nav class="space-y-1">
 
-                <a
-                    href="/help"
+                <a href="/help"
                     class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9" />
+                        <circle cx="12" cy="12" r="9" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+                        <path stroke-linecap="round" d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M12 16.5h.01" />
+                        <path stroke-linecap="round" d="M12 16.5h.01" />
 
                     </svg>
 
@@ -666,19 +533,12 @@
                 </a>
 
 
-                <a
-                    href="/feedback"
+                <a href="/feedback"
                     class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <path
-                            stroke-linecap="round"
+                        <path stroke-linecap="round"
                             d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.3 9.3 0 0 1-4.2-1L3 20l1.5-4.2A8.4 8.4 0 1 1 21 11.5Z" />
 
                     </svg>
@@ -688,29 +548,16 @@
                 </a>
 
 
-                <a
-                    href="/about-us"
+                <a href="/about-us"
                     class="sidebar-link flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
 
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9" />
+                        <circle cx="12" cy="12" r="9" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M12 11v5" />
+                        <path stroke-linecap="round" d="M12 11v5" />
 
-                        <path
-                            stroke-linecap="round"
-                            d="M12 8h.01" />
+                        <path stroke-linecap="round" d="M12 8h.01" />
 
                     </svg>
 
@@ -726,8 +573,7 @@
 
             <!-- LEGAL -->
 
-            <p
-                class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+            <p class="mono mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
 
                 Legal
 
@@ -736,24 +582,21 @@
 
             <nav class="space-y-1">
 
-                <a
-                    href="/privacy-policy"
+                <a href="/privacy-policy"
                     class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
 
                     Privacy Policy
 
                 </a>
 
-                <a
-                    href="/terms-and-conditions"
+                <a href="/terms-and-conditions"
                     class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
 
                     Terms & Conditions
 
                 </a>
 
-                <a
-                    href="/security"
+                <a href="/security"
                     class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800">
 
                     Security
@@ -773,8 +616,7 @@
 
                 <div class="flex items-center gap-2">
 
-                    <span
-                        class="h-2 w-2 rounded-full bg-emerald-500">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500">
                     </span>
 
                     <span class="text-xs font-bold text-slate-700">
@@ -798,9 +640,7 @@
          MOBILE OVERLAY
     ========================================================= -->
 
-    <div
-        id="mobileOverlay"
-        class="fixed inset-0 z-40 hidden bg-slate-900/20 backdrop-blur-sm md:hidden">
+    <div id="mobileOverlay" class="fixed inset-0 z-40 hidden bg-slate-900/20 backdrop-blur-sm md:hidden">
     </div>
 
 
@@ -808,25 +648,20 @@
          MOBILE SIDEBAR
     ========================================================= -->
 
-    <aside
-        id="mobileSidebar"
+    <aside id="mobileSidebar"
         class="mobile-sidebar closed fixed bottom-0 left-0 top-16 z-50 w-72 border-r border-slate-200 bg-white shadow-xl md:hidden">
 
         <div class="sidebar-scroll h-full overflow-y-auto p-4">
 
             <div class="mb-5 flex items-center justify-between">
 
-                <span
-                    class="mono text-xs font-bold uppercase tracking-widest text-slate-400">
+                <span class="mono text-xs font-bold uppercase tracking-widest text-slate-400">
 
                     Navigation
 
                 </span>
 
-                <button
-                    id="closeMobileMenu"
-                    type="button"
-                    class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
+                <button id="closeMobileMenu" type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
 
                     ✕
 
@@ -837,32 +672,28 @@
 
             <nav class="space-y-1">
 
-                <a
-                    href="/dashboard"
+                <a href="/dashboard"
                     class="block rounded-lg bg-emerald-50 px-3 py-3 text-sm font-bold text-emerald-700">
 
                     Dashboard
 
                 </a>
 
-                <a
-                    href="/my-polls"
+                <a href="/my-polls"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
 
                     My Polls
 
                 </a>
 
-                <a
-                    href="/joined-polls"
+                <a href="/joined-polls"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
 
                     Joined Polls
 
                 </a>
 
-                <a
-                    href="/quizzes"
+                <a href="/quizzes"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
 
                     My Quizzes
@@ -873,24 +704,20 @@
                 <div class="my-4 border-t border-slate-100"></div>
 
 
-                <a
-                    href="/help"
-                    class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <a href="/help" class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
 
                     Help Center
 
                 </a>
 
-                <a
-                    href="/feedback"
+                <a href="/feedback"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
 
                     Feedback
 
                 </a>
 
-                <a
-                    href="/about-us"
+                <a href="/about-us"
                     class="block rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
 
                     About E-VOTEX
@@ -901,25 +728,20 @@
                 <div class="my-4 border-t border-slate-100"></div>
 
 
-                <a
-                    href="/privacy-policy"
-                    class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+                <a href="/privacy-policy" class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
 
                     Privacy Policy
 
                 </a>
 
-                <a
-                    href="/terms-and-conditions"
+                <a href="/terms-and-conditions"
                     class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
 
                     Terms & Conditions
 
                 </a>
 
-                <a
-                    href="/security"
-                    class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
+                <a href="/security" class="block rounded-lg px-3 py-3 text-sm text-slate-500 hover:bg-slate-50">
 
                     Security
 
@@ -936,8 +758,7 @@
          MAIN CONTENT
     ========================================================= -->
 
-    <main
-        class="dashboard-scroll ml-0 min-h-screen overflow-y-auto pt-16 md:ml-60">
+    <main class="dashboard-scroll ml-0 min-h-screen overflow-y-auto pt-16 md:ml-60">
 
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
 
@@ -946,8 +767,7 @@
                  BREADCRUMB
             ================================================= -->
 
-            <div
-                class="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
+            <div class="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
 
                 <span>
                     Workspace
@@ -968,18 +788,15 @@
                  HERO
             ================================================= -->
 
-            <section
-                class="hero-grid relative mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+            <section class="hero-grid relative mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
 
                 <div class="relative p-6 sm:p-8 lg:p-10">
 
-                    <div
-                        class="flex flex-col justify-between gap-7 lg:flex-row lg:items-center">
+                    <div class="flex flex-col justify-between gap-7 lg:flex-row lg:items-center">
 
                         <div class="max-w-3xl">
 
-                            <div
-                                class="mb-3 flex flex-wrap items-center gap-2">
+                            <div class="mb-3 flex flex-wrap items-center gap-2">
 
                                 <span
                                     class="mono inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.16em] text-emerald-700">
@@ -991,8 +808,7 @@
                                 <span
                                     class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-white px-2.5 py-1 text-[10px] font-bold text-emerald-700">
 
-                                    <span
-                                        class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500">
+                                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500">
                                     </span>
 
                                     Operational
@@ -1002,8 +818,7 @@
                             </div>
 
 
-                            <h1
-                                class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+                            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
 
                                 Welcome back,
                                 <span class="text-emerald-600">
@@ -1013,8 +828,7 @@
                             </h1>
 
 
-                            <p
-                                class="mt-3 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+                            <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
 
                                 Create polls, participate in decisions, and build
                                 interactive quizzes from one simple workspace.
@@ -1028,20 +842,13 @@
 
                         <div class="flex shrink-0 flex-col gap-2 sm:flex-row lg:flex-col">
 
-                            <a
-                                href="/create-poll"
+                            <a href="/dashboard/create-poll"
                                 class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700">
 
-                                <svg
-                                    class="h-4 w-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M12 5v14M5 12h14" />
+                                    <path stroke-linecap="round" d="M12 5v14M5 12h14" />
 
                                 </svg>
 
@@ -1050,23 +857,15 @@
                             </a>
 
 
-                            <a
-                                href="/join-poll"
+                            <a href="/join-poll"
                                 class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50">
 
                                 Join a Poll
 
-                                <svg
-                                    class="h-4 w-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m9 18 6-6-6-6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
 
                                 </svg>
 
@@ -1085,14 +884,12 @@
                  STATISTICS
             ================================================= -->
 
-            <section
-                class="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <section class="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
 
 
                 <!-- CREATED POLLS -->
 
-                <div
-                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+                <div class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                     <div class="flex items-start justify-between">
 
@@ -1109,23 +906,14 @@
                         </div>
 
 
-                        <div
-                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M5 4h14v16H5z" />
+                                <path stroke-linecap="round" d="M5 4h14v16H5z" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M8 8h8M8 12h8M8 16h5" />
+                                <path stroke-linecap="round" d="M8 8h8M8 12h8M8 16h5" />
 
                             </svg>
 
@@ -1142,8 +930,7 @@
 
                 <!-- JOINED POLLS -->
 
-                <div
-                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+                <div class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                     <div class="flex items-start justify-between">
 
@@ -1160,23 +947,14 @@
                         </div>
 
 
-                        <div
-                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M16 11a4 4 0 1 0-8 0" />
+                                <path stroke-linecap="round" d="M16 11a4 4 0 1 0-8 0" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M4 20a6 6 0 0 1 16 0" />
+                                <path stroke-linecap="round" d="M4 20a6 6 0 0 1 16 0" />
 
                             </svg>
 
@@ -1193,8 +971,7 @@
 
                 <!-- QUIZZES -->
 
-                <div
-                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+                <div class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                     <div class="flex items-start justify-between">
 
@@ -1211,23 +988,14 @@
                         </div>
 
 
-                        <div
-                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M5 4h14v16H5z" />
+                                <path stroke-linecap="round" d="M5 4h14v16H5z" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M8 9h8M8 13h5" />
+                                <path stroke-linecap="round" d="M8 9h8M8 13h5" />
 
                             </svg>
 
@@ -1244,8 +1012,7 @@
 
                 <!-- ACCOUNT STATUS -->
 
-                <div
-                    class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+                <div class="dashboard-card rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                     <div class="flex items-start justify-between">
 
@@ -1257,12 +1024,10 @@
 
                             <div class="mt-3 flex items-center gap-2">
 
-                                <span
-                                    class="h-2.5 w-2.5 rounded-full bg-emerald-500">
+                                <span class="h-2.5 w-2.5 rounded-full bg-emerald-500">
                                 </span>
 
-                                <span
-                                    class="text-sm font-bold text-emerald-700">
+                                <span class="text-sm font-bold text-emerald-700">
 
                                     Active
 
@@ -1273,19 +1038,12 @@
                         </div>
 
 
-                        <div
-                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="m5 12 4 4L19 6" />
+                                <path stroke-linecap="round" d="m5 12 4 4L19 6" />
 
                             </svg>
 
@@ -1308,20 +1066,17 @@
 
             <section class="mb-10">
 
-                <div
-                    class="mb-5 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+                <div class="mb-5 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
 
                     <div>
 
-                        <p
-                            class="mono text-[10px] font-bold uppercase tracking-[.18em] text-emerald-600">
+                        <p class="mono text-[10px] font-bold uppercase tracking-[.18em] text-emerald-600">
 
                             Get started
 
                         </p>
 
-                        <h2
-                            class="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                        <h2 class="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
 
                             What would you like to do?
 
@@ -1343,8 +1098,7 @@
 
                     <!-- CREATE POLL -->
 
-                    <a
-                        href="/create-poll"
+                    <a href="/dashboard/create-poll"
                         class="action-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                         <div class="flex items-start justify-between">
@@ -1352,23 +1106,12 @@
                             <div
                                 class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                                <svg
-                                    class="h-6 w-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"
                                     viewBox="0 0 24 24">
 
-                                    <rect
-                                        x="4"
-                                        y="4"
-                                        width="16"
-                                        height="16"
-                                        rx="2" />
+                                    <rect x="4" y="4" width="16" height="16" rx="2" />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M8 12h8M12 8v8" />
+                                    <path stroke-linecap="round" d="M8 12h8M12 8v8" />
 
                                 </svg>
 
@@ -1385,16 +1128,14 @@
                         </div>
 
 
-                        <h3
-                            class="mt-5 text-lg font-bold text-slate-900 group-hover:text-emerald-700">
+                        <h3 class="mt-5 text-lg font-bold text-slate-900 group-hover:text-emerald-700">
 
                             Create New Poll
 
                         </h3>
 
 
-                        <p
-                            class="mt-2 text-sm leading-6 text-slate-500">
+                        <p class="mt-2 text-sm leading-6 text-slate-500">
 
                             Create a question, add options, configure participation
                             rules, and share your poll.
@@ -1402,22 +1143,14 @@
                         </p>
 
 
-                        <div
-                            class="mt-5 flex items-center gap-2 text-sm font-bold text-emerald-600">
+                        <div class="mt-5 flex items-center gap-2 text-sm font-bold text-emerald-600">
 
                             Create poll
 
-                            <svg
-                                class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                viewBox="0 0 24 24">
+                            <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="m9 18 6-6-6-6" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
 
                             </svg>
 
@@ -1428,33 +1161,21 @@
 
                     <!-- JOIN POLL -->
 
-                    <a
-                        href="/join-poll"
+                    <a href="/join-poll"
                         class="action-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                         <div class="flex items-start justify-between">
 
-                            <div
-                                class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                                <svg
-                                    class="h-6 w-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"
                                     viewBox="0 0 24 24">
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M15 11a4 4 0 1 0-8 0" />
+                                    <path stroke-linecap="round" d="M15 11a4 4 0 1 0-8 0" />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M3 20a6 6 0 0 1 12 0" />
+                                    <path stroke-linecap="round" d="M3 20a6 6 0 0 1 12 0" />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M17 8h4M19 6v4" />
+                                    <path stroke-linecap="round" d="M17 8h4M19 6v4" />
 
                                 </svg>
 
@@ -1471,16 +1192,14 @@
                         </div>
 
 
-                        <h3
-                            class="mt-5 text-lg font-bold text-slate-900 group-hover:text-blue-700">
+                        <h3 class="mt-5 text-lg font-bold text-slate-900 group-hover:text-blue-700">
 
                             Join a Poll
 
                         </h3>
 
 
-                        <p
-                            class="mt-2 text-sm leading-6 text-slate-500">
+                        <p class="mt-2 text-sm leading-6 text-slate-500">
 
                             Enter a poll code or invitation link and participate
                             in an active decision.
@@ -1488,22 +1207,14 @@
                         </p>
 
 
-                        <div
-                            class="mt-5 flex items-center gap-2 text-sm font-bold text-blue-600">
+                        <div class="mt-5 flex items-center gap-2 text-sm font-bold text-blue-600">
 
                             Join poll
 
-                            <svg
-                                class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                viewBox="0 0 24 24">
+                            <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="m9 18 6-6-6-6" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
 
                             </svg>
 
@@ -1514,8 +1225,7 @@
 
                     <!-- CREATE QUIZ -->
 
-                    <a
-                        href="/create-quiz"
+                    <a href="/create-quiz"
                         class="action-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                         <div class="flex items-start justify-between">
@@ -1523,20 +1233,12 @@
                             <div
                                 class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
 
-                                <svg
-                                    class="h-6 w-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"
                                     viewBox="0 0 24 24">
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M5 4h14v16H5z" />
+                                    <path stroke-linecap="round" d="M5 4h14v16H5z" />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        d="M8 9h8M8 13h5M8 17h3" />
+                                    <path stroke-linecap="round" d="M8 9h8M8 13h5M8 17h3" />
 
                                 </svg>
 
@@ -1553,16 +1255,14 @@
                         </div>
 
 
-                        <h3
-                            class="mt-5 text-lg font-bold text-slate-900 group-hover:text-violet-700">
+                        <h3 class="mt-5 text-lg font-bold text-slate-900 group-hover:text-violet-700">
 
                             Create a Quiz
 
                         </h3>
 
 
-                        <p
-                            class="mt-2 text-sm leading-6 text-slate-500">
+                        <p class="mt-2 text-sm leading-6 text-slate-500">
 
                             Build interactive quizzes with questions, answers,
                             scoring, and participant results.
@@ -1570,22 +1270,14 @@
                         </p>
 
 
-                        <div
-                            class="mt-5 flex items-center gap-2 text-sm font-bold text-violet-600">
+                        <div class="mt-5 flex items-center gap-2 text-sm font-bold text-violet-600">
 
                             Create quiz
 
-                            <svg
-                                class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                viewBox="0 0 24 24">
+                            <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="m9 18 6-6-6-6" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
 
                             </svg>
 
@@ -1604,20 +1296,17 @@
 
             <section class="mb-10">
 
-                <div
-                    class="mb-5 flex items-end justify-between">
+                <div class="mb-5 flex items-end justify-between">
 
                     <div>
 
-                        <p
-                            class="mono text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
+                        <p class="mono text-[10px] font-bold uppercase tracking-[.18em] text-slate-400">
 
                             Workspace history
 
                         </p>
 
-                        <h2
-                            class="mt-1 text-xl font-bold tracking-tight text-slate-900">
+                        <h2 class="mt-1 text-xl font-bold tracking-tight text-slate-900">
 
                             Recent activity
 
@@ -1632,9 +1321,7 @@
                     </div>
 
 
-                    <a
-                        href="/activity"
-                        class="text-sm font-bold text-emerald-600 hover:text-emerald-700">
+                    <a href="/activity" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">
 
                         View all
 
@@ -1643,43 +1330,32 @@
                 </div>
 
 
-                <div
-                    class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
                     <!-- EMPTY STATE -->
 
-                    <div
-                        class="px-6 py-14 text-center sm:py-16">
+                    <div class="px-6 py-14 text-center sm:py-16">
 
-                        <div
-                            class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100">
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100">
 
-                            <svg
-                                class="h-7 w-7 text-slate-400"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-7 w-7 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M8 7h8M8 11h5M5 4h14v16H5z" />
+                                <path stroke-linecap="round" d="M8 7h8M8 11h5M5 4h14v16H5z" />
 
                             </svg>
 
                         </div>
 
 
-                        <h3
-                            class="mt-4 text-sm font-bold text-slate-800">
+                        <h3 class="mt-4 text-sm font-bold text-slate-800">
 
                             No recent activity
 
                         </h3>
 
 
-                        <p
-                            class="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500">
+                        <p class="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500">
 
                             Once you create or participate in polls and quizzes,
                             your recent activity will appear here.
@@ -1687,8 +1363,7 @@
                         </p>
 
 
-                        <a
-                            href="/create-poll"
+                        <a href="/dashboard/create-poll"
                             class="mt-5 inline-flex items-center rounded-lg bg-slate-900 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-slate-800">
 
                             Create your first poll
@@ -1706,14 +1381,12 @@
                  INFORMATION CARDS
             ================================================= -->
 
-            <section
-                class="grid gap-4 md:grid-cols-2">
+            <section class="grid gap-4 md:grid-cols-2">
 
 
                 <!-- PRIVACY -->
 
-                <a
-                    href="/privacy-policy"
+                <a href="/privacy-policy"
                     class="dashboard-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div class="flex gap-4">
@@ -1721,20 +1394,13 @@
                         <div
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <path
-                                    stroke-linecap="round"
+                                <path stroke-linecap="round"
                                     d="M12 3 5 6v5c0 4.5 2.9 8.5 7 10 4.1-1.5 7-5.5 7-10V6l-7-3Z" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="m9 12 2 2 4-4" />
+                                <path stroke-linecap="round" d="m9 12 2 2 4-4" />
 
                             </svg>
 
@@ -1743,16 +1409,14 @@
 
                         <div class="min-w-0">
 
-                            <h3
-                                class="font-bold text-slate-900 group-hover:text-emerald-700">
+                            <h3 class="font-bold text-slate-900 group-hover:text-emerald-700">
 
                                 Your privacy matters
 
                             </h3>
 
 
-                            <p
-                                class="mt-1 text-sm leading-6 text-slate-500">
+                            <p class="mt-1 text-sm leading-6 text-slate-500">
 
                                 Learn how E-VOTEX handles account information,
                                 poll data and participant privacy.
@@ -1760,8 +1424,7 @@
                             </p>
 
 
-                            <span
-                                class="mt-3 inline-flex text-xs font-bold text-emerald-600">
+                            <span class="mt-3 inline-flex text-xs font-bold text-emerald-600">
 
                                 Read privacy policy →
 
@@ -1776,8 +1439,7 @@
 
                 <!-- HELP -->
 
-                <a
-                    href="/help"
+                <a href="/help"
                     class="dashboard-card group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div class="flex gap-4">
@@ -1785,25 +1447,14 @@
                         <div
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"
                                 viewBox="0 0 24 24">
 
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="9" />
+                                <circle cx="12" cy="12" r="9" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
+                                <path stroke-linecap="round" d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-.9.8-1.8 1.2-1.8 2.4" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M12 16.5h.01" />
+                                <path stroke-linecap="round" d="M12 16.5h.01" />
 
                             </svg>
 
@@ -1812,16 +1463,14 @@
 
                         <div class="min-w-0">
 
-                            <h3
-                                class="font-bold text-slate-900 group-hover:text-blue-700">
+                            <h3 class="font-bold text-slate-900 group-hover:text-blue-700">
 
                                 Need help?
 
                             </h3>
 
 
-                            <p
-                                class="mt-1 text-sm leading-6 text-slate-500">
+                            <p class="mt-1 text-sm leading-6 text-slate-500">
 
                                 Browse the E-VOTEX help center or contact us
                                 if you need assistance.
@@ -1829,8 +1478,7 @@
                             </p>
 
 
-                            <span
-                                class="mt-3 inline-flex text-xs font-bold text-blue-600">
+                            <span class="mt-3 inline-flex text-xs font-bold text-blue-600">
 
                                 Visit help center →
 
@@ -1851,44 +1499,36 @@
 
             <footer class="mt-12 border-t border-slate-200 py-6">
 
-    <div class="flex flex-col items-center justify-center gap-3 text-center text-xs text-slate-400">
+                <div class="flex flex-col items-center justify-center gap-3 text-center text-xs text-slate-400">
 
-        <p>
-            © 2026 E-VOTEX. All rights reserved.
-        </p>
+                    <p>
+                        © 2026 E-VOTEX. All rights reserved.
+                    </p>
 
-        <div class="flex flex-wrap justify-center gap-4">
+                    <div class="flex flex-wrap justify-center gap-4">
 
-            <a
-                href="/privacy-policy"
-                class="hover:text-slate-600">
-                Privacy
-            </a>
+                        <a href="/privacy-policy" class="hover:text-slate-600">
+                            Privacy
+                        </a>
 
-            <a
-                href="/terms-and-conditions"
-                class="hover:text-slate-600">
-                Terms
-            </a>
+                        <a href="/terms-and-conditions" class="hover:text-slate-600">
+                            Terms
+                        </a>
 
-            <a
-                href="/security"
-                class="hover:text-slate-600">
-                Security
-            </a>
+                        <a href="/security" class="hover:text-slate-600">
+                            Security
+                        </a>
 
-            <a
-                href="/about-us"
-                class="hover:text-slate-600">
-                About
-            </a>
+                        <a href="/about-us" class="hover:text-slate-600">
+                            About
+                        </a>
 
-        </div>
+                    </div>
 
-    </div>
+                </div>
 
-</footer>
-</main>
+            </footer>
+    </main>
 
     <!-- =========================================================
          JAVASCRIPT
