@@ -995,8 +995,13 @@ app.get("/dashboard", (req, res) => {
     if (!req.session || !req.session.isAuthenticated) {
         return res.redirect("/login");
     }
-    console.log(req.session.user);
-    res.render("dashboard", { user: req.session.user || null });
+    else if (req.session.voter == true) {
+        return res.redirect(`/${req.session.code}`);
+    }
+    else {
+        console.log(req.session.user);
+        res.render("dashboard", { user: req.session.user || null });
+    }
 });
 
 
@@ -1080,7 +1085,8 @@ app.post("/dashboard/create-poll/create-url/created-url", async (req, res) => {
                 console.error("Election_data Insertion error:", electionsError);
                 return res.status(500).send("Unable to insert in Elections.");
             }
-            election_id = elections.election_id;
+
+            election_id = req.session.election_id = elections.election_id;
 
             const optionRows = options.map((value, index) => ({
                 election_id: election_id,
@@ -1117,7 +1123,7 @@ app.post("/dashboard/create-poll/create-url/created-url", async (req, res) => {
                 ends_at,
                 status,
                 happy_message,
-                electionCode: election_code
+                electionCode: req.session.election_id
             };
 
             return res.redirect("/dashboard/create-poll/create-url/created-url");
@@ -1161,101 +1167,187 @@ app.get("/dashboard/create-poll/create-url/created-url", (req,res) => {
 
 
 
-app.get("/test", async (req, res) => {
-    if (req.session.isVoted === 3) {
-        res.redirect("/confirmed");
-    }
-    else {
-        res.render("signin", {
-
-            supabaseUrl: process.env.SUPABASE_URL,
-
-            supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
-
-        });
-
-        //        res.render("index");
-        req.session.isVoted = 1;
-    }
-});
-
-
-
+/* ========================================================
+   STEP 2: SUBMIT SELECTION -> CONFIRMATION PREVIEW
+   Strictly requires isVoted === 1 (must come directly from ballot).
+   Advances session state to 2.
+======================================================== */
 app.post("/vote", (req, res) => {
-
-    if (req.session.isVoted === 1) {
-        req.session.voteResponse = req.body["yesCommonOff"] || req.body["noCommonOff"];
-        const partyName = req.session.voteResponse;
-        res.render("confirmVote", { partyName });
-        console.log('Entered /vote 2');
-        req.session.isVoted = 2;
+    // 1. Permanently locked out if already confirmed
+    if (req.session.isVoted === 3) {
+        return res.redirect("/confirmed");
     }
 
-    else if (req.session.isVoted === 3) {
-        res.redirect("/confirmed");
+    // 2. Must come strictly from Step 1 (index.ejs ballot selection)
+    if (req.session.isVoted !== 1 || !req.body["response"]) {
+        return res.redirect(`/${req.session.code || ""}`);
     }
 
-    else {
-        res.redirect("/");
-    }
+    req.session.voteResponse = req.body["response"];
+    req.session.isVoted = 2; // Transition to confirmation pending state
+
+    const partyName = req.session.voteResponse;
+
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    return res.render("confirmVote", { partyName });
 });
 
 
-
+/* ========================================================
+   STEP 3: CONFIRM & WRITE TO DATABASE
+   Strictly requires isVoted === 2 (must come directly from confirmVote).
+   Advances session state to 3 (Permanently Voted).
+======================================================== */
 app.post("/confirmVote", async (req, res) => {
+    console.log(req.session.user?.username, ", Entered /confirmVote");
+
     if (req.session.isVoted === 2) {
         const partyName = req.session.voteResponse;
         const buttonName = req.body["edit"] || req.body["confirm"];
 
         console.log('Entered /confirmVote 3');
 
-
         if (buttonName === 'confirm') {
             try {
-                if (partyName === "Common Off Janata Party") {
-                    await db.query('UPDATE "commonOffVote" SET yes = yes + 1 WHERE id = 1');
-                    const status = await db.query('SELECT yes FROM "commonOffVote"');
-                    console.log("Status : yes = " + status.rows[0].yes);
+                if (partyName === req.session.poll[0]?.option_name) {
+                    const { error } = await supabase.from("Votes").insert({
+                        voter_id: req.session.user.id,
+                        election_id: req.session.election_id,
+                        option_id: req.session.poll[0].option_id
+                    });
+                    if (error) throw error;
                     console.log("Done db 1");
                     req.session.isVoted = 3;
                 }
-                else {
-                    await db.query('UPDATE "commonOffVote" SET no = no + 1 WHERE id = 1');
-                    const status = await db.query('SELECT no FROM "commonOffVote"');
-                    console.log("Status : no = " + status.rows[0].no);
+                else if (partyName === req.session.poll[1]?.option_name) {
+                    const { error } = await supabase.from("Votes").insert({
+                        voter_id: req.session.user.id,
+                        election_id: req.session.election_id,
+                        option_id: req.session.poll[1].option_id
+                    });
+                    if (error) throw error;
                     console.log("Done db 2");
                     req.session.isVoted = 3;
                 }
+                else if (partyName === req.session.poll[2]?.option_name) {
+                    const { error } = await supabase.from("Votes").insert({
+                        voter_id: req.session.user.id,
+                        election_id: req.session.election_id,
+                        option_id: req.session.poll[2].option_id
+                    });
+                    if (error) throw error;
+                    console.log("Done db 3");
+                    req.session.isVoted = 3;
+                }
+                else if (partyName === req.session.poll[3]?.option_name) {
+                    const { error } = await supabase.from("Votes").insert({
+                        voter_id: req.session.user.id,
+                        election_id: req.session.election_id,
+                        option_id: req.session.poll[3].option_id
+                    });
+                    if (error) throw error;
+                    console.log("Done db 4");
+                    req.session.isVoted = 3;
+                }
+                else {
+                    console.log("Invalid response");
+                    console.log("Done db 4");
+                    req.session.isVoted = 3;
+                }
+
                 return res.redirect("/confirmed");
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 return res.status(500).send("Database error occured!");
             }
         }
-
         else {
-            return res.redirect("/");
+            return res.redirect(`/${req.session.code}`);
         }
     }
+    else if (req.session.isVoted === 3) {
+        return res.redirect("/confirmed");
+    }
+    else {
+        return res.redirect("/");
+    }
+});
 
-    else if (req.session.isVoted === 3) { res.redirect("/confirmed"); }
+/* ========================================================
+   STEP 4: VOTE CONFIRMED SUCCESS PAGE
+   Strictly accessible ONLY if isVoted === 3.
+======================================================== */
+app.get("/confirmed", (req, res) => {
+    if (req.session.isVoted !== 3) {
+        return res.redirect(`/${req.session.code || ""}`);
+    }
 
-    else { res.redirect("/"); }
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    const partyName = req.session.voteResponse;
+    return res.render("confirmed", { partyName,username: req.session.user.username });
 });
 
 
 
-app.get("/confirmed", (req, res) => {
-    if (req.session.isVoted === 3) {
-        const partyName = req.session.voteResponse;
-        res.render("confirmed", { partyName });
-        console.log('Entered /confirmed 4');
+/* ========================================================
+   STEP 1: BALLOT PAGE
+   Allowed only if NOT already voted (isVoted === 3).
+   Sets session state to 1.
+======================================================== */
+app.get("/:code", async (req, res) => {
+    try {
+        const code = req.params.code;
+        req.session.code = code;
+
+        // If the user has already confirmed their vote, block access and send to /confirmed
+        if (req.session.isVoted === 3) {
+            return res.redirect("/confirmed");
+        }
+
+        const { data: poll, error } = await supabase
+            .from("Vote_options")
+            .select("option_id, option_no, option_name")
+            .eq("election_id", code);
+
+        if (error) {
+            console.error("Supabase query error:", error);
+            return res.status(500).send("Database error");
+        }
+
+        if (!poll || poll.length === 0) {
+            return res.status(404).send("Poll not found");
+        }
+
+        req.session.poll = poll;
+        req.session.election_id = code;
+
+        if (!req.session.isAuthenticated) {
+            req.session.voter = true;
+            return res.redirect('/login');
+        }
+
+        // Set state to 1 BEFORE rendering so the ballot step is locked in
+        req.session.isVoted = 1;
+
+        // Explicitly wait for session to save before rendering the ballot
+        req.session.save((err) => {
+            if (err) {
+                console.error("Session save error:", err);
+                return res.status(500).send("Session error");
+            }
+
+        // Prevent browser from caching ballot page after voting
+        res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+
+        return res.render("index", {
+            poll: poll,
+            user: req.session.user || null
+        });
+        });
+    } catch (err) {
+        console.error("Route error:", err);
+        return res.status(500).send("Internal Server Error");
     }
-    else {
-        res.redirect("/");
-    }
-    console.log("Session ID:", req.sessionID);
-    console.log("Session:", req.session);
 });
 
 
