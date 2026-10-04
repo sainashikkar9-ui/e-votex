@@ -1417,8 +1417,8 @@ app.get("/:code", async (req, res) => {
 
         // 2. Parse date using election.ends_at (NOT election itself)
         const dateValue = election.ends_at;
-        const targetDate = dateValue instanceof Date 
-            ? dateValue 
+        const targetDate = dateValue instanceof Date
+            ? dateValue
             : new Date(String(dateValue).replace(" ", "T"));
 
         const now = new Date();
@@ -1457,6 +1457,17 @@ app.get("/:code", async (req, res) => {
         req.session.election_id = code;
         req.session.isVoted = 1;
 
+        const { data: title_description, title_descriptionError } = await supabase
+            .from("Elections")
+            .select("title, description")
+            .eq("election_id", code)
+            .single();
+
+        if (title_descriptionError) {
+            console.error("Election title/description error:", error);
+            return res.status(500).send("Failed to fetch election details");
+        }
+
         req.session.save((err) => {
             if (err) {
                 console.error("Session save error:", err);
@@ -1466,7 +1477,9 @@ app.get("/:code", async (req, res) => {
             res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
             return res.render("index", {
                 poll: poll,
-                user: req.session.user || null
+                user: req.session.user || null,
+                title: title_description.title,
+                description: title_description.description
             });
         });
 
