@@ -1295,49 +1295,53 @@ app.get("/:code/results", async (req, res) => {
         const code = req.params.code;
         req.session.code = code;
 
-        const { data: votes, error } = await supabase
-            .from("Votes")
-            .select("option_name")
-            .eq("election_id", code);
+        // 1. Fetch options and cast votes in parallel
+        const [
+            { data: options, error: optionsError },
+            { data: votes, error: votesError },
+            { data: election, error: electionError }
+        ] = await Promise.all([
+            supabase
+                .from("Vote_options")
+                .select("option_id, option_no, option_name")
+                .eq("election_id", code)
+                .order("option_no", { ascending: true }),
+            supabase
+                .from("Votes")
+                .select("option_id")
+                .eq("election_id", code),
+            supabase
+                .from("Elections")
+                .select("title, description")
+                .eq("election_id", code)
+                .single()
+        ]);
 
-        if (error) {
-            console.error("Supabase query error:", error);
-            return res.status(500).send("Database error");
+        if (optionsError || votesError || electionError || !election) {
+            console.error("Results fetch error:", optionsError || votesError || electionError);
+            return res.status(500).send("Database error or election not found");
         }
 
-        // 1. Tally votes per option_name
+        // 2. Count votes per option_id
         const counts = {};
         votes.forEach(row => {
-            const name = row.option_name;
-            counts[name] = (counts[name] || 0) + 1;
+            const id = row.option_id;
+            counts[id] = (counts[id] || 0) + 1;
         });
 
-        // 2. Format into parallel arrays in a single variable
+        // 3. Map option names to their respective vote count
         const electionResults = {
-            option_name: Object.keys(counts),
-            total_count: Object.values(counts)
+            option_id: options.map(opt => opt.option_id),
+            option_name: options.map(opt => opt.option_name),
+            total_count: options.map(opt => counts[opt.option_id] || 0)
         };
 
-        console.log(electionResults);
-
-        const { data: election, errorTitleDesc } = await supabase
-            .from("Elections")
-            .select("title, description")
-            .eq("election_id", code)
-            .single();
-
-        if (errorTitleDesc || !election) {
-            console.error("Error fetching election details:", error);
-            return res.status(404).send("Election not found");
-        }
+        console.log("Election Results:", electionResults);
 
         const title = election.title;
         const description = election.description;
 
-        console.log("Title:", title);
-        console.log("Description:", description);
-
-        res.render("results", { title, description, electionResults });
+        return res.render("results", { title, description, electionResults });
 
     } catch (err) {
         console.error("Route error:", err);
@@ -1355,6 +1359,7 @@ app.get("/:code/results", async (req, res) => {
 app.get("/:code", async (req, res) => {
     try {
         const code = req.params.code;
+        if (code === "favicon.ico") return res.status(204).end();
         req.session.code = code;
 
         if (!req.session.isAuthenticated) {
@@ -1362,77 +1367,72 @@ app.get("/:code", async (req, res) => {
             return res.redirect('/login');
         }
 
-        const { data: ends_at, error } = await supabase
+        // 1. Fetch Election ends_at column
+        const { data: election, error } = await supabase
             .from("Elections")
             .select("ends_at")
             .eq("election_id", code)
             .single();
 
-        if (error || !code) {
+        if (error || !election || !election.ends_at) {
             console.error("Election fetch error:", error);
             return res.status(404).send("Election not found");
         }
 
-        // Replace the space with 'T' for ISO 8601 standard compliance
-        const targetDate = new Date(String(ends_at).replace(" ", "T"));
+        // 2. Parse date using election.ends_at (NOT election itself)
+        const dateValue = election.ends_at;
+        const targetDate = dateValue instanceof Date 
+            ? dateValue 
+            : new Date(String(dateValue).replace(" ", "T"));
 
-        // Current date and time
         const now = new Date();
 
-        // Compare using standard comparison operators
-        if (now >= targetDate) {
-            console.log("The poll has ended -> Results");
-            res.redirect(`/${code}/results`);
+        console.log("Current Time (ms):", now.getTime());
+        console.log("Ends At Time (ms):", targetDate.getTime());
+
+        // 3. Strict millisecond numeric comparison
+        if (now.getTime() >= targetDate.getTime()) {
+            console.log("The poll has ended -> Redirecting to Results");
+            return res.redirect(`/${code}/results`);
         }
 
-        else {
-            console.log("The poll is on.");
-            // If the user has already confirmed their vote, block access and send to /confirmed
-            if (req.session.isVoted === 3) {
-                return res.redirect("/confirmed");
+        console.log("The poll is on.");
+
+        // If the user has already confirmed their vote, block access
+        if (req.session.isVoted === 3) {
+            return res.redirect("/confirmed");
+        }
+
+        const { data: poll, error: pollError } = await supabase
+            .from("Vote_options")
+            .select("option_id, option_no, option_name")
+            .eq("election_id", code);
+
+        if (pollError) {
+            console.error("Supabase query error:", pollError);
+            return res.status(500).send("Database error");
+        }
+
+        if (!poll || poll.length === 0) {
+            return res.status(404).send("Poll not found");
+        }
+
+        req.session.poll = poll;
+        req.session.election_id = code;
+        req.session.isVoted = 1;
+
+        req.session.save((err) => {
+            if (err) {
+                console.error("Session save error:", err);
+                return res.status(500).send("Session error");
             }
 
-            const { data: poll, error } = await supabase
-                .from("Vote_options")
-                .select("option_id, option_no, option_name")
-                .eq("election_id", code);
-
-            if (error) {
-                console.error("Supabase query error:", error);
-                return res.status(500).send("Database error");
-            }
-
-            if (!poll || poll.length === 0) {
-                return res.status(404).send("Poll not found");
-            }
-
-            req.session.poll = poll;
-            req.session.election_id = code;
-
-            if (!req.session.isAuthenticated) {
-                req.session.voter = true;
-                return res.redirect('/login');
-            }
-
-            // Set state to 1 BEFORE rendering so the ballot step is locked in
-            req.session.isVoted = 1;
-
-            // Explicitly wait for session to save before rendering the ballot
-            req.session.save((err) => {
-                if (err) {
-                    console.error("Session save error:", err);
-                    return res.status(500).send("Session error");
-                }
-
-                // Prevent browser from caching ballot page after voting
-                res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
-
-                return res.render("index", {
-                    poll: poll,
-                    user: req.session.user || null
-                });
+            res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+            return res.render("index", {
+                poll: poll,
+                user: req.session.user || null
             });
-        }
+        });
 
     } catch (err) {
         console.error("Route error:", err);
