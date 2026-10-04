@@ -54,7 +54,17 @@ app.use(session({
 }));
 
 app.set("view engine", "ejs");
-app.set("views", path.join(process.cwd(), "views"));
+
+
+
+/*On Vercel*/
+app.set("views", path.join(process.cwd(), "GPP_EVM/views"));
+
+/*On Localhost*/
+/*app.set("views", path.join(process.cwd(), "views"));*/
+
+
+
 app.get("/", (req, res) => {
     res.redirect("/login");
     //    res.redirect("/dashboard/create-poll");
