@@ -71,7 +71,7 @@ app.get("/", (req, res) => {
 });
 
 
-/*
+/*Original /login
 app.get("/login", (req, res) => {
 
     res.render("login", {
@@ -277,6 +277,7 @@ app.post("/loginCheck", async (req, res) => {
 
 
 
+/*Original /signin
 app.get("/signin", (req, res) => {
 
     res.render("signin", {
@@ -289,6 +290,19 @@ app.get("/signin", (req, res) => {
 
     });
 
+});
+*/
+app.get("/signin", (req, res) => {
+    res.render("signin", {
+        supabaseUrl: process.env.SUPABASE_URL || "",
+        supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || ""
+    }, (err, html) => {
+        if (err) {
+            console.error("EJS Render Error on /signin:", err);
+            return res.status(500).send(`<pre style="color:red; font-size:16px;">Signin Render Error:\n${err.stack}</pre>`);
+        }
+        res.send(html);
+    });
 });
 
 
