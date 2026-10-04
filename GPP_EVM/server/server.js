@@ -1111,6 +1111,7 @@ app.post("/dashboard/create-poll/create-url/created-url", async (req, res) => {
 
 
         if (req.body.submit === 'submit') {
+            console.log("CREATE POLL USER:", req.session.user);
             const { data: elections, error: electionsError } = await supabase
                 .from("Elections")
                 .insert({ creator_id: req.session.user.id, title, description, starts_at: starts_at.toISOString(), ends_at: ends_at.toISOString(), status })
