@@ -41,8 +41,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Resolve static assets strictly inside the runtime directory:
-app.use(express.static(path.join(process.cwd(), "public")));
-app.use('/scripts', express.static(path.join(process.cwd(), 'scripts')));
+app.use(express.static(path.join(process.cwd(), "GPP_EVM/public")));
+app.use('/scripts', express.static(path.join(process.cwd(), "GPP_EVM/scripts")));
 
 app.use(session({
     secret: sessionSecret,

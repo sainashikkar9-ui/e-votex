@@ -1,14 +1,33 @@
 {
   "version": 2,
   "functions": {
+    "GPP_EVM/api/index.js": {
+      "includeFiles": "{GPP_EVM/views/**,GPP_EVM/public/**,GPP_EVM/scripts/**}"
+    },
     "api/index.js": {
-      "includeFiles": "{views/**,public/**,scripts/**}"
+      "includeFiles": "{views/**,public/**,scripts/**,GPP_EVM/views/**,GPP_EVM/public/**,GPP_EVM/scripts/**}"
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/api/index.js"
+      "src": "/css/(.*)",
+      "dest": "/GPP_EVM/public/css/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/GPP_EVM/public/images/$1"
+    },
+    {
+      "src": "/videos/(.*)",
+      "dest": "/GPP_EVM/public/videos/$1"
+    },
+    {
+      "src": "/scripts/(.*)",
+      "dest": "/GPP_EVM/scripts/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/GPP_EVM/api/index.js"
     }
   ]
 }
