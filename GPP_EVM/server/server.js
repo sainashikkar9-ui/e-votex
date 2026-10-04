@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const app = express();
 const port = 5000;
-const _dirname = path.dirname(fileURLToPath(import.meta.url));
+//const _dirname = path.dirname(fileURLToPath(import.meta.url));
 const sessionSecret = process.env.SESSION_SECRET || "gpp-evm-development-session-secret";
 const db = new pg.Client({
     user: process.env.DB_USER,
@@ -32,9 +32,9 @@ const supabase = createClient(
 
 db.connect();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(_dirname + "/../public"));
-app.use('/scripts', express.static(path.join(_dirname, '../scripts')));
-app.use('/bootstrap', express.static(path.join(_dirname, '../node_modules/bootstrap/dist')))
+app.use(express.static(process.cwd() + "/../public"));
+app.use('/scripts', express.static(path.join(process.cwd(), '../scripts')));
+app.use('/bootstrap', express.static(path.join(process.cwd(), '../node_modules/bootstrap/dist')))
 app.use(session({
     secret: sessionSecret,
     resave: false,
