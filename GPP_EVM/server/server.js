@@ -1155,14 +1155,14 @@ app.post("/dashboard/create-poll/create-url/created-url", async (req, res) => {
 
 
 
-app.get("/dashboard/create-poll/create-url/created-url", (req,res) => {
+app.get("/dashboard/create-poll/create-url/created-url", (req, res) => {
     const poll = req.session.createdPoll;
 
     if (!poll) {
         return res.redirect("/dashboard");
     }
 
-    res.render("created-url", {user: poll});
+    res.render("created-url", { user: poll });
 });
 
 
@@ -1284,7 +1284,65 @@ app.get("/confirmed", (req, res) => {
 
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
     const partyName = req.session.voteResponse;
-    return res.render("confirmed", { partyName,username: req.session.user.username });
+    req.session.voter = false;
+    return res.render("confirmed", { partyName, username: req.session.user.username });
+});
+
+
+
+app.get("/:code/results", async (req, res) => {
+    try {
+        const code = req.params.code;
+        req.session.code = code;
+
+        const { data: votes, error } = await supabase
+            .from("Votes")
+            .select("option_name")
+            .eq("election_id", code);
+
+        if (error) {
+            console.error("Supabase query error:", error);
+            return res.status(500).send("Database error");
+        }
+
+        // 1. Tally votes per option_name
+        const counts = {};
+        votes.forEach(row => {
+            const name = row.option_name;
+            counts[name] = (counts[name] || 0) + 1;
+        });
+
+        // 2. Format into parallel arrays in a single variable
+        const electionResults = {
+            option_name: Object.keys(counts),
+            total_count: Object.values(counts)
+        };
+
+        console.log(electionResults);
+
+        const { data: election, errorTitleDesc } = await supabase
+            .from("Elections")
+            .select("title, description")
+            .eq("election_id", code)
+            .single();
+
+        if (errorTitleDesc || !election) {
+            console.error("Error fetching election details:", error);
+            return res.status(404).send("Election not found");
+        }
+
+        const title = election.title;
+        const description = election.description;
+
+        console.log("Title:", title);
+        console.log("Description:", description);
+
+        res.render("results", { title, description, electionResults });
+
+    } catch (err) {
+        console.error("Route error:", err);
+        return res.status(500).send("Internal Server Error");
+    }
 });
 
 
@@ -1299,51 +1357,83 @@ app.get("/:code", async (req, res) => {
         const code = req.params.code;
         req.session.code = code;
 
-        // If the user has already confirmed their vote, block access and send to /confirmed
-        if (req.session.isVoted === 3) {
-            return res.redirect("/confirmed");
-        }
-
-        const { data: poll, error } = await supabase
-            .from("Vote_options")
-            .select("option_id, option_no, option_name")
-            .eq("election_id", code);
-
-        if (error) {
-            console.error("Supabase query error:", error);
-            return res.status(500).send("Database error");
-        }
-
-        if (!poll || poll.length === 0) {
-            return res.status(404).send("Poll not found");
-        }
-
-        req.session.poll = poll;
-        req.session.election_id = code;
-
         if (!req.session.isAuthenticated) {
             req.session.voter = true;
             return res.redirect('/login');
         }
 
-        // Set state to 1 BEFORE rendering so the ballot step is locked in
-        req.session.isVoted = 1;
+        const { data: ends_at, error } = await supabase
+            .from("Elections")
+            .select("ends_at")
+            .eq("election_id", code)
+            .single();
 
-        // Explicitly wait for session to save before rendering the ballot
-        req.session.save((err) => {
-            if (err) {
-                console.error("Session save error:", err);
-                return res.status(500).send("Session error");
+        if (error || !code) {
+            console.error("Election fetch error:", error);
+            return res.status(404).send("Election not found");
+        }
+
+        // Replace the space with 'T' for ISO 8601 standard compliance
+        const targetDate = new Date(String(ends_at).replace(" ", "T"));
+
+        // Current date and time
+        const now = new Date();
+
+        // Compare using standard comparison operators
+        if (now >= targetDate) {
+            console.log("The poll has ended -> Results");
+            res.redirect(`/${code}/results`);
+        }
+
+        else {
+            console.log("The poll is on.");
+            // If the user has already confirmed their vote, block access and send to /confirmed
+            if (req.session.isVoted === 3) {
+                return res.redirect("/confirmed");
             }
 
-        // Prevent browser from caching ballot page after voting
-        res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+            const { data: poll, error } = await supabase
+                .from("Vote_options")
+                .select("option_id, option_no, option_name")
+                .eq("election_id", code);
 
-        return res.render("index", {
-            poll: poll,
-            user: req.session.user || null
-        });
-        });
+            if (error) {
+                console.error("Supabase query error:", error);
+                return res.status(500).send("Database error");
+            }
+
+            if (!poll || poll.length === 0) {
+                return res.status(404).send("Poll not found");
+            }
+
+            req.session.poll = poll;
+            req.session.election_id = code;
+
+            if (!req.session.isAuthenticated) {
+                req.session.voter = true;
+                return res.redirect('/login');
+            }
+
+            // Set state to 1 BEFORE rendering so the ballot step is locked in
+            req.session.isVoted = 1;
+
+            // Explicitly wait for session to save before rendering the ballot
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Session save error:", err);
+                    return res.status(500).send("Session error");
+                }
+
+                // Prevent browser from caching ballot page after voting
+                res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+
+                return res.render("index", {
+                    poll: poll,
+                    user: req.session.user || null
+                });
+            });
+        }
+
     } catch (err) {
         console.error("Route error:", err);
         return res.status(500).send("Internal Server Error");
