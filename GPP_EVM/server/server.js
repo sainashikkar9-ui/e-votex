@@ -35,25 +35,26 @@ const supabase = createClient(
 /*db.connect();*/
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(process.cwd() + "/../public"));
-app.use('/scripts', express.static(path.join(process.cwd(), '../scripts')));
-app.use('/bootstrap', express.static(path.join(process.cwd(), '../node_modules/bootstrap/dist')))
+app.set("trust proxy", 1);
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Resolve static assets strictly inside the runtime directory:
+app.use(express.static(path.join(process.cwd(), "public")));
+app.use('/scripts', express.static(path.join(process.cwd(), 'scripts')));
+
 app.use(session({
     secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false
+        secure: process.env.NODE_ENV === "production" ? false : false // Keep false for standard session cookies
     }
 }));
-app.use(express.json());
-
-
 
 app.set("view engine", "ejs");
 app.set("views", path.join(process.cwd(), "views"));
-
-
-
 app.get("/", (req, res) => {
     res.redirect("/login");
     //    res.redirect("/dashboard/create-poll");
