@@ -1,11 +1,8 @@
 {
   "version": 2,
   "functions": {
-    "GPP_EVM/api/index.js": {
-      "includeFiles": "{GPP_EVM/views/**,GPP_EVM/public/**,GPP_EVM/scripts/**}"
-    },
     "api/index.js": {
-      "includeFiles": "{views/**,public/**,scripts/**,GPP_EVM/views/**,GPP_EVM/public/**,GPP_EVM/scripts/**}"
+      "includeFiles": "{GPP_EVM/views/**,GPP_EVM/public/**,GPP_EVM/scripts/**,views/**,public/**,scripts/**}"
     }
   },
   "routes": [
@@ -27,7 +24,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/GPP_EVM/api/index.js"
+      "dest": "/api/index.js"
     }
   ]
 }
