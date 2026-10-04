@@ -8,7 +8,8 @@ import { createClient } from "@supabase/supabase-js";
 
 const app = express();
 const port = 5000;
-//const _dirname = path.dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const sessionSecret = process.env.SESSION_SECRET || "gpp-evm-development-session-secret";
 /*
 const db = new pg.Client({
@@ -52,8 +53,11 @@ app.use(session({
 }));
 
 app.set("view engine", "ejs");
-app.set("views", path.join(process.cwd(), "views"));
+app.set("views", path.join(__dirname, "..", "views"));
 
+console.log("process.cwd():", process.cwd());
+console.log("server __dirname:", __dirname);
+console.log("views path:", path.join(__dirname, "..", "views"));
 
 app.get("/", (req, res) => {
     res.redirect("/login");
