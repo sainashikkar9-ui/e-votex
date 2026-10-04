@@ -10,6 +10,7 @@ const app = express();
 const port = 5000;
 //const _dirname = path.dirname(fileURLToPath(import.meta.url));
 const sessionSecret = process.env.SESSION_SECRET || "gpp-evm-development-session-secret";
+/*
 const db = new pg.Client({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -18,6 +19,7 @@ const db = new pg.Client({
     port: Number(process.env.DB_PORT),
     connectionTimeoutMillis: 5000
 });
+*/
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
@@ -30,7 +32,7 @@ const supabase = createClient(
     }
 );
 
-db.connect();
+/*db.connect();*/
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(process.cwd() + "/../public"));
 app.use('/scripts', express.static(path.join(process.cwd(), '../scripts')));
