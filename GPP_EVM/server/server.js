@@ -61,7 +61,7 @@ app.get("/", (req, res) => {
 });
 
 
-
+/*
 app.get("/login", (req, res) => {
 
     res.render("login", {
@@ -75,7 +75,20 @@ app.get("/login", (req, res) => {
     });
 
 });
-
+*/
+app.get("/login", (req, res) => {
+    res.render("login", {
+        supabaseUrl: process.env.SUPABASE_URL || "",
+        supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || ""
+    }, (err, html) => {
+        if (err) {
+            console.error("EJS Render Error:", err);
+            // This will send the exact error text directly to the browser screen:
+            return res.status(500).send(`<pre style="color:red; font-size:16px;">${err.stack}</pre>`);
+        }
+        res.send(html);
+    });
+});
 
 
 app.post("/loginCheck", async (req, res) => {
