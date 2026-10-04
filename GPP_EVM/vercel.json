@@ -2,25 +2,25 @@
   "version": 2,
   "functions": {
     "api/index.js": {
-      "includeFiles": "{GPP_EVM/views/**,GPP_EVM/public/**,GPP_EVM/scripts/**,views/**,public/**,scripts/**}"
+      "includeFiles": "views/**"
     }
   },
   "routes": [
     {
       "src": "/css/(.*)",
-      "dest": "/GPP_EVM/public/css/$1"
+      "dest": "/public/css/$1"
     },
     {
       "src": "/images/(.*)",
-      "dest": "/GPP_EVM/public/images/$1"
+      "dest": "/public/images/$1"
     },
     {
       "src": "/videos/(.*)",
-      "dest": "/GPP_EVM/public/videos/$1"
+      "dest": "/public/videos/$1"
     },
     {
       "src": "/scripts/(.*)",
-      "dest": "/GPP_EVM/scripts/$1"
+      "dest": "/scripts/$1"
     },
     {
       "src": "/(.*)",

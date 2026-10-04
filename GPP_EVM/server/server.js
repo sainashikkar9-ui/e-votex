@@ -32,37 +32,27 @@ const supabase = createClient(
     }
 );
 
-/*db.connect();*/
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(process.cwd() + "/../public"));
+/*db.connect(); */
+
 app.set("trust proxy", 1);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Resolve static assets strictly inside the runtime directory:
-app.use(express.static(path.join(process.cwd(), "GPP_EVM/public")));
-app.use('/scripts', express.static(path.join(process.cwd(), "GPP_EVM/scripts")));
+app.use(express.static(path.join(process.cwd(), "public")));
+app.use('/scripts', express.static(path.join(process.cwd(), "scripts")));
 
 app.use(session({
     secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === "production" ? false : false // Keep false for standard session cookies
+        secure: false
     }
 }));
 
 app.set("view engine", "ejs");
-
-
-
-/*On Vercel*/
-app.set("views", path.join(process.cwd(), "GPP_EVM/views"));
-
-/*On Localhost*/
-/*app.set("views", path.join(process.cwd(), "views"));*/
-
+app.set("views", path.join(process.cwd(), "views"));
 
 
 app.get("/", (req, res) => {
