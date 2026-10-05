@@ -6,10 +6,7 @@
   "author": "Sai Avinash Nashikkar",
   "type": "module",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/output.css --watch --source ./views"
-  },
+  "scripts": {},
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/cli": "^4.3.3",
