@@ -1,40 +1,24 @@
-```
 └── 📁GPP_EVM
     └── 📁api
-        ├── index.js
-    └── 📁public
-        └── 📁css
-            ├── output.css
-            ├── style.css
-        └── 📁images
-        └── 📁videos
-    └── 📁scripts
         ├── index.js
     └── 📁server
         ├── .env
         ├── client_secret.env
         ├── server.js
-    └── 📁src
-        ├── input.css
     └── 📁views
         ├── confirmed.ejs
         ├── confirmVote.ejs
-        ├── confirmVote.html
         ├── create-poll.ejs
         ├── create-url.ejs
         ├── created-url.ejs
         ├── dashboard.ejs
         ├── index.ejs
-        ├── index.html
         ├── login.ejs
         ├── results.ejs
-        ├── results.html
-        ├── signin.ejs
+        ├── signIn.ejs
     ├── .gitignore
     ├── architecture.md
     ├── package-lock.json
     ├── package.json
     ├── README.md
-    ├── tailwind.config.js
     └── vercel.json
-```
